@@ -1,0 +1,39 @@
+GameProject {
+ ID "V30MapVoting"
+ GUID "61CE96A4BB024B4C"
+ TITLE "V30 Map Voting"
+ Dependencies {
+  "58D0FB3206B6F859" "61DAA7B4B5025363"
+ }
+ Configurations {
+  GameProjectConfig PC {
+   WidgetManagerSettings WidgetManagerSettings "{AC4BE58770485E02}" {
+    StringTables {
+     StringTableDefinition "{62043DC4A2E7D13E}" {
+      StringTableSource "{04FC361420958F92}Language/V30_MapVoting_localization.st"
+      Languages {
+       LanguageDefinition "{62043DC4A53D26E4}" {
+        Code "en_us"
+        StringTableRuntime "{C9266652E991D99B}Language/V30_MapVoting_localization.en_us.conf"
+       }
+       LanguageDefinition "{62043DC4A53D2610}" {
+        Code "ru_ru"
+        StringTableRuntime "{5B3CEC78F906D25B}Language/V30_MapVoting_localization.ru_ru.conf"
+       }
+      }
+     }
+    }
+   }
+  }
+  GameProjectConfig XBOX_ONE {
+  }
+  GameProjectConfig XBOX_SERIES {
+  }
+  GameProjectConfig PS4 {
+  }
+  GameProjectConfig PS5 {
+  }
+  GameProjectConfig HEADLESS {
+  }
+ }
+}

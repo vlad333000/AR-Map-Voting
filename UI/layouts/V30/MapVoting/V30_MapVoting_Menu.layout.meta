@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{FA77B513872742B7}UI/layouts/V30/MapVoting/V30_MapVoting_ScreenFull.layout"
+ Configurations {
+  LayoutResourceClass PC {
+  }
+  LayoutResourceClass XBOX_ONE : PC {
+  }
+  LayoutResourceClass XBOX_SERIES : PC {
+  }
+  LayoutResourceClass PS4 : PC {
+  }
+  LayoutResourceClass PS5 : PC {
+  }
+  LayoutResourceClass HEADLESS : PC {
+  }
+ }
+}

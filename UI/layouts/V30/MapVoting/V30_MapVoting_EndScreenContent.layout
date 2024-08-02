@@ -1,0 +1,235 @@
+SizeLayoutWidgetClass {
+ Name "rootFrame"
+ Slot OverlayWidgetSlot "{6202F922BBA5CF9B}" {
+ }
+ components {
+  V30_MapVoting_GameOverScreenContentUIComponent "{620373547C68B531}" {
+   m_sImageName "MapImage"
+   m_sImageHolderName "MapImageWrapper"
+   m_sTileName "Title"
+   m_sSubtitleName "SubTitle"
+   m_sDebriefingName "Header"
+  }
+ }
+ {
+  OverlayWidgetClass "{6203735111CC4468}" {
+   Name "Overlay0"
+   Slot AlignableSlot "{6203735111CC4456}" {
+   }
+   {
+    VerticalLayoutWidgetClass "{6202F922A5470EAF}" {
+     Name "VerticalLayout0"
+     Slot OverlayWidgetSlot "{62037D96C2557A89}" {
+     }
+     {
+      TextWidgetClass "{6202F922AA7E8EE0}" {
+       Name "Header"
+       Slot LayoutSlot "{6202F922AA7E8ED5}" {
+       }
+       Color 0.761 0.386 0.08 1
+       Text "#AR-V30_MapVoting_MenuEndTitle"
+       "Font Size" 40
+       "Min Font Size" 40
+       "Horizontal Alignment" Center
+       FontProperties FontProperties "{6204521E984441DC}" {
+        Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+        ShadowSize 2
+        ShadowOffset 2 2
+       }
+      }
+      SizeLayoutWidgetClass "{6202F922EE2DC5D7}" {
+       Name "SizeLayout0"
+       Slot LayoutSlot "{6202F923D3240F27}" {
+       }
+       AllowWidthOverride 1
+       WidthOverride 480
+       HeightOverride 480
+       AllowMinDesiredWidth 1
+       MinDesiredWidth 144
+       AllowMinDesiredHeight 1
+       MinDesiredHeight 144
+       AllowMaxDesiredWidth 1
+       MaxDesiredWidth 720
+       AllowMaxDesiredHeight 1
+       MaxDesiredHeight 720
+       {
+        OverlayWidgetClass "{6202F922EE2DC5D4}" {
+         Name "Overlay0"
+         Slot AlignableSlot "{61FA6BD3791A34D9}" {
+          Padding 8 8 8 8
+         }
+         {
+          ScaleWidgetClass "{6202F922EE2DC5D5}" {
+           Name "Scale0"
+           Slot OverlayWidgetSlot "{61FA6BD5ACED62EF}" {
+           }
+           {
+            FrameWidgetClass "{6202F922EE2D522C}" {
+             Name "Frame0"
+             Slot AlignableSlot "{61FA6BD5AC5A88B0}" {
+             }
+             {
+              OverlayWidgetClass "{6202F922EE2D5222}" {
+               Name "Background"
+               Slot FrameWidgetSlot "{61FA6BD64D4A44A4}" {
+                Anchor 0 0 1 1
+                PositionX 0
+                OffsetLeft 0
+                PositionY 0
+                OffsetTop 0
+                SizeX 0
+                OffsetRight 0
+                SizeY 0
+                OffsetBottom 0
+                SizeToContent 1
+               }
+               {
+                ScaleWidgetClass "{6202F922EE2D5221}" {
+                 Name "PhotoFrameScale"
+                 Slot OverlayWidgetSlot "{61FA6BC773ADEF53}" {
+                 }
+                 {
+                  ImageWidgetClass "{6202F922EE2CD786}" {
+                   Name "PhotoFrame"
+                   Slot AlignableSlot "{61FA6BD01D0DB6F8}" {
+                   }
+                   Texture "{DA47F84ABED3F164}UI/Textures/LoadingScreen/Photos-asset_UI.edds"
+                   Size 1160 816
+                  }
+                 }
+                }
+               }
+              }
+              FrameWidgetClass "{6202F922EE2CD787}" {
+               Name "Info"
+               Slot FrameWidgetSlot "{61FA6BD4E7061B55}" {
+                Anchor 0.05 0.1 0.95 0.9
+                PositionX -17.2
+                PositionY -24.199
+                SizeX 34.4
+                OffsetRight 0
+                SizeY 48.397
+                OffsetBottom 0
+               }
+               Clipping True
+               {
+                OverlayWidgetClass "{6204419B05160067}" {
+                 Name "MapImageWrapper"
+                 Slot FrameWidgetSlot "{6204419BFD58A9F0}" {
+                  Anchor 0 0 1 1
+                  PositionX 0
+                  OffsetLeft 0
+                  PositionY 0
+                  OffsetTop 0
+                  SizeX 0
+                  OffsetRight 0
+                  SizeY 0
+                  OffsetBottom 0
+                 }
+                 {
+                  ScaleWidgetClass "{6204419B05160064}" {
+                   Name "MapImageScale"
+                   Slot OverlayWidgetSlot "{6204419BF84D9571}" {
+                    HorizontalAlign 3
+                    VerticalAlign 3
+                   }
+                   "Scale Mode" "Scale to fill"
+                   {
+                    ImageWidgetClass "{6204419B0516005A}" {
+                     Name "MapImage"
+                     Slot AlignableSlot "{6204419BF8441B1F}" {
+                     }
+                     Texture "{FB84DD112A84AB32}UI/Textures/LoadingScreen/PlaceholderScenery_UI.edds"
+                     Size 1920 1080
+                    }
+                   }
+                  }
+                  ImageWidgetClass "{6204419B0516005B}" {
+                   Name "PhotoDamage"
+                   Slot OverlayWidgetSlot "{6204419B0516007B}" {
+                    HorizontalAlign 3
+                    VerticalAlign 3
+                   }
+                   Texture "{A89D17F1A74B903B}UI/Textures/LoadingScreen/Masks/AlphaMaskV3_UI.edds"
+                   Size 1000 600
+                   "Blend Mode" Additive
+                  }
+                 }
+                }
+                OverlayWidgetClass "{6202F922EE2C8929}" {
+                 Name "InfoWrapper"
+                 Slot FrameWidgetSlot "{61FA6BD49F369D3D}" {
+                  Anchor 0 0 1 1
+                  PositionX 0
+                  OffsetLeft 0
+                  PositionY 0
+                  OffsetTop 0
+                  SizeX -344
+                  OffsetRight 0
+                  SizeY -241.986
+                  OffsetBottom 0
+                  SizeToContent 1
+                 }
+                 {
+                  OverlayWidgetClass "{6202F922EE2C04D7}" {
+                   Name "MapInfoWrapper"
+                   Slot OverlayWidgetSlot "{61FA6BDBA65417EC}" {
+                    HorizontalAlign 3
+                    VerticalAlign 2
+                   }
+                   {
+                    ImageWidgetClass "{6202F922EE2C04D6}" {
+                     Name "MapInfoBackground"
+                     Slot OverlayWidgetSlot "{61FA6BC773ADEDB4}" {
+                      HorizontalAlign 3
+                      VerticalAlign 3
+                     }
+                     Color 0 0 0 0.7
+                    }
+                    VerticalLayoutWidgetClass "{6202F922EE2C04D5}" {
+                     Name "MapInfo"
+                     Slot OverlayWidgetSlot "{61FA6BDBD715BC22}" {
+                      HorizontalAlign 3
+                      VerticalAlign 3
+                      Padding 4 4 4 4
+                     }
+                     {
+                      TextWidgetClass "{6202F922EE33B740}" {
+                       Name "Title"
+                       Slot LayoutSlot "{61FA6BC773ADED8F}" {
+                        HorizontalAlign 0
+                        VerticalAlign 1
+                       }
+                       Text "#ar-v30_mapvoting_menuchoicetitle"
+                      }
+                      TextWidgetClass "{6202F922EE33B741}" {
+                       Name "SubTitle"
+                       Slot LayoutSlot "{61FA6BDB7B47C1E2}" {
+                       }
+                       Color 0.604 0.604 0.604 1
+                       Text "#ar-v30_mapvoting_menuchoicesubtitle"
+                       "Font Size" 16
+                       "Min Font Size" 16
+                      }
+                     }
+                    }
+                   }
+                  }
+                 }
+                }
+               }
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

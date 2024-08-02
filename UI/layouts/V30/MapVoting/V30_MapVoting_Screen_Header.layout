@@ -1,0 +1,147 @@
+OverlayWidgetClass {
+ Name "Header"
+ {
+  OverlayWidgetClass "{61FA6BE60136CC54}" {
+   Name "Overlay"
+   Slot OverlayWidgetSlot "{61FA6BE60136CBBF}" {
+    HorizontalAlign 3
+    VerticalAlign 0
+   }
+   {
+    VerticalLayoutWidgetClass "{6202CAADBD24A090}" {
+     Name "TitleWrapper"
+     Slot OverlayWidgetSlot "{6202CAADBD24A0F1}" {
+      VerticalAlign 0
+     }
+     {
+      ButtonWidgetClass "{620413A0F34B62B7}" {
+       Name "Golosovanie"
+       Slot LayoutSlot "{620413A0F34B6293}" {
+       }
+       components {
+        SCR_ButtonComponent "{620413A0CE6A159C}" {
+         m_bCanBeToggled 1
+         m_bUseColorization 0
+        }
+       }
+       style blank
+       Switch toggle
+       {
+        TextWidgetClass "{61FA6BF9245EF489}" {
+         Name "Title"
+         Slot ButtonWidgetSlot "{620413A35F3A919A}" {
+         }
+         "Inherit Color" 1
+         Text "#AR-V30_MapVoting_MenuScreenTitle"
+         "Font Size" 48
+         "Min Font Size" 48
+        }
+       }
+      }
+      HorizontalLayoutWidgetClass "{6202CAA248FD89BC}" {
+       Name "RemainingTimeWrapper"
+       Slot LayoutSlot "{6202CAADAD6D5DEA}" {
+        HorizontalAlign 1
+        VerticalAlign 2
+       }
+       {
+        TextWidgetClass "{6202CAA248FD89BD}" {
+         Name "RemainintTimeText"
+         Slot LayoutSlot "{6202CAAD93E8EE06}" {
+          Padding 0 0 8 0
+         }
+         "Is Visible" 0
+         Text "Remains:"
+        }
+        TextWidgetClass "{6202CAA248FD89B2}" {
+         Name "RemainingTime"
+         Slot LayoutSlot "{6202CAADA97E78A4}" {
+         }
+         components {
+          V30_MapVoting_RemainingTimeComponentWidgetComponent "{6202CAAD40AF603E}" {
+          }
+         }
+         Text "--:--"
+         "No Localization" 1
+        }
+       }
+      }
+     }
+    }
+    HorizontalLayoutWidgetClass "{61FA6BFFA1717DC8}" {
+     Name "PlayersInfo"
+     Slot OverlayWidgetSlot "{61FAD50ED489830F}" {
+      HorizontalAlign 2
+      VerticalAlign 1
+      Padding 0 0 8 0
+     }
+     {
+      TextWidgetClass "{61FA6BF8CFFBC4BC}" {
+       Name "PlayersVoted"
+       Slot LayoutSlot "{61FA6BFC5D4EC58A}" {
+        HorizontalAlign 1
+        Padding 0 0 0 0
+       }
+       components {
+        V30_MapVoting_VotedPlayerCountComponent "{6202F925A40D8474}" {
+        }
+       }
+       Text "0"
+       "Font Size" 32
+       "Min Font Size" 32
+       "No Localization" 1
+      }
+      TextWidgetClass "{61FA6BFF9EAC21C1}" {
+       Name "Delimeter"
+       Slot LayoutSlot "{61FA6BFF9EAC212A}" {
+       }
+       Text "/"
+       "Font Size" 32
+       "Min Font Size" 32
+      }
+      TextWidgetClass "{61FA6BFF83D82C35}" {
+       Name "PlayersCount"
+       Slot LayoutSlot "{61FA6BFF83D82CDF}" {
+        HorizontalAlign 1
+        Padding 0 0 0 0
+       }
+       components {
+        V30_MapVoting_TotalPlayerCountComponent "{6202F92419160BEC}" {
+        }
+       }
+       Text "0"
+       "Font Size" 32
+       "Min Font Size" 32
+       "No Localization" 1
+      }
+      SizeLayoutWidgetClass "{61FA6BFFEBF15792}" {
+       Name "PlayersIconSize"
+       Slot LayoutSlot "{61FA6BFFEBF15781}" {
+       }
+       AllowHeightOverride 1
+       HeightOverride 32
+       AllowAspectRatioForce 1
+       {
+        ScaleWidgetClass "{61FA6BFFF8A0ACFE}" {
+         Name "PlayersIconScale"
+         Slot AlignableSlot "{61FA6BFFEB0CA45F}" {
+         }
+         {
+          ImageWidgetClass "{61FA6BFF8A33646B}" {
+           Name "PlayersIcon"
+           Slot AlignableSlot "{61FA6BFFE5C57FEC}" {
+           }
+           Texture "{FDD5423E69D007F8}UI/Textures/Icons/icons_wrapperUI-128.imageset"
+           Image "player"
+           Size 128 128
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

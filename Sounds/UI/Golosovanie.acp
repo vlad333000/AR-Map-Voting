@@ -1,0 +1,64 @@
+AudioClass {
+ sounds {
+  SoundClass {
+   id 3081
+   name "SOUND_GOLOSOVANIE"
+   version 5
+   tl -266.786 992.619
+   ins {
+    ConnectionsClass connections {
+     id 64
+     links {
+      ConnectionClass connection {
+       id 2052
+       port 65
+      }
+     }
+    }
+   }
+   outState 1035
+   outStatePort 22535
+  }
+ }
+ mixers {
+  MixerClass {
+   id 1035
+   name "OutputState"
+   version 4
+   tl -32.857 991.428
+   res "{B764D803219C775E}Sounds/FinalMix.afm"
+   ins {
+    ConnectionsClass connections {
+     id 22535
+     links {
+      ConnectionClass connection {
+       id 3081
+       port 65
+      }
+     }
+    }
+   }
+   pi {
+    512 0
+   }
+   path "{B764D803219C775E}Sounds/FinalMix.afm"
+   inputs {
+    "WPN_Handling" "WPN_Shots" "WPN_Explosions" "WNP_BulletHits" "CHAR" "ENV_AMB_2D" "VEH_Animations" "Impacts" "Dialogue" "Music" "ENV_Doors" "VEH_Engine" "VEH_Tires" "VON" "SFX" "SFX_Reverb" "VON_Reverb" "Dialogue_Reverb" "Impacts_EXT" "ENV_AMB_3D" "WPN_SonicCracks" "CHAR_Gear" "PA" "SFX_Reverb_Exterior" "UI" "ENV_AMB_3D_Reverb_Exterior" "SFX_Direct" "SFX_Reverb_Small" "SFX_Reverb_Medium" "SFX_Reverb_Large"
+   }
+  }
+ }
+ banks_local {
+  BankLocalClass {
+   id 2052
+   name "Golosovanie"
+   version 7
+   tl -525.714 997.857
+   Samples {
+    AudioBankSampleClass Sample {
+     Filename "{619C4EB6076C7A58}Sounds/UI/Golosovanie.wav"
+    }
+   }
+  }
+ }
+ version 1
+}

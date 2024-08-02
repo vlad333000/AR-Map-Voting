@@ -1,0 +1,17 @@
+ScriptedChatEntity {
+ ID "61FAF86CD21F2BA1"
+ components {
+  RplComponent "{61FAF86CF36B602E}" {
+   Streamable Disabled
+  }
+ }
+ Channels {
+  BaseChatChannel "{61FB034BAA7145E3}" {
+   "Channel name" "Global"
+  }
+ }
+ "Whisper channel" PrivateMessageChannel "{61FB034B9CEABA11}" {
+  "Channel name" "Whisper"
+ }
+ "Default channel" "Global"
+}

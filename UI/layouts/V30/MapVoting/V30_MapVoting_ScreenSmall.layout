@@ -1,0 +1,111 @@
+FrameWidgetClass {
+ Name "rootFrame"
+ {
+  OverlayWidgetClass "{61FA6BE05A46C8A5}" {
+   Name "Overlay0"
+   Slot FrameWidgetSlot "{61FA6BE05A46C895}" {
+    Anchor 0 0 1 1
+    PositionX 0
+    OffsetLeft 0
+    PositionY 0
+    OffsetTop 0
+    SizeX -1820
+    OffsetRight 0
+    SizeY -1050
+    OffsetBottom 0
+   }
+   {
+    OverlayWidgetClass "{61FA6BE6E8F34F07}" {
+     Name "Overlay0"
+     Slot OverlayWidgetSlot "{61FA6BE6E8F34F6A}" {
+     }
+     {
+      ImageWidgetClass "{61FA6BE68B84935F}" {
+       Name "Image0"
+       Slot OverlayWidgetSlot "{61FA6BE67FB157DF}" {
+        HorizontalAlign 3
+        VerticalAlign 3
+       }
+       Color 0.007 0.012 0.014 1
+      }
+      OverlayWidgetClass "{61FA6BE6EC79ED90}" {
+       Name "Overlay0"
+       Slot OverlayWidgetSlot "{61FA6BE6EC79EDF9}" {
+        Padding 16 16 16 16
+       }
+       {
+        VerticalLayoutWidgetClass "{61FA6BE7E3DD06DA}" {
+         Name "VerticalLayout0"
+         Slot OverlayWidgetSlot "{61FAD50D71B2CD6A}" {
+         }
+         {
+          OverlayWidgetClass "{61FA6BE7034EE44B}" : "{7D8BC3BCB56EC349}UI/layouts/V30/MapVoting/V30_MapVoting_Screen_Header.layout" {
+           Name "Header"
+           Slot LayoutSlot "{61FA6BE2F128E349}" {
+           }
+          }
+          HorizontalLayoutWidgetClass "{61FA6BE069AFC4C9}" {
+           Name "Choices"
+           Slot LayoutSlot "{61FA6BE67FB15772}" {
+            Padding 0 8 0 8
+           }
+           {
+            ButtonWidgetClass "{61FA6BE0490DFED3}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+             Name "Choice0"
+             Slot LayoutSlot "{61FA6BE0490DFEC1}" {
+             }
+            }
+            ButtonWidgetClass "{61FA6BE04BCD6E6C}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+             Name "Choice1"
+             Slot LayoutSlot "{61FA6BE04BCD6E5F}" {
+             }
+            }
+            ButtonWidgetClass "{61FA6BE04A4BFB54}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+             Name "Choice2"
+             Slot LayoutSlot "{61FA6BE04A4BFB45}" {
+             }
+            }
+           }
+          }
+          OverlayWidgetClass "{61FA6BE765ADEA2D}" {
+           Name "Footer"
+           Slot LayoutSlot "{61FA6BE765ADEA13}" {
+           }
+           {
+            HorizontalLayoutWidgetClass "{61FAD50D487B1F87}" {
+             Name "HorizontalLayout0"
+             Slot OverlayWidgetSlot "{61FAD50D487B1FEC}" {
+             }
+             {
+              ButtonWidgetClass "{61FA6BE75DAE85A0}" : "{08CF3B69CB1ACBC4}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButton.layout" {
+               Name "OpenFullListButton"
+               Slot LayoutSlot "{61FAD50A1FF96ECF}" {
+                Padding 0 0 20 0
+               }
+              }
+              ButtonWidgetClass "{61FA6BE5A304A1BF}" : "{08CF3B69CB1ACBC4}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButton.layout" {
+               Name "SelectButton"
+               Slot LayoutSlot "{61FAD50A1FF96E3C}" {
+                Padding 0 0 20 0
+               }
+               components {
+                SCR_InputButtonComponent "{5D346C3DD81D95CD}" {
+                 m_sActionName "MenuSelect"
+                 m_sLabel "#AR-Editor_ContentBrowser_ButtonSelect"
+                }
+               }
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

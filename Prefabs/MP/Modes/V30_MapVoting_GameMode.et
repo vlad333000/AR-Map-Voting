@@ -1,0 +1,31 @@
+V30_MapVoting_GameMode : "{0F307326459A1395}Prefabs/MP/Modes/GameMode_Base.et" {
+ ID "56B2B479C6B96951"
+ components {
+  SCR_RespawnSystemComponent "{56B2B4793051E7C9}" {
+   m_SpawnLogic SCR_AutoSpawnLogic "{61FCD147FA20BC44}" {
+    m_sForcedFaction "CIV"
+   }
+  }
+  V30_MapVoting_AutoGameModeComponent "{6202CAA8847546EC}" {
+  }
+  V30_MapVoting_GameOverScreenManagerComponent "{56DEC646298AD219}" {
+   m_GameOverScreenConfig SCR_GameOverScreenConfig "{56DEC6462FFDD82D}" {
+    m_aGameOverScreens {
+     SCR_BaseGameOverScreenInfo "{6202F925D47676B1}" {
+      m_GameOverScreenId V30_MAPVOTING_NEXT_MAP
+      m_GameOverContentLayout "{5486562508132FF1}UI/layouts/V30/MapVoting/V30_MapVoting_EndScreenContent.layout"
+      m_OptionalParams SCR_BaseGameOverScreenInfoOptional "{6202F92564E8725C}" {
+       m_sDebriefing "#AR-V30_MapVoting_MenuEndTitle"
+       m_sAudioOneShot "SOUND_ONVICTORY"
+      }
+     }
+    }
+   }
+   m_fShowEndscreenDelay 0
+   m_sGameOverScreenBasePrefab "{3B0315D25EB29EC1}UI/layouts/HUD/GameOver/EndScreen/V30_MapVoting_EndScreen.layout"
+  }
+ }
+ coords 0 0 0
+ PlayerControllerPrefab "{CC897243C4BADFE1}Prefabs/Characters/Core/V30_MapVoting_DefaultPlayerControllerMP.et"
+ m_fAutoReloadTime 0
+}

@@ -1,0 +1,316 @@
+OverlayWidgetClass {
+ Name "Overlay0"
+ components {
+  SCR_FadeUIComponent "{62037D9D5D8E551F}" {
+   m_sFadeWidgetName "GameOver_Base"
+   m_fFadeInAnimationSpeed 1
+  }
+  SCR_GameOverScreenUIComponent "{620413A5BE803057}" {
+   m_fContentFadeInSpeed 0.5
+  }
+ }
+ {
+  OverlayWidgetClass "{62037D91645571F1}" : "{A5D822A6CBEB8003}UI/layouts/Menus/Common/MenuBackground-NoScripts.layout" {
+   Name "Background"
+   Slot OverlayWidgetSlot "{62037D96C2557AA0}" {
+   }
+  }
+  OverlayWidgetClass "{620413A5B2DA68A7}" : "{2436D0BF3FCE6C84}UI/layouts/HUD/GameOver/GameOver_Base.layout" {
+   Name "GameOver_Base"
+   Slot OverlayWidgetSlot "{620413A5B2DA689C}" {
+   }
+   components {
+    SCR_FadeUIComponent "{5864FBC18EF10A95}" {
+     Enabled 0
+     m_fFadeInAnimationSpeed 1
+     m_bAutoFadeIn 0
+    }
+    SCR_GameOverScreenUIComponent "{586684782B65C320}" {
+     Enabled 0
+     m_sBackgroundName "Background"
+     m_sRestartTimerHolderName "RestartTimerHolder"
+     m_fContentFadeInSpeed 0.5
+    }
+   }
+   {
+    VerticalLayoutWidgetClass "{62037350A36C530D}" : "{A971263DAE3AD8BC}UI/layouts/WidgetLibrary/TabView/WLib_TabViewHorizontal.layout" {
+     Name "TabView"
+     Slot OverlayWidgetSlot "{59EC75ADBFC7439F}" {
+      HorizontalAlign 3
+      VerticalAlign 3
+      Padding 75 75 75 100
+     }
+     "Z Order" 10
+     "Is Visible" 0
+     components {
+      SCR_TabViewComponent "{546B27D01CA8A38D}" {
+       m_aElements {
+        SCR_TabViewContent "{59EC75A28570BFC1}" {
+         m_sTabButtonContent "#AR-EndScreen_Tab_Content_Name"
+        }
+        SCR_TabViewContent "{59EC75A2A79C6A1E}" {
+         m_ElementLayout "{C13DDB8EAEB7E79F}UI/layouts/HUD/GameOver/EndScreen/EndScreen_Career.layout"
+         m_sTabButtonContent "#AR-EndScreen_Tab_Career_Name"
+        }
+       }
+      }
+      SCR_FadeUIComponent "{59EC75A7B21CB1E5}" {
+      }
+     }
+    }
+    FrameWidgetClass "{62037350A36C5306}" : "{36E2C012BAE9FE16}UI/layouts/Menus/DeployMenu/RestartTimer.layout" {
+     Name "RestartTimerHolder"
+     Slot OverlayWidgetSlot "{60AAB6C5BDC7742E}" {
+      VerticalAlign 0
+      Padding 0 34 9 0
+     }
+     "Z Order" 1
+    }
+    HorizontalLayoutWidgetClass "{62037350A36C5307}" {
+     Name "ButtonHolder"
+     Slot OverlayWidgetSlot "{592C7566437CDF9F}" {
+      HorizontalAlign 3
+      VerticalAlign 2
+      Padding 24 0 24 24
+     }
+     "Z Order" 1
+     components {
+      SCR_FadeUIComponent "{5D9E8437729E61B3}" {
+      }
+     }
+     {
+      ButtonWidgetClass "{62037350A36FFB10}" : "{87037226B1A2064B}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButtonSuperSmall.layout" {
+       Name "Back"
+       Slot LayoutSlot "{592C7566436A409B}" {
+        Padding 0 0 20 0
+       }
+       components {
+        SCR_InputButtonComponent "{5D346C3DD81D95CD}" {
+         m_sActionName "MenuBack"
+         m_sLabel "#AR-PauseMenu_Exit"
+        }
+       }
+      }
+      ButtonWidgetClass "{62037350A36FFB6C}" : "{87037226B1A2064B}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButtonSuperSmall.layout" {
+       Name "ChatButton"
+       Slot LayoutSlot "{592C75664146A20F}" {
+       }
+       components {
+        SCR_InputButtonComponent "{5D346C3DD81D95CD}" {
+         m_sActionName "ChatToggle"
+         m_sLabel "#AR-Keybind_ChatOpen"
+        }
+       }
+      }
+      OverlayWidgetClass "{62037350A36FFB6F}" {
+       Name "Overlay0"
+       Slot LayoutSlot "{5D9E7C92E8117E0B}" {
+        SizeMode Fill
+       }
+      }
+      ButtonWidgetClass "{62037350A36FFB6E}" : "{87037226B1A2064B}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButtonSuperSmall.layout" {
+       Name "Debriefing"
+       Slot LayoutSlot "{5D4272AB8225884B}" {
+       }
+       components {
+        SCR_InputButtonComponent "{5D346C3DD81D95CD}" {
+         m_sActionName "MenuSelectHold"
+         m_sLabel "#AR-DebriefingScreen_Debriefing"
+        }
+       }
+      }
+     }
+    }
+    FrameWidgetClass "{62037350A36FFB68}" {
+     Name "HudManagerLayout"
+     Slot OverlayWidgetSlot "{5F0B1576FB3E03F4}" {
+      HorizontalAlign 3
+      VerticalAlign 3
+     }
+     "Z Order" 11
+     components {
+      SCR_HUDMenuComponent "{5F0ADEF0C660AF98}" {
+       m_sIdentifier "EndScreenMenu"
+      }
+     }
+     {
+      FrameWidgetClass "{62037350A36FE0A6}" {
+       Name "Layer_Slots"
+       Slot FrameWidgetSlot "{5D62A913A6057240}" {
+        Anchor 0 0 1 1
+        PositionX 0
+        OffsetLeft 0
+        PositionY 0
+        OffsetTop 0
+        SizeX 0
+        OffsetRight 0
+        SizeY 0
+        OffsetBottom 0
+       }
+       {
+        VerticalLayoutWidgetClass "{62037350A36FE0A5}" {
+         Name "Group_Left"
+         Slot FrameWidgetSlot "{5D44B19A2BE9A6C4}" {
+          Anchor 0 0 1 1
+          PositionX 0
+          OffsetLeft 0
+          PositionY 0
+          OffsetTop 0
+          SizeX -1320
+          OffsetRight 1320
+          SizeY 0
+          OffsetBottom 0
+         }
+         Clipping False
+         components {
+          SCR_HUDGroupUIComponent "{5D44B19A39A468D7}" {
+           m_bEnableDebugFont 0
+          }
+         }
+         {
+          FrameWidgetClass "{62037350A36FE0A4}" {
+           Name "Filler0"
+           Slot LayoutSlot "{5D44B19A48E6BC77}" {
+            SizeMode Fill
+            FillWeight 0.3
+           }
+          }
+          FrameWidgetClass "{62037350A36FE0AB}" {
+           Name "Slot_Chat"
+           Slot LayoutSlot "{5D44B19A05C7B70A}" {
+           }
+           components {
+            SCR_HUDSlotUIComponent "{5D44B19A037B2FF4}" {
+             m_iPriority 1
+             m_aHeightSteps {
+              100 200 300
+             }
+             m_aWidthSteps {
+              600
+             }
+            }
+           }
+          }
+          FrameWidgetClass "{62037350A36F185F}" {
+           Name "Slot_VON"
+           Slot LayoutSlot "{5D44B19A05C7B70A}" {
+            Padding 0 0 0 0
+           }
+           components {
+            SCR_HUDSlotUIComponent "{5D44B19A037B2FF4}" {
+             m_iPriority 1
+             m_aHeightSteps {
+              100 200
+             }
+             m_aWidthSteps {
+              600
+             }
+            }
+           }
+          }
+          FrameWidgetClass "{62037350A36F185E}" {
+           Name "Filler"
+           Slot LayoutSlot "{5D44B19A48E6BC77}" {
+            SizeMode Fill
+           }
+          }
+         }
+        }
+        VerticalLayoutWidgetClass "{62037350A36F185D}" {
+         Name "Group_Right"
+         Slot FrameWidgetSlot "{5D44B19A2BE9A6C4}" {
+          Anchor 0 0 1 1
+          PositionX 1312.64
+          OffsetLeft 1320
+          PositionY -2.735
+          OffsetTop 0
+          SizeX -1320
+          OffsetRight 0
+          SizeY 0
+          OffsetBottom 0
+         }
+         components {
+          SCR_HUDGroupUIComponent "{5D44B19A39A468D7}" {
+           m_bEnableDebugFont 0
+          }
+         }
+         {
+          FrameWidgetClass "{62037350A36F185C}" {
+           Name "Slot_GameVersion"
+           Slot LayoutSlot "{5D44B19A05C7B70A}" {
+            HorizontalAlign 2
+           }
+           components {
+            SCR_HUDSlotUIComponent "{5D44B19A037B2FF4}" {
+             m_iPriority 2
+             m_aHeightSteps {
+              50
+             }
+             m_aWidthSteps {
+              600
+             }
+            }
+           }
+          }
+          FrameWidgetClass "{62037350A36EB7E0}" {
+           Name "Slot_Notifications"
+           Slot LayoutSlot "{5D44B19A05C7B70A}" {
+            HorizontalAlign 2
+           }
+           components {
+            SCR_HUDSlotUIComponent "{5D44B19A037B2FF4}" {
+             m_iPriority 2
+             m_aHeightSteps {
+              100 150 200 300
+             }
+             m_aWidthSteps {
+              600
+             }
+            }
+           }
+          }
+          FrameWidgetClass "{62037350A36EB7E7}" {
+           Name "Filler"
+           Slot LayoutSlot "{5D44B19A48E6BC77}" {
+            SizeMode Fill
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+    BlurWidgetClass "{58668234E6768AF3}" {
+     Prefab "{58668234E6768AF3}"
+     "Is Visible" 1
+    }
+    ImageWidgetClass "{58668234E6768AF7}" {
+     Prefab "{58668234E6768AF7}"
+     components {
+      SCR_FadeUIComponent "{586699D849853F1C}" {
+       m_fFadeInOpacitytarget 0.05
+      }
+     }
+    }
+    SizeLayoutWidgetClass "{58668234E6768AC8}" {
+     Prefab "{58668234E6768AC8}"
+     Slot OverlayWidgetSlot "{57288BB26E9D57D8}" {
+      HorizontalAlign 2
+      Padding 0 40 75 0
+     }
+     Opacity 0.25
+    }
+    OverlayWidgetClass "{58668234E6768ACA}" {
+     Prefab "{58668234E6768ACA}"
+     "Is Enabled" 0
+     "Is Visible" 0
+     components {
+      SCR_FadeUIComponent "{5866847994438DAC}" {
+      }
+     }
+    }
+   }
+  }
+ }
+}

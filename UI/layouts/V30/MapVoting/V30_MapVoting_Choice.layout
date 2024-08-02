@@ -1,0 +1,369 @@
+ButtonWidgetClass {
+ Name "rootFrame"
+ Color 1 1 1 0
+ components {
+  SCR_ButtonComponent "{61FA6BD328F1B2D3}" {
+   m_bMouseOverToFocus 1
+  }
+  SCR_ColorizationComponent "{61FA6BC1C11D15E7}" {
+   m_sWidgetName "PhotoFrame"
+   m_ColorDefault 1 1 1 1
+   m_bSetHoverColor 0
+   m_ColorHover 1 1 1 1
+   m_ColorFocus 0.76 0.392 0.08 1
+   m_bSetClickColor 0
+  }
+  V30_MapVoting_VoteComponent "{61FA6BC764C37F52}" {
+   m_sVoteCountWidgetName "VoteCount"
+   m_sCheckWidgetName "Check"
+   m_sImageWidgetName "MapImage"
+   m_sTitleWidgetName "Title"
+   m_sSubTitleWidgetName "SubTitle"
+  }
+ }
+ {
+  SizeLayoutWidgetClass "{61FA6BD312C5311E}" {
+   Name "SizeLayout0"
+   Slot ButtonWidgetSlot "{61FA6BD312C5317A}" {
+   }
+   AllowWidthOverride 1
+   WidthOverride 480
+   HeightOverride 480
+   AllowMinDesiredWidth 1
+   MinDesiredWidth 144
+   AllowMinDesiredHeight 1
+   MinDesiredHeight 144
+   AllowMaxDesiredWidth 1
+   MaxDesiredWidth 720
+   AllowMaxDesiredHeight 1
+   MaxDesiredHeight 720
+   {
+    OverlayWidgetClass "{61FA6BD3791A348D}" {
+     Name "Overlay0"
+     Slot AlignableSlot "{61FA6BD3791A34D9}" {
+      Padding 8 8 8 8
+     }
+     {
+      ScaleWidgetClass "{61FA6BD5ACED6281}" {
+       Name "Scale0"
+       Slot OverlayWidgetSlot "{61FA6BD5ACED62EF}" {
+       }
+       {
+        FrameWidgetClass "{61FA6BD7269A37BE}" {
+         Name "Frame0"
+         Slot AlignableSlot "{61FA6BD5AC5A88B0}" {
+         }
+         {
+          OverlayWidgetClass "{61FA6BD64D4A44B1}" {
+           Name "Background"
+           Slot FrameWidgetSlot "{61FA6BD64D4A44A4}" {
+            Anchor 0 0 1 1
+            PositionX 0
+            OffsetLeft 0
+            PositionY 0
+            OffsetTop 0
+            SizeX 0
+            OffsetRight 0
+            SizeY 0
+            OffsetBottom 0
+            SizeToContent 1
+           }
+           {
+            ScaleWidgetClass "{61FA6BD01B6D1FBC}" {
+             Name "PhotoFrameScale"
+             Slot OverlayWidgetSlot "{61FA6BC773ADEF53}" {
+             }
+             {
+              ImageWidgetClass "{61FA6BD01D0DB690}" {
+               Name "PhotoFrame"
+               Slot AlignableSlot "{61FA6BD01D0DB6F8}" {
+               }
+               Texture "{DA47F84ABED3F164}UI/Textures/LoadingScreen/Photos-asset_UI.edds"
+               Size 1160 816
+              }
+             }
+            }
+           }
+          }
+          FrameWidgetClass "{61FA6BD4E7061B6F}" {
+           Name "Info"
+           Slot FrameWidgetSlot "{61FA6BD4E7061B55}" {
+            Anchor 0.05 0.1 0.95 0.9
+            PositionX -17.2
+            PositionY -24.199
+            SizeX 34.4
+            OffsetRight 0
+            SizeY 48.397
+            OffsetBottom 0
+           }
+           Clipping True
+           {
+            OverlayWidgetClass "{62044198C844052E}" {
+             Name "MapImageWrapper"
+             Slot FrameWidgetSlot "{6204419BFD58A9F0}" {
+              Anchor 0 0 1 1
+              PositionX 0
+              OffsetLeft 0
+              PositionY 0
+              OffsetTop 0
+              SizeX -311.529
+              OffsetRight 0
+              SizeY -227.324
+              OffsetBottom 0
+             }
+             {
+              ScaleWidgetClass "{6204419BF84D9515}" {
+               Name "MapImageScale"
+               Slot OverlayWidgetSlot "{6204419BF84D9571}" {
+                HorizontalAlign 3
+                VerticalAlign 3
+               }
+               "Scale Mode" "Scale to fill"
+               {
+                ImageWidgetClass "{61FA6BD67EE54FD2}" {
+                 Name "MapImage"
+                 Slot AlignableSlot "{6204419BF8441B1F}" {
+                 }
+                 Texture "{FB84DD112A84AB32}UI/Textures/LoadingScreen/PlaceholderScenery_UI.edds"
+                 Size 1920 1080
+                }
+               }
+              }
+              ImageWidgetClass "{61FA6BD6677A66CC}" {
+               Name "PhotoDamage"
+               Slot OverlayWidgetSlot "{620468028C1556BE}" {
+                HorizontalAlign 3
+                VerticalAlign 3
+               }
+               Texture "{A89D17F1A74B903B}UI/Textures/LoadingScreen/Masks/AlphaMaskV3_UI.edds"
+               Size 1000 600
+               "Blend Mode" Additive
+              }
+             }
+            }
+            OverlayWidgetClass "{61FA6BD49F369DE4}" {
+             Name "InfoWrapper"
+             Slot FrameWidgetSlot "{61FA6BD49F369D3D}" {
+              Anchor 0 0 1 1
+              PositionX 0
+              OffsetLeft 0
+              PositionY 0
+              OffsetTop 0
+              SizeX -344
+              OffsetRight 0
+              SizeY -241.986
+              OffsetBottom 0
+              SizeToContent 1
+             }
+             {
+              OverlayWidgetClass "{61FA6BDBA6541784}" {
+               Name "MapInfoWrapper"
+               Slot OverlayWidgetSlot "{61FA6BDBA65417EC}" {
+                HorizontalAlign 3
+                VerticalAlign 2
+               }
+               {
+                ImageWidgetClass "{61FA6BDB97A24C50}" {
+                 Name "MapInfoBackground"
+                 Slot OverlayWidgetSlot "{61FA6BC773ADEDB4}" {
+                  HorizontalAlign 3
+                  VerticalAlign 3
+                 }
+                 Color 0 0 0 0.7
+                }
+                HorizontalLayoutWidgetClass "{6204680302C21701}" {
+                 Name "HorizontalLayout0"
+                 Slot OverlayWidgetSlot "{6204680302C21748}" {
+                  HorizontalAlign 3
+                  VerticalAlign 3
+                  Padding 4 4 4 4
+                 }
+                 {
+                  FrameWidgetClass "{61FA6BDBD715BC3B}" {
+                   Name "MapInfo"
+                   Slot LayoutSlot "{62048C44B4C1C7FD}" {
+                    HorizontalAlign 0
+                    Padding 0 0 4 0
+                    SizeMode Fill
+                   }
+                   components {
+                    SCR_HorizontalScrollAnimationComponent "{620468006462BA20}" {
+                     Enabled 0
+                     m_sAnimationContentWidget "Title"
+                     m_fWaitTimeLeftSec 1
+                     m_fWaitTimeRightSec 2
+                    }
+                    SCR_HorizontalScrollAnimationComponent "{620468016505F4B2}" {
+                     Enabled 0
+                     m_sAnimationContentWidget "SubTitle"
+                     m_fWaitTimeLeftSec 1
+                     m_fWaitTimeRightSec 2
+                    }
+                   }
+                   {
+                    TextWidgetClass "{61FA6BD4491267AD}" {
+                     Name "Title"
+                     Slot FrameWidgetSlot "{620468004184E094}" {
+                      OffsetLeft 0
+                      PositionY 0
+                      OffsetTop 0
+                      SizeX 0
+                      OffsetRight 0
+                      SizeY 0
+                      OffsetBottom 0
+                      SizeToContent 1
+                     }
+                     Pivot 0 0
+                     Text "#AR-V30_MapVoting_MenuChoiceTitle"
+                     "Min Font Size" 24
+                    }
+                    TextWidgetClass "{61FA6BDB7B47C182}" {
+                     Name "SubTitle"
+                     Slot FrameWidgetSlot "{620468004184E083}" {
+                      OffsetLeft 0
+                      PositionY 24
+                      OffsetTop 24
+                      SizeX 0
+                      OffsetRight 0
+                      SizeY 0
+                      OffsetBottom -24
+                      Alignment 0 0
+                      SizeToContent 1
+                     }
+                     Color 0.604 0.604 0.604 1
+                     Pivot 0 0
+                     Text "#AR-V30_MapVoting_MenuChoiceSubTitle"
+                     "Font Size" 16
+                     "Min Font Size" 16
+                    }
+                   }
+                  }
+                  OverlayWidgetClass "{6202F914C13CA0FD}" {
+                   Name "Check"
+                   Slot LayoutSlot "{62048C44B4C1C70E}" {
+                    HorizontalAlign 2
+                    Padding 4 0 0 0
+                   }
+                   {
+                    SizeLayoutWidgetClass "{6202F91482F05D93}" {
+                     Name "SizeLayout0"
+                     Slot OverlayWidgetSlot "{6202F92E412127E1}" {
+                      HorizontalAlign 0
+                      VerticalAlign 0
+                     }
+                     AllowWidthOverride 1
+                     WidthOverride 36
+                     AllowAspectRatioForce 1
+                     {
+                      OverlayWidgetClass "{6202F9177FEDA0DD}" {
+                       Name "CheckBox"
+                       Slot AlignableSlot "{6202F91482C509BF}" {
+                        HorizontalAlign 0
+                       }
+                       {
+                        ImageWidgetClass "{6202F917654D25FA}" {
+                         Name "CheckBoxBackground"
+                         Slot OverlayWidgetSlot "{6202F917654D25E6}" {
+                          HorizontalAlign 3
+                          VerticalAlign 3
+                         }
+                         Color 0 0.502 0.125 1
+                         Size 64 64
+                         Mask "{FCB6689A30FB29E9}UI/Textures/Workshop/radioBg_UI.edds"
+                         Progress 0.5
+                        }
+                        ImageWidgetClass "{6202F91714B900F7}" {
+                         Name "CheckBoxKnob"
+                         Slot OverlayWidgetSlot "{6202F92E41212731}" {
+                          HorizontalAlign 3
+                          VerticalAlign 3
+                         }
+                         Color 0 0.502 0.125 1
+                         Texture "{FDD5423E69D007F8}UI/Textures/Icons/icons_wrapperUI-128.imageset"
+                         Image "check"
+                         Size 32 32
+                        }
+                       }
+                      }
+                     }
+                    }
+                   }
+                  }
+                 }
+                }
+               }
+              }
+              OverlayWidgetClass "{61FA6BDA18031375}" {
+               Name "VoteCountWrapper"
+               Slot OverlayWidgetSlot "{61FA6BDA1803135F}" {
+                HorizontalAlign 2
+                VerticalAlign 0
+               }
+               Clipping False
+               {
+                ImageWidgetClass "{61FA6BDA07D52612}" {
+                 Name "VoteCountBackgound"
+                 Slot OverlayWidgetSlot "{61FA6BDA07D5267F}" {
+                  HorizontalAlign 3
+                  VerticalAlign 3
+                 }
+                 Color 0.093 0.107 0.089 1
+                 Texture "{C61CAD73B761DEA7}UI/Textures/V30_MapVoting_Choice_Votes_Background.edds"
+                 Size 0 0
+                }
+                HorizontalLayoutWidgetClass "{61FA6BD9B08733DE}" {
+                 Name "Overlay0"
+                 Slot OverlayWidgetSlot "{61FA6BD9B08733C5}" {
+                  Padding 8 2 2 2
+                 }
+                 {
+                  TextWidgetClass "{61FA6BDA59966C18}" {
+                   Name "VoteCount"
+                   Slot LayoutSlot "{61FA6BC773ADED28}" {
+                   }
+                   Text "—"
+                   "Horizontal Alignment" Right
+                   "No Localization" 1
+                  }
+                  SizeLayoutWidgetClass "{61FA6BD96FFD83D3}" {
+                   Name "VoteCountIconSize"
+                   Slot LayoutSlot "{61FA6BD96FFD83C6}" {
+                   }
+                   AllowHeightOverride 1
+                   HeightOverride 24
+                   AllowAspectRatioForce 1
+                   {
+                    ScaleWidgetClass "{61FA6BD980E3B6EF}" {
+                     Name "VoteCountIconScale"
+                     Slot AlignableSlot "{61FA6BD956E3BFE3}" {
+                     }
+                     {
+                      ImageWidgetClass "{61FA6BD934B60BBC}" {
+                       Name "VoteCountIcon"
+                       Slot AlignableSlot "{61FA6BD982F794D9}" {
+                       }
+                       Texture "{FDD5423E69D007F8}UI/Textures/Icons/icons_wrapperUI-128.imageset"
+                       Image "player"
+                      }
+                     }
+                    }
+                   }
+                  }
+                 }
+                }
+               }
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

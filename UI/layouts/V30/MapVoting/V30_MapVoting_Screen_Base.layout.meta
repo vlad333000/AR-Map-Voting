@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{06B7FB89806D9685}UI/layouts/V30/MapVoting/V30_MapVoting_Screen_Base.layout"
+ Configurations {
+  LayoutResourceClass PC {
+  }
+  LayoutResourceClass XBOX_ONE : PC {
+  }
+  LayoutResourceClass XBOX_SERIES : PC {
+  }
+  LayoutResourceClass PS4 : PC {
+  }
+  LayoutResourceClass PS5 : PC {
+  }
+  LayoutResourceClass HEADLESS : PC {
+  }
+ }
+}

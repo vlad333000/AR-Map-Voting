@@ -1,0 +1,186 @@
+FrameWidgetClass {
+ Name "Choices"
+ Slot OverlayWidgetSlot "{61FA6BFF1AC5397E}" {
+ }
+ {
+  ScaleWidgetClass "{61FAD50F9353D9DE}" {
+   Name "ScaleWrapper"
+   Slot FrameWidgetSlot "{61FAD5047F8B3D88}" {
+    Anchor 0 0 1 1
+    PositionX 0
+    OffsetLeft 0
+    PositionY 0
+    OffsetTop 0
+    SizeX -1820
+    OffsetRight 0
+    SizeY -1050
+    OffsetBottom 0
+   }
+   {
+    VerticalLayoutWidgetClass "{61FCA61C1C14FC1D}" {
+     Name "Content"
+     Slot AlignableSlot "{61FAD50C1932E84F}" {
+      HorizontalAlign 3
+      VerticalAlign 3
+     }
+     {
+      OverlayWidgetClass "{61FCA61C1C14FC10}" : "{7D8BC3BCB56EC349}UI/layouts/V30/MapVoting/V30_MapVoting_Screen_Header.layout" {
+       Name "Header"
+       Slot LayoutSlot "{61FAD50D71B1B2DC}" {
+       }
+      }
+      UniformGridLayoutWidgetClass "{61FCA61C1C14FC14}" {
+       Name "Choices"
+       Slot LayoutSlot "{61FAD50D71B1B2C9}" {
+        HorizontalAlign 1
+        VerticalAlign 1
+        Padding 0 32 0 64
+        SizeMode Fill
+       }
+       {
+        ButtonWidgetClass "{61FCA61C1C14FC0A}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+         Name "Choice0"
+         Slot UniformGridWidgetSlot "{61FA6BF974D723D4}" {
+         }
+        }
+        ButtonWidgetClass "{61FCA61C1C14FC0C}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+         Name "Choice1"
+         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
+          Column 1
+         }
+        }
+        ButtonWidgetClass "{61FCA61C1C14FC01}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+         Name "Choice2"
+         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
+          Column 2
+         }
+        }
+        ButtonWidgetClass "{61FCA61C1C14FC05}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+         Name "Choice3"
+         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
+          Column 3
+         }
+        }
+        ButtonWidgetClass "{61FCA61C1C14FC78}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+         Name "Choice4"
+         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
+          Column 4
+         }
+        }
+        ButtonWidgetClass "{61FCA61C1C14FC7F}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+         Name "Choice5"
+         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
+          Row 1
+         }
+        }
+        ButtonWidgetClass "{61FCA61C1C14FC72}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+         Name "Choice6"
+         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
+          Row 1
+          Column 1
+         }
+        }
+        ButtonWidgetClass "{61FCA61C1C14FC70}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+         Name "Choice7"
+         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
+          Row 1
+          Column 2
+         }
+        }
+        ButtonWidgetClass "{61FCA61C1C14FC76}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+         Name "Choice8"
+         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
+          Row 1
+          Column 3
+         }
+        }
+        ButtonWidgetClass "{61FCA61C1C14FC75}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+         Name "Choice9"
+         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
+          Row 1
+          Column 4
+         }
+        }
+        ButtonWidgetClass "{61FCA61C1C14FC6B}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+         Name "Choice10"
+         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
+          Row 2
+         }
+        }
+        ButtonWidgetClass "{61FCA61C1C14FC6E}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+         Name "Choice11"
+         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
+          Row 2
+          Column 1
+         }
+        }
+        ButtonWidgetClass "{61FCA61C1C14FC6C}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+         Name "Choice12"
+         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
+          Row 2
+          Column 2
+         }
+        }
+        ButtonWidgetClass "{61FCA61C1C14FC62}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+         Name "Choice13"
+         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
+          Row 2
+          Column 3
+         }
+        }
+        ButtonWidgetClass "{61FCA61C1C14FC61}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
+         Name "Choice14"
+         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
+          Row 2
+          Column 4
+         }
+        }
+       }
+      }
+      OverlayWidgetClass "{61FCA61C1C14FC67}" {
+       Name "Footer"
+       Slot LayoutSlot "{61FAD50D71B1B1BE}" {
+       }
+       {
+        HorizontalLayoutWidgetClass "{61FCA61C1C14FC64}" {
+         Name "Center"
+         Slot OverlayWidgetSlot "{61FAD5042525F3C4}" {
+         }
+         {
+          HorizontalLayoutWidgetClass "{61FCA61C1C14FC5A}" : "{D0FC6BB2485677C4}UI/layouts/Common/Buttons/PagingButtons.layout" {
+           Name "Pagination"
+           Slot LayoutSlot "{61FC8A2397C76F6A}" {
+           }
+           "Is Enabled" 0
+           "Is Visible" 0
+          }
+         }
+        }
+        HorizontalLayoutWidgetClass "{61FCA61C1C14FC57}" {
+         Name "Right"
+         Slot OverlayWidgetSlot "{61FAD50D8AD91F98}" {
+          HorizontalAlign 2
+         }
+         {
+          ButtonWidgetClass "{61FCA61C1C14FC54}" : "{08CF3B69CB1ACBC4}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButton.layout" {
+           Name "SelectButton"
+           Slot LayoutSlot "{61FAD50D71B50ABB}" {
+           }
+           components {
+            SCR_InputButtonComponent "{5D346C3DD81D95CD}" {
+             m_sSoundClicked ""
+             m_sActionName "MenuSelect"
+             m_sLabel "#AR-Editor_ContentBrowser_ButtonSelect"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

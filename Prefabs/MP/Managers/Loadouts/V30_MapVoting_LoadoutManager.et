@@ -1,0 +1,11 @@
+SCR_LoadoutManager : "{AA4E7419A1FF65B0}Prefabs/MP/Managers/Loadouts/LoadoutManager_Base.et" {
+ ID "56B2B47708C4F23A"
+ m_aPlayerLoadouts {
+  SCR_FactionPlayerLoadout "{61FCE04D11B32FF4}" {
+   m_sLoadoutName "#AR-Random_Civilian_Name"
+   m_sLoadoutResource "{22E43956740A6794}Prefabs/Characters/Factions/CIV/GenericCivilians/Character_CIV_Randomized.et"
+   m_sLoadoutImage "{A1FEAA3146DDAF38}UI/Textures/EditorPreviews/Characters/CIV/Character_CIV_Randomized.edds"
+   m_sAffiliatedFaction "CIV"
+  }
+ }
+}

@@ -1,0 +1,90 @@
+FrameWidgetClass {
+ Name "rootFrame"
+ {
+  OverlayWidgetClass "{61FAD50B97EC0673}" {
+   Name "Window"
+   Slot FrameWidgetSlot "{61FAD50B97EC0651}" {
+    Anchor 0.5 0.5 0.5 0.5
+    OffsetLeft 0
+    OffsetTop 0
+    SizeX 1410
+    OffsetRight -1410
+    SizeY 840
+    OffsetBottom -840
+    Alignment 0.5 0.5
+   }
+   {
+    ImageWidgetClass "{61FAD50B6C2B0F64}" {
+     Name "Background"
+     Slot OverlayWidgetSlot "{61FAD50B6C2B0F4C}" {
+      HorizontalAlign 3
+      VerticalAlign 3
+     }
+     Color 0.007 0.012 0.014 1
+    }
+    OverlayWidgetClass "{61FAD507E0D57ED0}" {
+     Name "Content"
+     Slot OverlayWidgetSlot "{61FAD507E0D57E38}" {
+      HorizontalAlign 3
+      VerticalAlign 3
+      Padding 16 16 16 16
+     }
+     {
+      FrameWidgetClass "{61FAD5072EC6140D}" : "{06B7FB89806D9685}UI/layouts/V30/MapVoting/V30_MapVoting_Screen_Base.layout" {
+       Name "Choices"
+       Slot OverlayWidgetSlot "{61FA6BFF1AC5397E}" {
+        HorizontalAlign 3
+        VerticalAlign 3
+       }
+      }
+      OverlayWidgetClass "{61FAD507E27CA4A2}" {
+       Name "Footer"
+       Slot OverlayWidgetSlot "{61FAD5079F53D740}" {
+        HorizontalAlign 3
+        VerticalAlign 2
+       }
+       {
+        HorizontalLayoutWidgetClass "{61FAD507E27CA4A0}" {
+         Name "Left"
+         Slot OverlayWidgetSlot "{61FA6BFE6DC3B7B1}" {
+          HorizontalAlign 0
+         }
+         {
+          ButtonWidgetClass "{61FAD507E27CA4A6}" : "{08CF3B69CB1ACBC4}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButton.layout" {
+           Name "CloseButton"
+           Slot LayoutSlot "{61FA6BFE5DEE321C}" {
+            HorizontalAlign 3
+            VerticalAlign 3
+            Padding 0 0 20 0
+           }
+           components {
+            SCR_InputButtonComponent "{5D346C3DD81D95CD}" {
+             m_sActionName "MenuBack"
+             m_sLabel "#AR-Editor_ContentBrowser_ButtonClose"
+            }
+           }
+          }
+          ButtonWidgetClass "{61FAD507E27CA498}" : "{08CF3B69CB1ACBC4}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButton.layout" {
+           Name "ChatButton"
+           Slot LayoutSlot "{61FA6BFE4E388C93}" {
+            HorizontalAlign 3
+            VerticalAlign 3
+            Padding 0 0 20 0
+           }
+           components {
+            SCR_InputButtonComponent "{5D346C3DD81D95CD}" {
+             m_sActionName "ChatToggle"
+             m_sLabel "#AR-Keybind_ChatOpen"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

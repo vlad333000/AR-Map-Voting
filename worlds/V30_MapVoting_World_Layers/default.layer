@@ -1,0 +1,46 @@
+ScriptedChatEntity : "{8D2CBCD78EB8EE10}Prefabs/MP/V30_MapVoting_ScriptedChatMPEntity.et" {
+}
+V30_MapVoting_GameMode V30_MapVoting_GameMode1 : "{90B80F466134E2A5}Prefabs/MP/Modes/V30_MapVoting_GameMode.et" {
+ components {
+  SCR_RespawnSystemComponent "{56B2B4793051E7C9}" {
+   m_SpawnLogic SCR_AutoSpawnLogic "{61FCD147FA20BC44}" {
+    m_sForcedFaction "CIV"
+   }
+  }
+  V30_MapVoting_AutoGameModeComponent "{6202CAA8847546EC}" {
+   m_TimeLimit 60
+  }
+  V30_MapVoting_GameOverScreenManagerComponent "{56DEC646298AD219}" {
+   m_GameOverScreenConfig SCR_GameOverScreenConfig "{56DEC6462FFDD82D}" {
+    m_aGameOverScreens {
+     SCR_BaseGameOverScreenInfo "{6202F925D47676B1}" {
+      m_GameOverScreenId V30_MAPVOTING_NEXT_MAP
+      m_GameOverContentLayout "{5486562508132FF1}UI/layouts/V30/MapVoting/V30_MapVoting_EndScreenContent.layout"
+      m_OptionalParams SCR_BaseGameOverScreenInfoOptional "{6202F92564E8725C}" {
+       m_sAudioOneShot "SOUND_ONVICTORY"
+      }
+     }
+    }
+   }
+   m_fShowEndscreenDelay 0
+   m_sGameOverScreenBasePrefab "{3B0315D25EB29EC1}UI/layouts/HUD/GameOver/EndScreen/V30_MapVoting_EndScreen.layout"
+  }
+ }
+}
+SCR_FactionManager V30_MapVoting_FactionManager1 : "{C46BF1AB7177139A}Prefabs/MP/Managers/Factions/V30_MapVoting_FactionManager.et" {
+}
+MusicManager : "{359452CCDBDD03F5}Prefabs/Sounds/Music/MusicManager_Base.et" {
+ Music {
+  ScriptedMusic "{620413A10B1F9A35}" {
+   Acp "{C2DCD57F345AC0E4}Sounds/UI/Golosovanie.acp"
+   "Music Name" "SOUND_GOLOSOVANIE"
+   Priority 999
+   Categories 4
+  }
+ }
+}
+SCR_SpawnPoint : "{A141FD448CE27ECF}Prefabs/MP/Spawning/V30_MapVoting_SpawnPoint.et" {
+ coords 128 1 128
+}
+SCR_LoadoutManager : "{CFC6C0CE082BB3C0}Prefabs/MP/Managers/Loadouts/V30_MapVoting_LoadoutManager.et" {
+}

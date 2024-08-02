@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{8D2CBCD78EB8EE10}Prefabs/MP/Modes/V30_MapVoting/V30_MapVoting_ChatMPEntity.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass PS5 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}
