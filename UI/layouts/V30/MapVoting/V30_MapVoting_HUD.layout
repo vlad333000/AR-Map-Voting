@@ -1,0 +1,122 @@
+FrameWidgetClass {
+ Name "HUD"
+ Slot FrameWidgetSlot "{6206F6656030359D}" {
+  Anchor 0 0 1 1
+  PositionX 0
+  OffsetLeft 0
+  PositionY 0
+  OffsetTop 0
+  SizeX 0
+  OffsetRight 0
+  SizeY 0
+  OffsetBottom 0
+ }
+ components {
+  SCR_HUDMenuComponent "{62071CECFA777CC7}" {
+   m_sIdentifier "V30_MapVoting_Menu"
+  }
+ }
+ {
+  VerticalLayoutWidgetClass "{6206F667780B06B2}" {
+   Name "Left"
+   Slot FrameWidgetSlot "{6206F667780B0693}" {
+    Anchor 0 0 1 1
+    PositionX 0
+    OffsetLeft 0
+    PositionY 0
+    OffsetTop 0
+    SizeX 0
+    OffsetRight 0
+    SizeY -770
+    OffsetBottom 0
+   }
+   components {
+    SCR_HUDGroupUIComponent "{62071CECE723CFA1}" {
+    }
+   }
+   {
+    FrameWidgetClass "{6206F66481204B02}" {
+     Name "Slot_Chat"
+     Slot LayoutSlot "{5D44B19A05C7B70A}" {
+      HorizontalAlign 0
+     }
+     components {
+      SCR_HUDSlotUIComponent "{5D44B19A037B2FF4}" {
+       m_iPriority 0
+       m_bSizeToContent 1
+      }
+     }
+    }
+    FrameWidgetClass "{6206F664A700DFEB}" {
+     Name "Slot_AvailableActions"
+     Slot LayoutSlot "{5D44B19A05C7B70A}" {
+      HorizontalAlign 0
+     }
+     components {
+      SCR_HUDSlotUIComponent "{5D44B19A037B2FF4}" {
+       m_iPriority 0
+       m_bSizeToContent 1
+      }
+     }
+    }
+    VerticalLayoutWidgetClass "{62071CEC6B68C85D}" {
+     Name "Slot_VON"
+     Slot LayoutSlot "{62071CEC6B68C847}" {
+      HorizontalAlign 0
+     }
+     components {
+      SCR_HUDSlotUIComponent "{62071CEC5302FF26}" {
+       m_bSizeToContent 1
+      }
+     }
+    }
+   }
+  }
+  VerticalLayoutWidgetClass "{6206F66788C0D2E0}" {
+   Name "Right"
+   Slot FrameWidgetSlot "{6206F66788C0D238}" {
+    Anchor 0 0 1 1
+    PositionX 0
+    OffsetLeft 0
+    PositionY 0
+    OffsetTop 0
+    SizeX 0
+    OffsetRight 0
+    SizeY -1050
+    OffsetBottom 0
+    Alignment 0 0
+    SizeToContent 1
+   }
+   components {
+    SCR_HUDGroupUIComponent "{62071CECDB1652B1}" {
+    }
+   }
+   {
+    FrameWidgetClass "{6206F664F6DEF480}" {
+     Name "Slot_GameVersion"
+     Slot LayoutSlot "{62071CEC8C68A725}" {
+      HorizontalAlign 2
+     }
+     components {
+      SCR_HUDSlotUIComponent "{5D44B19A037B2FF4}" {
+       m_iPriority 0
+       m_bSizeToContent 1
+      }
+     }
+    }
+    FrameWidgetClass "{62071CEC334E42BA}" {
+     Name "Slot_Notifications"
+     Slot LayoutSlot "{62071CEC334E42AF}" {
+      HorizontalAlign 2
+     }
+     components {
+      SCR_HUDSlotUIComponent "{62071CEC3BAA3A02}" {
+       m_iPriority 0
+       m_bSizeToContent 1
+      }
+     }
+    }
+   }
+  }
+ }
+}

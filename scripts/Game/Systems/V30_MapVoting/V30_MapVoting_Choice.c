@@ -99,18 +99,7 @@ class V30_MapVoting_Scenario {
 	
 	protected static string GetInitialAddonsList() {
 		if (m_IsInitialAddonsList) return m_InitialAddonsList;
-		
-		auto addons = new array<string>();
-		GameProject.GetLoadedAddons(addons);
-		
-		m_InitialAddonsList = "";
-		PrintFormat("V30_MapVoting_Scenario.m_InitialAddonsList[%1]", addons.Count());
-		foreach (int i, string addon : addons) {
-			if (i > 0) m_InitialAddonsList += ",";
-			PrintFormat("	[%1] = %2", i, addon);
-			m_InitialAddonsList += addon;
-		};
-		m_IsInitialAddonsList = true;
+		m_InitialAddonsList = GetCurrentAddonsList();
 		return m_InitialAddonsList;
 	};
 	

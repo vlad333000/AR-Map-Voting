@@ -36,6 +36,44 @@ FrameWidgetClass {
       HorizontalAlign 3
       VerticalAlign 3
      }
+     {
+      ScaleWidgetClass "{61FAD50F9353D9DE}" {
+       Prefab "{61FAD50F9353D9DE}"
+       {
+        VerticalLayoutWidgetClass "{61FCA61C1C14FC1D}" {
+         Prefab "{61FCA61C1C14FC1D}"
+         {
+          OverlayWidgetClass "{61FCA61C1C14FC67}" {
+           Prefab "{61FCA61C1C14FC67}"
+           {
+            HorizontalLayoutWidgetClass "{61FCA61C1C14FC57}" {
+             Prefab "{61FCA61C1C14FC57}"
+             {
+              ButtonWidgetClass "{62066D72AB49F5FB}" : "{08CF3B69CB1ACBC4}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButton.layout" {
+               Name "EndVoteButton"
+               Slot LayoutSlot "{62066D72AB49F5DC}" {
+                HorizontalAlign 3
+                VerticalAlign 3
+                Padding 0 0 20 0
+               }
+               "Is Enabled" 0
+               "Is Visible" 0
+               components {
+                SCR_InputButtonComponent "{5D346C3DD81D95CD}" {
+                 m_sActionName "EditorToggle"
+                 m_sLabel "End Vote"
+                }
+               }
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
     }
     OverlayWidgetClass "{61FAD5079F53D766}" {
      Name "Footer"
@@ -146,103 +184,10 @@ FrameWidgetClass {
     }
    }
   }
-  FrameWidgetClass "{61FAD506B6F0B95E}" : "{7A376F90E18453C4}UI/layouts/HUD/Notifications/Notifications_Log.layout" {
-   Name "Notifications"
-   Slot FrameWidgetSlot "{5D44B7C56EBEFDB6}" {
-    Anchor 0 0.025 1 0.1
-    PositionX 0
-    OffsetLeft 0
-    PositionY 0
-    OffsetTop 0
-    SizeX 0
-    OffsetRight 0
-    SizeY 0
-    OffsetBottom 0
-    Alignment 0 0
-   }
-  }
-  FrameWidgetClass "{61FCA611065A8459}" : "{1C6708FF989A420A}UI/layouts/Editor/HUD/HudMenuLayout.layout" {
+  FrameWidgetClass "{62071CED2161C118}" : "{63397C60B1761AD9}UI/layouts/V30/MapVoting/V30_MapVoting_HUD.layout" {
    Name "HUD"
-   Slot FrameWidgetSlot "{5D8AB8F2DCC3C881}" {
-    PositionX 960
-    PositionY 540
-    SizeX 0
-    SizeY 0
-    Alignment 0 0
+   Slot FrameWidgetSlot "{6206F6656030359D}" {
    }
-   components {
-    SCR_HUDMenuComponent "{5F0ADEF0C660AF98}" {
-     m_sIdentifier "V30_MapVoting_Menu"
-    }
-   }
-   {
-    FrameWidgetClass "{5F0ADEF79D309F0B}" {
-     Prefab "{5F0ADEF79D309F0B}"
-     {
-      VerticalLayoutWidgetClass "{5F0ADEF79D309F0A}" {
-       Prefab "{5F0ADEF79D309F0A}"
-       {
-        FrameWidgetClass "{5F0ADEF79D309F09}" {
-         Prefab "{5F0ADEF79D309F09}"
-         Slot LayoutSlot "{5D44B19A48E6BC77}" {
-          FillWeight 0
-         }
-        }
-        FrameWidgetClass "{5F0ADEF79D309F08}" {
-         Prefab "{5F0ADEF79D309F08}"
-         Slot LayoutSlot "{5D44B19A05C7B70A}" {
-          VerticalAlign 0
-         }
-        }
-        FrameWidgetClass "{5F0ADEF79D306E46}" {
-         Prefab "{5F0ADEF79D306E46}"
-         Slot LayoutSlot "{5D44B19A05C7B70A}" {
-         }
-         "Is Enabled" 0
-         "Is Visible" 0
-        }
-        FrameWidgetClass "{5F0ADEF79D306E58}" {
-         Prefab "{5F0ADEF79D306E58}"
-         Slot LayoutSlot "{5D6CA98E3A998376}" {
-         }
-        }
-       }
-      }
-      VerticalLayoutWidgetClass "{5F0ADEF79D306E5B}" {
-       Prefab "{5F0ADEF79D306E5B}"
-       {
-        FrameWidgetClass "{5F0ADEF79D306E5A}" {
-         Prefab "{5F0ADEF79D306E5A}"
-         Slot LayoutSlot "{5D44B19A05C7B70A}" {
-          Padding 0 0 0 0
-         }
-        }
-        FrameWidgetClass "{5F0ADEF79D306E5D}" {
-         Prefab "{5F0ADEF79D306E5D}"
-         Slot LayoutSlot "{5D7AC823F452D020}" {
-         }
-        }
-       }
-      }
-     }
-    }
-   }
-  }
-  FrameWidgetClass "{61FCF1CFE84C0E5C}" : "{D89BBA18F99053D6}UI/layouts/HUD/Chat/ChatHud.layout" {
-   Name "Chat"
-   Slot FrameWidgetSlot "{5D4881250D202DF3}" {
-    Anchor 0 0 0 0
-    PositionX 8
-    OffsetLeft 8
-    PositionY 0
-    OffsetTop 0
-    SizeX 1920
-    OffsetRight -1928
-    SizeY 1080
-    OffsetBottom -1080
-   }
-   "Is Enabled" 0
-   "Is Visible" 0
   }
  }
 }

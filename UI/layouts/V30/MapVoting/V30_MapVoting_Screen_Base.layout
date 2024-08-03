@@ -162,6 +162,20 @@ FrameWidgetClass {
           HorizontalAlign 2
          }
          {
+          ButtonWidgetClass "{62066D7300BC21B7}" : "{08CF3B69CB1ACBC4}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButton.layout" {
+           Name "RemoveVoteButton"
+           Slot LayoutSlot "{62066D7300BC218B}" {
+            HorizontalAlign 3
+            VerticalAlign 3
+            Padding 0 0 20 0
+           }
+           components {
+            SCR_InputButtonComponent "{5D346C3DD81D95CD}" {
+             m_sActionName "MenuRefresh"
+             m_sLabel "Remove Vote"
+            }
+           }
+          }
           ButtonWidgetClass "{61FCA61C1C14FC54}" : "{08CF3B69CB1ACBC4}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButton.layout" {
            Name "SelectButton"
            Slot LayoutSlot "{61FAD50D71B50ABB}" {

@@ -19,10 +19,19 @@ class V30_MapVoting_RemainingTimeComponentWidgetComponent : SCR_ScriptedWidgetCo
 	
 	protected void UpdateTimer(Widget w) {
 		if (!w || !m_GameModeComponent) {
+			GetGame().GetCallqueue().Remove(UpdateTimer);
 			return;
 		};
 		
-		auto time = m_GameModeComponent.GetRemainingTime() / 1000;
+		auto time = m_GameModeComponent.GetRemainingTime();
+		if (time == int.MAX) {
+			if (w.IsVisible()) w.SetVisible(false);
+			return;
+		}
+		
+		if (!w.IsVisible()) w.SetVisible(true);
+		
+		time /= 1000;
 		auto minutes = (time / 60).ToString();
 		auto seconds = (time % 60).ToString();
 		

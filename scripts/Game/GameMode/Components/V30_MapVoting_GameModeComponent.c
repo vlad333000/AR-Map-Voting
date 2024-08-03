@@ -45,14 +45,20 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	
 	protected ref ScriptInvoker m_OnPlayerVoteChanged;
 	
-	[Attribute("true", desc: "Set seed for randomization on vote end")]
+	[Attribute("true", desc: "Set seed for randomization on vote end", category: "Vote")]
 	protected bool m_SetRandomizationSeed;
 	
-	[Attribute("-1", desc: "Seed for randomization (-1 for using current time as seed)")]
+	[Attribute("-1", desc: "Seed for randomization (-1 for using current time as seed)", uiwidget: "editbox", category: "Vote")]
 	protected int m_RandomizationSeed;
 	
-	[Attribute("true", desc: "Save choice id on vote end for 'skipRepeats'")]
-	protected bool m_SaveLastChoiceId;
+	[Attribute("true", desc: "Allows to remember previous choices for skipRepeats config parameter.", category: "Vote")]
+	protected bool m_RememberPreviousChoices;
+	
+	[Attribute("-1", desc: "How many previous choices will be remembered, -1 - for equal to skipRepeats config parameter.", params: "-1 inf", category: "Vote")]
+	protected int m_RememberPreviousChoicesCount;
+	
+	[Attribute("true", desc: "Allows player to remove his vote.")]
+	protected bool m_AllowsVoteRemove;
 	
 	void V30_MapVoting_GameModeComponent(IEntityComponentSource src, IEntity ent, IEntity parent) {
 		m_ChoiceId = 0;
@@ -65,6 +71,10 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		m_OnAllChoicesLoaded = new ScriptInvoker();
 		m_IsAllChoicesLoaded = false;
 		m_OnPlayerVoteChanged = new ScriptInvoker();
+	};
+	
+	bool IsAllowsVoteRemove() {
+		return m_AllowsVoteRemove;
 	};
 	
 	override protected event void OnPostInit(IEntity owner) {
@@ -120,16 +130,16 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	};
 	
 	override protected bool RplSave(ScriptBitWriter writer) {
-		PrintFormat("%1.RplSave(%2)", this, writer);
+		//PrintFormat("%1.RplSave(%2)", this, writer);
 		writer.WriteInt(m_VoteState);
-		PrintFormat("	m_VoteState = %1", m_VoteState);
+		//PrintFormat("	m_VoteState = %1", m_VoteState);
 		if (IsVoteStarted() || IsVoteEnded()) {
 			RplSave_Choices(writer);
 			RplSave_PlayerChoices(writer);
 		};
 		if (IsVoteEnded()) {
 			writer.WriteInt(m_WinnerId);
-			PrintFormat("	m_WinnerId = %1", m_WinnerId);
+			//PrintFormat("	m_WinnerId = %1", m_WinnerId);
 			RplSave_Preview(writer, m_WinnerPreview);
 		};
 		return true;
@@ -138,7 +148,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	protected void RplSave_Choices(ScriptBitWriter writer) {
 		auto n = m_AvaiableChoices.Count();
 		writer.WriteInt(n);
-		PrintFormat("	m_AvaiableChoices[%1]", n);
+		//PrintFormat("	m_AvaiableChoices[%1]", n);
 		foreach (V30_MapVoting_ChoiceId choiceId, V30_MapVoting_Choice choice : m_AvaiableChoices) {
 			RplSave_Choice(writer, choiceId, choice);
 		};
@@ -147,27 +157,27 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	protected void RplSave_PlayerChoices(ScriptBitWriter writer) {
 		auto n = m_PlayerChoices.Count();
 		writer.WriteInt(n);
-		PrintFormat("	m_PlayerChoices[%1]", n);
+		//PrintFormat("	m_PlayerChoices[%1]", n);
 		foreach (int playerId, V30_MapVoting_ChoiceId playerChoiceId : m_PlayerChoices) {
 			writer.WriteInt(playerId);
 			writer.WriteInt(playerChoiceId);
-			PrintFormat("		[%1] = %2", playerId, playerChoiceId);
+			//PrintFormat("		[%1] = %2", playerId, playerChoiceId);
 		};
 	};
 	
 	protected void RplSave_Choice(ScriptBitWriter writer, V30_MapVoting_ChoiceId choiceId, V30_MapVoting_Choice choice) {
 		writer.WriteInt(choiceId);
-		PrintFormat("		[%1]:", choiceId);
+		//PrintFormat("		[%1]:", choiceId);
 		RplSave_Preview(writer, choice.GetPreview());
 	};
 	
 	protected void RplSave_Preview(ScriptBitWriter writer, V30_MapVoting_PreviewData choicePreview) {
 		writer.WriteResourceName(choicePreview.GetImage());
-		PrintFormat("			.m_Image = %1", choicePreview.GetImage());
+		//PrintFormat("			.m_Image = %1", choicePreview.GetImage());
 		writer.WriteString(choicePreview.GetTitle());
-		PrintFormat("			.m_Title = %1", choicePreview.GetTitle());
+		//PrintFormat("			.m_Title = %1", choicePreview.GetTitle());
 		writer.WriteString(choicePreview.GetSubTitle());
-		PrintFormat("			.m_SubTitle = %1", choicePreview.GetSubTitle());
+		//PrintFormat("			.m_SubTitle = %1", choicePreview.GetSubTitle());
 	};
 	
 	override protected bool RplLoad(ScriptBitReader reader) {
@@ -177,6 +187,12 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		if (IsVoteStarted() || IsVoteEnded()) {
 			RplLoad_Choices(reader);
 			RplLoad_PlayerChoices(reader);
+			
+			foreach (V30_MapVoting_ChoiceId choiceId, V30_MapVoting_Choice choice : m_AvaiableChoices) {
+				OnChoiceLoaded(choiceId, choice);
+			};
+			OnAllChoicesLoaded(m_AvaiableChoices);
+			
 			OnVoteStarted();
 		};
 		if (IsVoteEnded()) {
@@ -200,9 +216,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 			V30_MapVoting_Choice choice;
 			RplLoad_Choice(reader, choiceId, choice);
 			m_AvaiableChoices.Set(choiceId, choice);
-			OnChoiceLoaded(choiceId, choice);
 		};
-		OnAllChoicesLoaded(m_AvaiableChoices);
 	};
 	
 	protected void RplLoad_PlayerChoices(ScriptBitReader reader) {
@@ -231,6 +245,10 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		V30_MapVoting_PreviewData choicePreviewData; 
 		RplLoad_Preview(reader, choicePreviewData);
 		choice = new V30_MapVoting_ChoiceProxy(choicePreviewData);
+		PrintFormat("		[%1] = %2", choiceId, choice);
+		PrintFormat("			.m_Title = '%1'", choicePreviewData.GetTitle());
+		PrintFormat("			.m_SubTitle = '%1'", choicePreviewData.GetSubTitle());
+		PrintFormat("			.m_Image = '%1'", choicePreviewData.GetImage());
 	};
 	
 	protected void RplLoad_Preview(ScriptBitReader reader, out V30_MapVoting_PreviewData choicePreviewData) {
@@ -244,8 +262,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	};
 	
 	protected event void OnVoteStateUpdated() {
-		PrintFormat("%1.OnVoteStateUpdated()", this);
-		PrintFormat("	m_VoteState = %1", m_VoteState);
+		PrintFormat("%1.OnVoteStateUpdated(%2)", this, m_VoteState);
 		switch (m_VoteState) {
 			case V30_MapVoting_EVoteState.NOT_STARTED: {
 				// Tothing to do
@@ -265,27 +282,30 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	
 	
 	protected void LoadConfig() {
+		PrintFormat("%1.LoadConfig()", this);
+		
 		if (!FileIO.FileExists("$profile:V30/MapVoting/config.json")) {
-			PrintFormat("%1.LoadConfig() Missing config file, it should be at: '$profile:V30/MapVoting/config.json'.", this, level: LogLevel.FATAL);
-			debug;
+			PrintFormat("	Missing config file, it should be at '$profile:V30/MapVoting/config.json'.", level: LogLevel.ERROR);
 			return;
 		};
 		
 		auto jsonConfig = V30_Json_FileDeserializer("$profile:V30/MapVoting/config.json").Deserialize();
 		if (!jsonConfig) {
-			PrintFormat("%1.LoadConfig() Failed to deserialize config.", this, level: LogLevel.FATAL);
-			debug;
+			PrintFormat("	Failed to deserialize config.", level: LogLevel.ERROR);
+			return;
+		}
+		else if (jsonConfig.IsNull()) {
+			PrintFormat("	Config is empty.", level: LogLevel.WARNING);
 			return;
 		};
 		
-		auto jsonConfigObject = jsonConfig.AsObject();
-		if (!jsonConfigObject) {
-			PrintFormat("%1.LoadConfig() Root value is not an object - %2.", this, jsonConfig, level: LogLevel.FATAL);
-			debug;
+		auto config = jsonConfig.AsObject();
+		if (!config) {
+			PrintFormat("	Root value of config is not an object %1.", jsonConfig, level: LogLevel.ERROR);
 			return;
 		};
 		
-		ParseConfig(jsonConfigObject);
+		ParseConfig(config);
 		
 		foreach (V30_MapVoting_ChoiceId id, V30_MapVoting_Choice choice : m_AvaiableChoices) {
 			OnChoiceLoaded(id, choice);
@@ -297,52 +317,67 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		// mode
 		auto jsonMode = config.GetAt("mode");
 		if (jsonMode.IsString()) {
-			ParseConfigMode(jsonMode.AsString().Get(), config);
+			auto mode = jsonMode.AsString().Get();
+			PrintFormat("	'mode' = %1.", mode);
+			ParseConfigMode(mode, config);
 		}
 		else if (jsonMode.IsNull()) {
+			PrintFormat("	'mode' is missing, 'whitelist' will be used.");
 			ParseConfigMode("whitelist", config);
 		}
 		else {
-			PrintFormat("%1.ParseConfig(...) Entry 'mode' is not a string - %2.", this, jsonMode, level: LogLevel.ERROR);
+			PrintFormat("	'mode' is not a string - %1.", jsonMode, level: LogLevel.ERROR);
+			return;
 		};
 		
 		// skipRepeats
 		auto jsonSkipRepeats = config.GetAt("skipRepeats");
-		if (jsonSkipRepeats.IsBool() || jsonSkipRepeats.IsInt()) {
+		if (jsonSkipRepeats.IsBool()/* || jsonSkipRepeats.IsInt()*/) {
 			int skipRepeats;
 			if (jsonSkipRepeats.IsBool()) {
-				if (jsonSkipRepeats.AsBool().Get()) skipRepeats = 1;
-				else skipRepeats = 0;
+				auto skipRepeatsBool = jsonSkipRepeats.AsBool().Get();
+				PrintFormat("	'skipRepeats' = %1.", skipRepeatsBool);
+				if (skipRepeatsBool) {
+					skipRepeats = 1/*m_SaveLastChoicesCount*/;
+				}
+				else {
+					skipRepeats = 0;
+				};
 			}
-			else {
-				skipRepeats = jsonSkipRepeats.AsInt().Get();
-			};
+			//else /*if (jsonSkipRepeats.IsInt())*/ {
+			//    TODO: How many previous votes to count
+			//};
 			
-			if (skipRepeats == 2) {
-				m_SaveLastChoiceId = true;
+			if (skipRepeats > 0 && !m_RememberPreviousChoices) {
+				PrintFormat("		m_RememberPreviousChoices attribute is set to false.", level: LogLevel.WARNING);
 			}
-			else if (skipRepeats == 1 && m_SaveLastChoiceId) {
-				PrintFormat("'skipRepeats' is set, but 'Save Last Choice Id' attribute on game mode component is disabled.", level: LogLevel.WARNING);
-			};
+			//else if (m_RememberPreviousChoicesCount != 0 && skipRepeats > m_RememberPreviousChoicesCount) {
+			//	PrintFormat("		m_RememberPreviousChoicesCount is less than 'skipRepeats' - %1.", m_RememberPreviousChoicesCount, level: LogLevel.WARNING);
+			//};
 			
 			if (skipRepeats > 0) {
 				auto path = "$profile:V30/MapVoting/last.json";
 				if (FileIO.FileExists(path)) {
 					auto value = V30_Json_FileDeserializer(path).Deserialize();
-					if (value.IsInt()) {
+					if (!value) {
+						PrintFormat("		Failed to deserialize '%1'.", path, level: LogLevel.ERROR);
+					}
+					else if (value.IsInt()) {
 						V30_MapVoting_ChoiceId skipChoiceId = value.AsInt().Get();
-						PrintFormat("Skipping choice with id %1 (%2) due to it was used in last vote.", skipChoiceId, GetChoice(skipChoiceId), level: LogLevel.WARNING);
+						PrintFormat("		Skipping previous voted choice: %1.", skipChoiceId);
 						m_AvaiableChoices.Remove(skipChoiceId);
 					}
-					else {
-						PrintFormat("'%1' contains bad data, it shoud be only integer.", path, level: LogLevel.WARNING);
-						FileIO.DeleteFile(path);
+					//else if (value.IsArray()) {
+					//    TODO
+					//}
+					else if (!value.IsNull()) {
+						PrintFormat("		'%1' contains bad data, it shoud be only integer.", path, level: LogLevel.ERROR);
 					};
 				};
 			};
 		}
 		else if (!jsonSkipRepeats.IsNull()) {
-			PrintFormat("%1.ParseConfig(...) Entry 'mode' is not a string - %2.", this, jsonSkipRepeats, level: LogLevel.ERROR);
+			PrintFormat("	'skipRepeats' is not a bool - %1.", jsonSkipRepeats, level: LogLevel.ERROR);
 		};
 		
 		// count
@@ -353,37 +388,48 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 			if (!jsonPreserveRandom.IsNull()) {
 				if (jsonPreserveRandom.IsBool()) {
 					preserveRandom = jsonPreserveRandom.AsBool().Get();
+					PrintFormat("	'countPreserveRandom' = %1.", preserveRandom);
 				}
 				else {
-					PrintFormat("%1.ParseConfig(...) Entry 'countPreserveRandom' is not a bool - %2.", this, jsonPreserveRandom, level: LogLevel.ERROR);
+					PrintFormat("	'countPreserveRandom' is not a bool - %1.", jsonPreserveRandom, level: LogLevel.ERROR);
 				};
 			};
 			
 			auto count = jsonCount.AsInt().Get();
-			if (count > 1) {
-				if (count < m_AvaiableChoices.Count()) {
-					auto ids = new array<V30_MapVoting_ChoiceId>();
-					foreach (V30_MapVoting_ChoiceId choiceId, V30_MapVoting_Choice choice : m_AvaiableChoices)
-						if (!preserveRandom || !V30_MapVoting_ChoiceRandom.Cast(choice))
-							ids.Insert(choiceId);
-					
-					PrintFormat("	Removing %1 choices...", m_AvaiableChoices.Count() - count);
-					while (m_AvaiableChoices.Count() > count) {
-						auto i = ids.GetRandomIndex();
-						auto choiceId = ids.Get(i);
-						ids.Remove(i);
+			if (count >= 2) {
+				PrintFormat("	'count' = %1.", count);
+				if (count <= m_AvaiableChoices.Count()) {
+					if (count != m_AvaiableChoices.Count()) {
+						auto ids = new array<V30_MapVoting_ChoiceId>();
+						foreach (V30_MapVoting_ChoiceId choiceId, V30_MapVoting_Choice choice : m_AvaiableChoices)
+							if (!preserveRandom || !V30_MapVoting_ChoiceRandom.Cast(choice))
+								ids.Insert(choiceId);
 						
-						PrintFormat("		Removing: [%1] = %2", choiceId, GetChoice(choiceId));
-						m_AvaiableChoices.Remove(choiceId);
+						PrintFormat("		Removing %1 choices:", m_AvaiableChoices.Count() - count);
+						while (m_AvaiableChoices.Count() > count) {
+							auto i = ids.GetRandomIndex();
+							auto choiceId = ids.Get(i);
+							ids.Remove(i);
+							
+							PrintFormat("			[%1]", choiceId);
+							m_AvaiableChoices.Remove(choiceId);
+						};
+					}
+					else {
+						PrintFormat("		No options for remove.");
 					};
+					
+				}
+				else {
+					PrintFormat("	'count' is less than number of avaiable options - %1.", m_AvaiableChoices.Count(), level: LogLevel.WARNING);
 				};
 			}
 			else {
-				PrintFormat("%1.ParseConfig(...) Entry 'count' less then 2 - %2.", this, count, level: LogLevel.ERROR);
+				PrintFormat("	'count' is less than 2.", level: LogLevel.ERROR);
 			};
 		}
 		else if (!jsonCount.IsNull()) {
-			PrintFormat("%1.ParseConfig(...) Entry 'count' is not a number - %2.", this, jsonCount, level: LogLevel.ERROR);
+			PrintFormat("	'count' is not a number - %1.", jsonCount, level: LogLevel.ERROR);
 		};
 	};
 	
@@ -392,18 +438,28 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 			// list
 			auto jsonList = config.GetAt("list");
 			if (!jsonList) {
-				PrintFormat("%1.ParseConfig(...) Missing 'list' entry.", this, level: LogLevel.ERROR);
+				PrintFormat("	'list' is missing.", level: LogLevel.ERROR);
 				return;
 			}
 			else if (!jsonList.IsArray()) {
-				PrintFormat("%1.ParseConfig(...) Entry 'list' is not a array - %2.", this, jsonList, level: LogLevel.ERROR);
+				PrintFormat("	'list' is not a array - %1.", jsonList, level: LogLevel.ERROR);
 				return;
 			};
 			
-			ParseConfigWhitelist(jsonList.AsArray().Get(), config);
+			auto list = jsonList.AsArray().Get();
+			if (list.IsEmpty()) {
+				PrintFormat("	'list' is empty.", level: LogLevel.ERROR);
+				return;
+			}
+			else if (list.Count() < 2) {
+				PrintFormat("	'list' contains less than 2 options.", level: LogLevel.WARNING);
+			};
+			
+			PrintFormat("	'list':");
+			ParseConfigWhitelist(list, config);
 		}
 		else {
-			PrintFormat("%1.ParseConfigMode(...) Unknown mode '%2'!", this, mode, level: LogLevel.ERROR);
+			PrintFormat("	Unknown mode '%1',", mode, level: LogLevel.ERROR);
 		};
 	};
 	
@@ -416,6 +472,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	protected V30_MapVoting_Choice ParseConfigListEntry(V30_MapVoting_ChoiceId id, notnull V30_Json_Value entry, string mode, notnull V30_Json_object config) {
 		if (entry.IsString()) {
 			auto path = entry.AsString().Get();
+			PrintFormat("		[%1] = '%2'.", id, path);
 			if (path == "#random") {
 				return new V30_MapVoting_ChoiceRandom();
 			}
@@ -423,11 +480,11 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 				return new V30_MapVoting_ChoiceMission(path);
 			};
 		}
-		else if (entry.IsObject()) {
-			return null;
-		}
+		//else if (entry.IsObject()) {
+		//    TODO;
+		//}
 		else {
-			PrintFormat("%1.ParseConfigMode(...) List entry at %2 is not a string nor object - %3.", this, id, entry, level: LogLevel.ERROR);
+			PrintFormat("		[%1] is not a string - %2.", id, entry, level: LogLevel.ERROR);
 			return null;
 		};
 	};
@@ -446,7 +503,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	};
 	
 	protected event void OnAllChoicesLoaded(notnull map<V30_MapVoting_ChoiceId, ref V30_MapVoting_Choice> choices) {
-		PrintFormat("%1.OnChoiceLoaded(%2[%3])", this, choices, choices.Count());
+		PrintFormat("%1.OnAllChoicesLoaded(%2[%3])", this, choices, choices.Count());
 		m_IsAllChoicesLoaded = true;
 		m_OnAllChoicesLoaded.Invoke(this, choices);
 	};
@@ -508,7 +565,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		return m_VoteState;
 	};
 	
-	protected void StartVote() {
+	void StartVote() {
 		if (m_RplComponent.Role() != RplRole.Authority) {
 			return;
 		};
@@ -541,16 +598,16 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		return m_OnVoteStarted;
 	};
 	
-	protected void EndVote() {
+	void EndVote() {
 		PrintFormat("%1.EndVote()", this);
 		
 		if (m_RplComponent.Role() != RplRole.Authority) {
-			debug;
+			PrintFormat("	Called on Non-Authority.", level: LogLevel.ERROR);
 			return;
 		};
 		
 		if (m_SetRandomizationSeed) {
-			PrintFormat("	Randomize with seed %1", Math.Randomize(m_RandomizationSeed));
+			PrintFormat("	Randomize with seed %1.", Math.Randomize(m_RandomizationSeed));
 		};
 		
 		foreach (V30_MapVoting_Choice choice : m_AvaiableChoices) {
@@ -559,7 +616,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		
 		SelectWinner();
 		
-		if (m_SaveLastChoiceId) {
+		if (m_RememberPreviousChoices) {
 			auto choiceId = m_WinnerId;
 			while (V30_MapVoting_ChoiceWrapper.Cast(GetChoice(choiceId))) choiceId = V30_MapVoting_ChoiceWrapper.Cast(GetChoice(choiceId)).GetChoiceId();
 			V30_Json_FileSerializer("$profile:V30/MapVoting/last.json").Serialize(V30_Json_int(choiceId));
@@ -640,7 +697,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 			return;
 		};
 		
-		if (!m_AvaiableChoices.Contains(choiceId)) {
+		if (choiceId != V30_MapVoting_NoChoice && !m_AvaiableChoices.Contains(choiceId)) {
 			PrintFormat("%1: No choice with id %1 found.", this, choiceId, level: LogLevel.ERROR);
 			return;
 		};
@@ -658,6 +715,16 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	
 	V30_MapVoting_ChoiceId GetPlayerChoice(int playerId) {
 		return m_PlayerChoices.Get(playerId);
+	};
+	
+	int CountVotedPlayers() {
+		int count = 0;
+		foreach (V30_MapVoting_ChoiceId playerChoiceId : m_PlayerChoices) {
+			if (playerChoiceId != V30_MapVoting_NoChoice) {
+				count++;
+			};
+		};
+		return count;
 	};
 	
 	bool IsPlayerVoted(int playerId) {
@@ -699,5 +766,16 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		auto playerVote = GetPlayerChoice(playerId);
 		if (playerVote != V30_MapVoting_NoChoice) OnPlayerVoteChanged(playerId, V30_MapVoting_NoChoice, playerVote);
 		m_PlayerChoices.Remove(playerId);
+	};
+	
+	override void OnPlayerSpawnFinalize_S(SCR_SpawnRequestComponent requestComponent, SCR_SpawnHandlerComponent handlerComponent, SCR_SpawnData data, IEntity entity) {
+		//auto game = GetGame();
+		//auto menuManager = game.GetMenuManager();
+		//auto menu = menuManager.FindMenuByPreset(ChimeraMenuPreset.V30_MapVoting_Menu);
+		//auto root = menu.GetRootWidget();
+		//auto hud = root.FindAnyWidget("HUD");
+		//auto comp = SCR_HUDMenuComponent.Cast(hud.FindHandler(SCR_HUDMenuComponent));
+		//comp.DelayHUDLayoutChange();
+		//SCR_HUDMenuComponent.Cast(GetGame().GetMenuManager().FindMenuByPreset(ChimeraMenuPreset.V30_MapVoting_Menu).GetRootWidget().FindAnyWidget("HID").FindHandler(SCR_HUDMenuComponent)).DelayHUDLayoutChange();
 	};
 };

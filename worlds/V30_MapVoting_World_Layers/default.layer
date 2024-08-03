@@ -7,9 +7,6 @@ V30_MapVoting_GameMode V30_MapVoting_GameMode1 : "{90B80F466134E2A5}Prefabs/MP/M
     m_sForcedFaction "CIV"
    }
   }
-  V30_MapVoting_AutoGameModeComponent "{6202CAA8847546EC}" {
-   m_TimeLimit 60
-  }
   V30_MapVoting_GameOverScreenManagerComponent "{56DEC646298AD219}" {
    m_GameOverScreenConfig SCR_GameOverScreenConfig "{56DEC6462FFDD82D}" {
     m_aGameOverScreens {
@@ -26,6 +23,7 @@ V30_MapVoting_GameMode V30_MapVoting_GameMode1 : "{90B80F466134E2A5}Prefabs/MP/M
    m_sGameOverScreenBasePrefab "{3B0315D25EB29EC1}UI/layouts/HUD/GameOver/EndScreen/V30_MapVoting_EndScreen.layout"
   }
  }
+ m_bAutoPlayerRespawn 0
 }
 SCR_FactionManager V30_MapVoting_FactionManager1 : "{C46BF1AB7177139A}Prefabs/MP/Managers/Factions/V30_MapVoting_FactionManager.et" {
 }

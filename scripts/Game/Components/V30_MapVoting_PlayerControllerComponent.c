@@ -27,6 +27,17 @@ class V30_MapVoting_PlayerControllerComponent : ScriptComponent {
 		OnVoteChanged(m_ChoiceId, oldChoiceId);
 	};
 	
+	void EndVote() {
+		if (!SCR_Global.IsAdmin()) return;
+		Rpc(RpcAsk_EndVote);
+	};
+	
+	[RplRpc(channel: RplChannel.Reliable, rcver: RplRcver.Server)]
+	protected void RpcAsk_EndVote() {
+		if (!SCR_Global.IsAdmin(PlayerController.Cast(GetOwner()).GetPlayerId())) return;
+		V30_MapVoting_GameModeComponent.GetInstance().EndVote();
+	};
+	
 	void ClearVote() {
 		SetVote(V30_MapVoting_NoChoice);
 	};
