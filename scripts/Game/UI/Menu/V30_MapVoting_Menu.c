@@ -69,8 +69,6 @@ class V30_MapVoting_Menu : ChimeraMenuBase {
 		m_Choices.SetEnabled(false);
 		m_Choices.SetVisible(false);
 		
-		m_Hud = root.FindAnyWidget("HUD");
-		
 		auto choice = m_Choices.GetChildren();
 		while (choice) {
 			choice.SetEnabled(false);
@@ -136,13 +134,18 @@ class V30_MapVoting_Menu : ChimeraMenuBase {
 	};
 	
 	protected void OnPauseMenu() {
-		m_Hud.RemoveFromHierarchy();
 		GetGame().OpenPauseMenu(false, true);
 	};
 	
 	override event void OnMenuFocusGained() {
-		m_Hud = GetGame().GetWorkspace().CreateWidgets("{63397C60B1761AD9}UI/layouts/V30/MapVoting/V30_MapVoting_HUD.layout", GetRootWidget());
 		super.OnMenuFocusGained();
+		m_Hud = GetGame().GetWorkspace().CreateWidgets("{63397C60B1761AD9}UI/layouts/V30/MapVoting/V30_MapVoting_HUD.layout", GetRootWidget());
+	};
+	
+	override event void OnMenuFocusLost() {
+		super.OnMenuFocusLost();
+		m_Hud.RemoveFromHierarchy();
+		m_Hud = null;
 	};
 
 	

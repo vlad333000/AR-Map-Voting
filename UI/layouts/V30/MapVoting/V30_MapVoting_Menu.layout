@@ -184,10 +184,5 @@ FrameWidgetClass {
     }
    }
   }
-  FrameWidgetClass "{62071CED2161C118}" : "{63397C60B1761AD9}UI/layouts/V30/MapVoting/V30_MapVoting_HUD.layout" {
-   Name "HUD"
-   Slot FrameWidgetSlot "{6206F6656030359D}" {
-   }
-  }
  }
 }
