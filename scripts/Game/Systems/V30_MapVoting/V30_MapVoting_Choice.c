@@ -209,9 +209,14 @@ class V30_MapVoting_ChoiceResource : V30_MapVoting_Choice {
 	
 	protected ref Resource m_Resource;
 	
+	protected int m_Repeats;
+	
+	protected static const int s_MaxRepeats = 10;
+	
 	void V30_MapVoting_ChoiceResource(ResourceName resourceName, string addonsList = "$initial") {
 		m_ResourceName = resourceName;
 		m_AddonsList = addonsList;
+		m_Repeats = 0;
 		
 		m_Resource = Resource.Load(m_ResourceName);
 		if (!m_Resource.IsValid()) PrintFormat("%1: invalid resource '%2'.", this, m_ResourceName, level: LogLevel.ERROR);
@@ -252,7 +257,19 @@ class V30_MapVoting_ChoiceResource : V30_MapVoting_Choice {
 		addonsList.Replace("$current", currentAddonsList);
 		
 		PrintFormat("	RequestScenarioChangeTransition('%1', '%2')", m_ResourceName, addonsList);
-		GameStateTransitions.RequestScenarioChangeTransition(m_ResourceName, addonsList); // GetGame().PlayGameConfig(m_ResourceName, addonsList);
+		bool r = GameStateTransitions.RequestScenarioChangeTransition(m_ResourceName, addonsList); // GetGame().PlayGameConfig(m_ResourceName, addonsList);
+		if (!r) {
+			m_Repeats += 1;
+			if (m_Repeats >= s_MaxRepeats) {
+				PrintFormat("	Failed to RequestScenarioChangeTransition in %1 time(s), shutdown the server.", s_MaxRepeats, level: LogLevel.FATAL);
+				GetGame().RequestClose();
+				//GameStateTransitions.RequestGameTerminateTransition();
+				return;
+			};
+			
+			PrintFormat("	Failed to RequestScenarioChangeTransition in %1 time(s), repeat in 1000 ms", m_Repeats, level: LogLevel.ERROR);
+			GetGame().GetCallqueue().CallLater(Play, delay: 1.0 * 1000);
+		};
 	};
 	
 	static string GetInitialAddonsList() {
