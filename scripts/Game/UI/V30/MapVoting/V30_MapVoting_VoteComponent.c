@@ -83,7 +83,7 @@ class V30_MapVoting_VoteComponent : ScriptedWidgetComponent {
 	};
 	
 	protected void OnClicked(SCR_ButtonBaseComponent component) {
-		V30_MapVoting_PlayerControllerComponent.GetInstance().SetVote(m_ChoiceId);
+		V30_MapVoting_PlayerControllerComponent.GetLocalInstance().SetVote(m_ChoiceId);
 	};
 	
 	protected void OnChoiceVoteAdded(V30_MapVoting_Choice choice, int playerId) {

@@ -151,7 +151,7 @@ class V30_MapVoting_Menu : ChimeraMenuBase {
 	
 	protected void OnRemoveVote() {
 		if (!V30_MapVoting_GameModeComponent.GetInstance().IsAllowsVoteRemove()) return;
-		V30_MapVoting_PlayerControllerComponent.GetInstance().ClearVote();
+		V30_MapVoting_PlayerControllerComponent.GetLocalInstance().ClearVote();
 	};
 	
 	protected void updateAdminRole() {
@@ -171,6 +171,6 @@ class V30_MapVoting_Menu : ChimeraMenuBase {
 	};
 	
 	protected void OnEndVote() {
-		V30_MapVoting_PlayerControllerComponent.GetInstance().EndVote();
+		V30_MapVoting_PlayerControllerComponent.GetLocalInstance().EndVote();
 	};
 };

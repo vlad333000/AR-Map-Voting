@@ -9,7 +9,7 @@ class V30_MapVoting_TotalPlayerCountComponent : SCR_ScriptedWidgetComponent {
 	
 	protected void UpdatePlayerCount() {
 		if (!m_Root) return;
-		m_Root.SetText(GetGame().GetPlayerManager().GetPlayerCount().ToString());
+		m_Root.SetText(V30_MapVoting_GameModeComponent.GetInstance().CountPlayersWithVoteAbility().ToString());
 	};
 
 	override void HandlerDeattached(Widget w) {

@@ -8,6 +8,15 @@ enum V30_MapVoting_EVoteState {
 	ENDED
 }
 
+enum V30_MapVoting_EGiveVoteAbility {
+	ALL,
+	ADMINISTRATORS,
+	SESSION_ADMINISTRATORS,
+	GAME_MASTERS,
+	NONE
+};
+
+
 [ComponentEditorProps(category: "GameScripted/Misc", description: "")]
 class V30_MapVoting_GameModeComponentClass : SCR_BaseGameModeComponentClass {
 };
@@ -31,6 +40,8 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	protected ref ScriptInvoker m_OnChoiceLoaded;
 	
 	protected ref ScriptInvoker m_OnAllChoicesLoaded;
+	
+	protected ref ScriptInvoker m_OnPlayerVoteAbilityChanged;
 	
 	[RplProp()]
 	protected V30_MapVoting_ChoiceId m_WinnerId;
@@ -60,6 +71,13 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	[Attribute("true", desc: "Allows player to remove his vote.")]
 	protected bool m_AllowsVoteRemove;
 	
+	[Attribute("0", desc: "Who can vote (NONE for full scripted-base).", uiwidget: UIWidgets.ComboBox, category: "Vote", enums: ParamEnumArray.FromEnum(V30_MapVoting_EGiveVoteAbility))]
+	protected V30_MapVoting_EGiveVoteAbility m_GiveVoteAbility;
+	
+	protected ref set<int> m_Voters;
+	
+	protected int m_VotersCount;
+	
 	void V30_MapVoting_GameModeComponent(IEntityComponentSource src, IEntity ent, IEntity parent) {
 		m_ChoiceId = 0;
 		m_AvaiableChoices = new map<V30_MapVoting_ChoiceId, ref V30_MapVoting_Choice>();
@@ -71,6 +89,10 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		m_OnAllChoicesLoaded = new ScriptInvoker();
 		m_IsAllChoicesLoaded = false;
 		m_OnPlayerVoteChanged = new ScriptInvoker();
+		m_GiveVoteAbility = V30_MapVoting_EGiveVoteAbility.ALL;
+		m_Voters = new set<int>();
+		m_OnPlayerVoteAbilityChanged = new ScriptInvoker();
+		m_VotersCount = 0;
 	};
 	
 	bool IsAllowsVoteRemove() {
@@ -142,6 +164,9 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 			//PrintFormat("	m_WinnerId = %1", m_WinnerId);
 			RplSave_Preview(writer, m_WinnerPreview);
 		};
+		if (!IsVoteEnded()) {
+			writer.WriteInt(m_VotersCount);
+		};
 		return true;
 	};
 	
@@ -202,6 +227,11 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 			PrintFormat("	m_WinnerId = %1", m_WinnerId);
 			RplLoad_Preview(reader, m_WinnerPreview);
 			OnVoteEnded(m_WinnerId);
+		};
+		if (!IsVoteEnded()) {
+			int votersCount;
+			reader.ReadInt(votersCount);
+			m_VotersCount = votersCount;
 		};
 		
 		return true;
@@ -431,6 +461,46 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		else if (!jsonCount.IsNull()) {
 			PrintFormat("	'count' is not a number - %1.", jsonCount, level: LogLevel.ERROR);
 		};
+		
+		
+		auto voteAbility = config.GetAt("giveVoteAbility");
+		if (voteAbility) {
+			switch (voteAbility.GetType()) {
+				case V30_Json_EValueType.STRING: {
+					switch (voteAbility.AsString().Get()) {
+						case "administrators": {
+							m_GiveVoteAbility = V30_MapVoting_EGiveVoteAbility.ADMINISTRATORS;
+							break;
+						};
+						case "session_administrators": {
+							m_GiveVoteAbility = V30_MapVoting_EGiveVoteAbility.SESSION_ADMINISTRATORS;
+							break;
+						};
+						case "game_masters": {
+							m_GiveVoteAbility = V30_MapVoting_EGiveVoteAbility.GAME_MASTERS;
+							break;
+						};
+						case "all": {
+							m_GiveVoteAbility = V30_MapVoting_EGiveVoteAbility.ALL;
+							break;
+						};
+						case "none": {
+							m_GiveVoteAbility = V30_MapVoting_EGiveVoteAbility.NONE;
+							break;
+						};
+						default: {
+							PrintFormat("    'voteAbility' has bad option, available options: 'all', 'game_masters', 'session_administrators', 'administrators' or 'none'", level: LogLevel.ERROR);
+							break;
+						};
+					};
+					break;
+				};
+				default: {
+					PrintFormat("    'voteAbility' is not a string", level: LogLevel.ERROR);
+					break;
+				};
+			};
+		};
 	};
 	
 	protected void ParseConfigMode(string mode, notnull V30_Json_object config) {
@@ -578,11 +648,43 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		
 		SendAllChoices();
 		
+		
 		m_VoteState = V30_MapVoting_EVoteState.STARTED;
 		
 		Replication.BumpMe();
 		
 		OnVoteStarted();
+		
+		auto game = GetGame();
+		auto playerManager = game.GetPlayerManager();
+		array<int> playerIds = new array<int>();
+		playerManager.GetPlayers(playerIds);
+		foreach (int playerId : playerIds) {
+			switch (m_GiveVoteAbility) {
+				case V30_MapVoting_EGiveVoteAbility.ADMINISTRATORS: {
+					if (playerManager.GetPlayerRoles(playerId) & (EPlayerRole.ADMINISTRATOR)) {
+						GivePlayerVoteAbility(playerId);
+					};
+					break;
+				};
+				case V30_MapVoting_EGiveVoteAbility.SESSION_ADMINISTRATORS: {
+					if (playerManager.GetPlayerRoles(playerId) & (EPlayerRole.ADMINISTRATOR | EPlayerRole.SESSION_ADMINISTRATOR)) {
+						GivePlayerVoteAbility(playerId);
+					};
+					break;
+				};
+				case V30_MapVoting_EGiveVoteAbility.GAME_MASTERS: {
+					if (playerManager.GetPlayerRoles(playerId) & (EPlayerRole.ADMINISTRATOR | EPlayerRole.SESSION_ADMINISTRATOR | EPlayerRole.GAME_MASTER)) {
+						GivePlayerVoteAbility(playerId);
+					};
+					break;
+				};
+				case V30_MapVoting_EGiveVoteAbility.ALL: {
+					GivePlayerVoteAbility(playerId);
+					break;
+				};
+			};
+		};
 	};
 	
 	bool IsVoteStarted() {
@@ -706,6 +808,10 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		RplDo_SetPlayerChoice(playerId, choiceId);
 	};
 	
+	void RemovePlayerChoice(int playerId) {
+		SetPlayerChoice(playerId, V30_MapVoting_NoChoice);
+	};
+	
 	[RplRpc(channel: RplChannel.Reliable, rcver: RplRcver.Broadcast)]
 	protected void RplDo_SetPlayerChoice(int playerId, V30_MapVoting_ChoiceId choiceId) {
 		auto oldChoiceId = m_PlayerChoices.Get(playerId);
@@ -746,6 +852,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		super.OnPlayerConnected(playerId);
 		Rpc(RplDo_OnPlayerConnected, playerId);
 		RplDo_OnPlayerConnected(playerId);
+		if (IsVoteStarted() && m_GiveVoteAbility == V30_MapVoting_EGiveVoteAbility.ALL) GivePlayerVoteAbility(playerId);
 	};
 	
 	[RplRpc(channel: RplChannel.Reliable, rcver: RplRcver.Broadcast)]
@@ -758,6 +865,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		super.OnPlayerDisconnected(playerId, cause, timeout);
 		Rpc(RplDo_OnPlayerDisconnected, playerId, cause, timeout);
 		RplDo_OnPlayerDisconnected(playerId, cause, timeout);
+		TakePlayerVoterAbility(playerId);
 	};
 	
 	[RplRpc(channel: RplChannel.Reliable, rcver: RplRcver.Broadcast)]
@@ -768,14 +876,85 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		m_PlayerChoices.Remove(playerId);
 	};
 	
-	override void OnPlayerSpawnFinalize_S(SCR_SpawnRequestComponent requestComponent, SCR_SpawnHandlerComponent handlerComponent, SCR_SpawnData data, IEntity entity) {
-		//auto game = GetGame();
-		//auto menuManager = game.GetMenuManager();
-		//auto menu = menuManager.FindMenuByPreset(ChimeraMenuPreset.V30_MapVoting_Menu);
-		//auto root = menu.GetRootWidget();
-		//auto hud = root.FindAnyWidget("HUD");
-		//auto comp = SCR_HUDMenuComponent.Cast(hud.FindHandler(SCR_HUDMenuComponent));
-		//comp.DelayHUDLayoutChange();
-		//SCR_HUDMenuComponent.Cast(GetGame().GetMenuManager().FindMenuByPreset(ChimeraMenuPreset.V30_MapVoting_Menu).GetRootWidget().FindAnyWidget("HID").FindHandler(SCR_HUDMenuComponent)).DelayHUDLayoutChange();
+	override void OnPlayerRoleChange(int playerId, EPlayerRole roleFlags) {
+		if (!IsVoteStarted()) return;
+		
+		switch (m_GiveVoteAbility) {
+			case V30_MapVoting_EGiveVoteAbility.ADMINISTRATORS: {
+				SetPlayerVoteAbility(playerId, (roleFlags & (EPlayerRole.ADMINISTRATOR)) != 0);
+				break;
+			};
+			case V30_MapVoting_EGiveVoteAbility.SESSION_ADMINISTRATORS: {
+				SetPlayerVoteAbility(playerId, (roleFlags & (EPlayerRole.ADMINISTRATOR | EPlayerRole.SESSION_ADMINISTRATOR)) != 0);
+				break;
+			};
+			case V30_MapVoting_EGiveVoteAbility.GAME_MASTERS: {
+				SetPlayerVoteAbility(playerId, (roleFlags & (EPlayerRole.ADMINISTRATOR | EPlayerRole.SESSION_ADMINISTRATOR | EPlayerRole.GAME_MASTER)) != 0);
+				break;
+			};
+		};
+	};
+	
+	
+	
+	// --------- Vote Ability --------- //
+	void SetPlayerVoteAbility(int playerId, bool voteAbility) {
+		if (m_RplComponent.Role() != RplRole.Authority) return;
+		if (!GetGame().GetPlayerManager().IsPlayerConnected(playerId)) return;
+		if (voteAbility) GivePlayerVoteAbility(playerId);
+		else TakePlayerVoterAbility(playerId);
+	};
+	
+	void GivePlayerVoteAbility(int playerId) {
+		if (m_RplComponent.Role() != RplRole.Authority) return;
+		if (!GetGame().GetPlayerManager().IsPlayerConnected(playerId)) return;
+		if (IsPlayerHasVoteAbility(playerId)) return;
+		m_Voters.Insert(playerId);
+		m_VotersCount++;
+		Rpc(RpcDo_UpdateVotersCount, m_VotersCount);
+		OnPlayerVoteAbilityChanged(playerId, true);
+		GetPlayerControllerComponent(playerId).OnVoteAbilityChanged(true);
+	};
+	
+	void TakePlayerVoterAbility(int playerId) {
+		if (m_RplComponent.Role() != RplRole.Authority) return;
+		if (!GetGame().GetPlayerManager().IsPlayerConnected(playerId)) return;
+		if (!IsPlayerHasVoteAbility(playerId)) return;
+		m_Voters.RemoveItem(playerId);
+		m_VotersCount--;
+		Rpc(RpcDo_UpdateVotersCount, m_VotersCount);
+		OnPlayerVoteAbilityChanged(playerId, false);
+		RemovePlayerChoice(playerId);
+		GetPlayerControllerComponent(playerId).OnVoteAbilityChanged(false);
+	};
+	
+	[RplRpc(channel: RplChannel.Reliable, rcver: RplRcver.Broadcast)]
+	protected void RpcDo_UpdateVotersCount(int votersCount) {
+		m_VotersCount = votersCount;
+	};
+	
+	bool IsPlayerHasVoteAbility(int playerId) {
+		return m_Voters.Contains(playerId);
+	};
+	
+	int CountPlayersWithVoteAbility() {
+		return m_VotersCount; //m_Voters.Count();
+	};
+	
+	protected void OnPlayerVoteAbilityChanged(int playerId, bool hasVoteAbility) {
+		PrintFormat("%1.OnPlayerVoteAbilityChanged(%2, %3)", this, playerId, hasVoteAbility);
+		m_OnPlayerVoteAbilityChanged.Invoke(this, playerId, hasVoteAbility);
+	};
+	
+	ScriptInvoker GetOnPlayerVoteAbilityChanged() {
+		return m_OnPlayerVoteAbilityChanged;
+	};
+	
+	V30_MapVoting_PlayerControllerComponent GetLocalPlayerControllerComponent() {
+		return V30_MapVoting_PlayerControllerComponent.GetLocalInstance();
+	};
+	
+	V30_MapVoting_PlayerControllerComponent GetPlayerControllerComponent(int playerId) {
+		return V30_MapVoting_PlayerControllerComponent.GetInstance(playerId);
 	};
 };

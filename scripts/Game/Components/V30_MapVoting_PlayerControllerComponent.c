@@ -7,10 +7,15 @@ class V30_MapVoting_PlayerControllerComponent : ScriptComponent {
 	
 	protected ref ScriptInvoker m_OnVoteChanged;
 	
+	protected bool m_HasVoteAbility = false;
+	
+	protected ref ScriptInvoker m_OnVoteAbilityChanged;
+	
 	void V30_MapVoting_PlayerControllerComponent(IEntityComponentSource src, IEntity ent, IEntity parent) {
 		// TODO: Add check for adding to PlayerController
 		m_ChoiceId = V30_MapVoting_NoChoice;
 		m_OnVoteChanged = new ScriptInvoker();
+		m_OnVoteAbilityChanged = new ScriptInvoker();
 		if (!GetGame().InPlayMode()) return;
 		SetEventMask(ent, EntityEvent.INIT);
 	};
@@ -20,6 +25,7 @@ class V30_MapVoting_PlayerControllerComponent : ScriptComponent {
 	};
 	
 	void SetVote(V30_MapVoting_ChoiceId choiceId) {
+		if (!HasVoteAbility()) return;
 		if (choiceId == m_ChoiceId) return;
 		auto oldChoiceId = m_ChoiceId;
 		m_ChoiceId = choiceId;
@@ -51,6 +57,7 @@ class V30_MapVoting_PlayerControllerComponent : ScriptComponent {
 	};
 	
 	protected void SendVote() {
+		if (!HasVoteAbility()) return;
 		Rpc(RpcAsk_SendVote, m_ChoiceId);
 	};
 	
@@ -65,14 +72,44 @@ class V30_MapVoting_PlayerControllerComponent : ScriptComponent {
 	
 	[RplRpc(channel: RplChannel.Reliable, rcver: RplRcver.Server)]
 	protected void RpcAsk_SendVote(V30_MapVoting_ChoiceId choiceId) {
+		if (!HasVoteAbility()) return;
 		V30_MapVoting_GameModeComponent.GetInstance().SetPlayerChoice(PlayerController.Cast(GetOwner()).GetPlayerId(), choiceId);
 	};
 	
-	static V30_MapVoting_PlayerControllerComponent GetInstance() {
+	static V30_MapVoting_PlayerControllerComponent GetLocalInstance() {
 		auto game = GetGame();
 		if (!game) return null;
 		auto playerController = game.GetPlayerController();
 		if (!playerController) return null;
 		return V30_MapVoting_PlayerControllerComponent.Cast(playerController.FindComponent(V30_MapVoting_PlayerControllerComponent));
+	};
+	
+	static V30_MapVoting_PlayerControllerComponent GetInstance(int playerId) {
+		auto game = GetGame();
+		if (!game) return null;
+		auto playerManager = game.GetPlayerManager();
+		if (!playerManager) return null;
+		auto playerController = playerManager.GetPlayerController(playerId);
+		if (!playerController) return null;
+		return V30_MapVoting_PlayerControllerComponent.Cast(playerController.FindComponent(V30_MapVoting_PlayerControllerComponent));
+	};
+	
+	void OnVoteAbilityChanged(bool hasVoteAbility) {
+		Rpc(RpcDo_OnVoteAbilityChanged, hasVoteAbility);
+		RpcDo_OnVoteAbilityChanged(hasVoteAbility);
+	};
+	
+	[RplRpc(channel: RplChannel.Reliable, rcver: RplRcver.Owner)]
+	protected void RpcDo_OnVoteAbilityChanged(bool hasVoteAbility) {
+		m_HasVoteAbility = hasVoteAbility;
+		m_OnVoteAbilityChanged.Invoke(this, hasVoteAbility);
+	};
+	
+	ScriptInvoker GetOnVoteAbilityChanged() {
+		return m_OnVoteAbilityChanged;
+	};
+	
+	bool HasVoteAbility() {
+		return m_HasVoteAbility;
 	};
 };
