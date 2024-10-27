@@ -213,7 +213,7 @@ class V30_MapVoting_ChoiceResource : V30_MapVoting_Choice {
 	
 	protected static const int s_MaxRepeats = 10;
 	
-	void V30_MapVoting_ChoiceResource(ResourceName resourceName, string addonsList = "$initial") {
+	void V30_MapVoting_ChoiceResource(ResourceName resourceName, string addonsList = "") {
 		m_ResourceName = resourceName;
 		m_AddonsList = addonsList;
 		m_Repeats = 0;
