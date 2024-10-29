@@ -161,7 +161,7 @@ class V30_MapVoting_AutoGameModeComponent : V30_MapVoting_GameModeComponent {
 	
 	
 	override event void OnGameModeStart() {
-		GetGame().GetMenuManager().OpenMenu(ChimeraMenuPreset.V30_MapVoting_Menu);
+		if (!System.IsConsoleApp()) GetGame().GetMenuManager().OpenMenu(ChimeraMenuPreset.V30_MapVoting_Menu);
 		if (m_RplComponent.Role() != RplRole.Authority) return;
 		StartVote();
 	};
