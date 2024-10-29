@@ -106,7 +106,7 @@ OverlayWidgetClass {
         Padding 0 0 0 0
        }
        components {
-        V30_MapVoting_TotalPlayerCountComponent "{6202F92419160BEC}" {
+        V30_MapVoting_VotingPlayerCountComponent "{62BB3E1B44C211E8}" {
         }
        }
        Text "0"
