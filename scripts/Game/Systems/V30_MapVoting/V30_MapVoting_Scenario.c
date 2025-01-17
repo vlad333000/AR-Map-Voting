@@ -20,7 +20,7 @@ class V30_MapVoting_Scenario {
 		return m_AddonsList;
 	};
 	
-	V30_MapVoting_PreviewData GetPreview() {
+	V30_MapVoting_PreviewData GetPreviewData() {
 		SCR_MissionHeader header = SCR_ConfigHelperT<SCR_MissionHeader>.GetConfigObject(m_ResourceName);
 		return V30_MapVoting_PreviewData.Create(header.m_sPreviewImage, header.m_sName, header.m_sGameMode);
 	};
