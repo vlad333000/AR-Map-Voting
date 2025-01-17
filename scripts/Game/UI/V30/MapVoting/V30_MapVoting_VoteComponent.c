@@ -64,7 +64,7 @@ class V30_MapVoting_VoteComponent : ScriptedWidgetComponent {
 	void SetupChoice(V30_MapVoting_ChoiceId choiceId, notnull V30_MapVoting_Choice choice) {
 		m_ChoiceId = choiceId;
 		m_Choice = choice;
-		auto choicePreview = choice.GetPreview();
+		auto choicePreview = choice.GetPreviewData();
 		if (m_VoteCountWidget) UpdateVoteCount();
 		if (m_ImageWidget) {
 			m_ImageWidget.LoadImageTexture(0, choicePreview.GetImage());

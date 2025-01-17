@@ -55,7 +55,7 @@ class V30_MapVoting_Choice {
 	
 	void Play();
 	
-	V30_MapVoting_PreviewData GetPreview();
+	V30_MapVoting_PreviewData GetPreviewData();
 };
 
 class V30_MapVoting_ChoiceProxy : V30_MapVoting_Choice {
@@ -65,7 +65,7 @@ class V30_MapVoting_ChoiceProxy : V30_MapVoting_Choice {
 		m_Preview = preview;
 	};
 	
-	override V30_MapVoting_PreviewData GetPreview() {
+	override V30_MapVoting_PreviewData GetPreviewData() {
 		return m_Preview;
 	};
 };
@@ -102,7 +102,7 @@ class V30_MapVoting_ChoiceResource : V30_MapVoting_Choice {
 		return m_Resource;
 	};
 	
-	override V30_MapVoting_PreviewData GetPreview() {
+	override V30_MapVoting_PreviewData GetPreviewData() {
 		return V30_MapVoting_PreviewData.Create("{65B6F7199650B53A}UI/Textures/V30_MapVoting_Choice_RandomImage.edds", m_ResourceName, m_AddonsList);
 	};
 	
@@ -170,11 +170,11 @@ class V30_MapVoting_ChoiceResource : V30_MapVoting_Choice {
 };
 
 class V30_MapVoting_ChoiceMission : V30_MapVoting_ChoiceResource {
-	override V30_MapVoting_PreviewData GetPreview() {
+	override V30_MapVoting_PreviewData GetPreviewData() {
 		SCR_MissionHeader header = SCR_ConfigHelperT<SCR_MissionHeader>.GetConfigObject(m_ResourceName);
 		if (!header) {
 			PrintFormat("%1: failed to get config for '%2'", this, m_ResourceName);
-			return super.GetPreview();
+			return super.GetPreviewData();
 		};
 		
 		return V30_MapVoting_PreviewData.Create(header.m_sPreviewImage, header.m_sName, header.m_sGameMode);
@@ -188,8 +188,8 @@ class V30_MapVoting_ChoiceWrapper : V30_MapVoting_Choice {
 		return V30_MapVoting_GameModeComponent.GetInstance().GetChoice(GetChoiceId());
 	};
 	
-	override V30_MapVoting_PreviewData GetPreview() {
-		return GetChoice().GetPreview();
+	override V30_MapVoting_PreviewData GetPreviewData() {
+		return GetChoice().GetPreviewData();
 	};
 };
 
@@ -226,9 +226,9 @@ class V30_MapVoting_ChoiceRandom : V30_MapVoting_ChoiceWrapper {
 		PrintFormat("	Selected: [%1] = %2",  m_SelectedChoiceId, V30_MapVoting_GameModeComponent.GetInstance().GetChoice(m_SelectedChoiceId));
 	};
 	
-	override V30_MapVoting_PreviewData GetPreview() {
+	override V30_MapVoting_PreviewData GetPreviewData() {
 		if (IsChoiceDetermined()) {
-			return GetChoice().GetPreview();
+			return GetChoice().GetPreviewData();
 		}
 		else {
 			return V30_MapVoting_PreviewData.Create("{65B6F7199650B53A}UI/Textures/V30_MapVoting_Choice_RandomImage.edds", "#AR-V30_MapVoting_RandomChoiceTitle", "#AR-V30_MapVoting_RandomChoiceSubTitle");
