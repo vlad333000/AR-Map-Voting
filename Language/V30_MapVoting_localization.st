@@ -106,5 +106,21 @@ StringTable {
    Author "Vlad333000"
    LastChanged "Vlad333000"
   }
+  CustomStringTableItem "{646307F3CA58268E}" {
+   Id "AR-V30_MapVoting_UnknownChoiceSubTitle"
+   Target_en_us "Unknown"
+   Target_ru_ru "Неизвестно"
+   Modified 1684214943
+   Author "Vlad333000"
+   LastChanged "Vlad333000"
+  }
+  CustomStringTableItem "{646307F3D6540BCE}" {
+   Id "AR-V30_MapVoting_UnknownChoiceTitle"
+   Target_en_us "Unknown scenario"
+   Target_ru_ru "Неизвестный сценарий"
+   Modified 1684215261
+   Author "Vlad333000"
+   LastChanged "Vlad333000"
+  }
  }
 }

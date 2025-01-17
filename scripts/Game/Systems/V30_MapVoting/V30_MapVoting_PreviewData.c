@@ -9,7 +9,7 @@ class V30_MapVoting_PreviewData {
 		return;
 	};
 	
-	static V30_MapVoting_PreviewData Create(ResourceName image, string title, string subTitle) {
+	static V30_MapVoting_PreviewData Create(ResourceName image = "{31F6670FAB57B6FE}UI/Textures/V30_MapVoting_Choice_UnknownImage.edds", string title = "#AR-V30_MapVoting_UnknownChoiceTitle", string subTitle = "#AR-V30_MapVoting_UnknownChoiceSubTitle") {
 		auto data = new V30_MapVoting_PreviewData();
 		data.m_Image = image;
 		data.m_Title = title;
