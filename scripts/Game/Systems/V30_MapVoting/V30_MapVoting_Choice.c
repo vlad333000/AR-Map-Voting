@@ -16,8 +16,7 @@ class V30_MapVoting_Scenario {
 		auto addonsList = m_AddonsList;
 		addonsList.Replace("$initial", GetInitialAddonsList());
 		addonsList.Replace("$current", GetCurrentAddonsList());
-		GameStateTransitions.RequestScenarioChangeTransition(m_ResourceName, addonsList);
-		//GetGame().PlayGameConfig(m_ResourceName, addonsList);
+		ArmaReforgerScripted.Cast(GetGame()).PlayGameConfig(m_ResourceName, addonsList);
 	};
 	
 	protected static string GetInitialAddonsList() {
