@@ -128,10 +128,6 @@ class V30_MapVoting_Scenario {
 		SCR_MissionHeader header = SCR_ConfigHelperT<SCR_MissionHeader>.GetConfigObject(m_ResourceName);
 		return V30_MapVoting_PreviewData.Create(header.m_sPreviewImage, header.m_sName, header.m_sGameMode);
 	};
-	
-	static V30_MapVoting_Choice FromConfig(notnull V30_Json_object config) {
-		// TODO
-	};
 };
 
 class V30_MapVoting_Choice {
@@ -192,6 +188,10 @@ class V30_MapVoting_Choice {
 	void Play();
 	
 	V30_MapVoting_PreviewData GetPreview();
+	
+	static V30_MapVoting_Choice FromConfig(notnull V30_Json_object config) {
+		// TODO
+	};
 };
 
 class V30_MapVoting_ChoiceProxy : V30_MapVoting_Choice {
