@@ -5,7 +5,7 @@ class V30_MapVoting_GameOverScreenManagerComponentClass : SCR_GameOverScreenMana
 }
 
 class V30_MapVoting_GameOverScreenManagerComponent : SCR_GameOverScreenManagerComponent {
-	override SCR_GameOverScreenUIComponent OpenGameOverScreen(ResourceName contentLayout, SCR_GameModeEndData endData, LocalizedString title = string.Empty, LocalizedString subtitle = string.Empty, LocalizedString debriefing = string.Empty, ResourceName imageTexture = ResourceName.Empty, ResourceName icon = ResourceName.Empty, Color vignetteColor = null, string titleParam = string.Empty, string subtitleParam = string.Empty, string debriefingParam = string.Empty) {
+	/*override SCR_GameOverScreenUIComponent OpenGameOverScreen(ResourceName contentLayout, SCR_GameModeEndData endData, LocalizedString title = string.Empty, LocalizedString subtitle = string.Empty, LocalizedString debriefing = string.Empty, ResourceName imageTexture = ResourceName.Empty, ResourceName icon = ResourceName.Empty, Color vignetteColor = null, string titleParam = string.Empty, string subtitleParam = string.Empty, string debriefingParam = string.Empty) {
 		SCR_HUDManagerComponent hudManager = GetGame().GetHUDManager();
 		if (!hudManager)
 			return null;
@@ -25,5 +25,5 @@ class V30_MapVoting_GameOverScreenManagerComponent : SCR_GameOverScreenManagerCo
 		}
 
 		return screenUIComponent;
-	};
+	};*/
 };

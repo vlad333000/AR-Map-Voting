@@ -1,29 +1,21 @@
 class V30_MapVoting_RemainingTimeComponentWidgetComponent : SCR_ScriptedWidgetComponent {
-	protected V30_MapVoting_AutoGameModeComponent m_GameModeComponent;
+	protected V30_MapVoting_GameMode m_gameMode;
 	
 	override void HandlerAttached(Widget w) {
 		super.HandlerAttached(w);
 		
-		auto gameMode = SCR_BaseGameMode.Cast(GetGame().GetGameMode());
-		if (!gameMode) {
-			return;
-		};
-		
-		m_GameModeComponent = V30_MapVoting_AutoGameModeComponent.Cast(V30_MapVoting_AutoGameModeComponent.GetInstance());
-		if (!m_GameModeComponent) {
-			return;
-		};
+		m_gameMode = V30_MapVoting_GameMode.Cast(GetGame().GetGameMode());
 		
 		GetGame().GetCallqueue().CallLater(UpdateTimer, delay: 0.5 * 1000, repeat: true, param1: w);
 	};
 	
 	protected void UpdateTimer(Widget w) {
-		if (!w || !m_GameModeComponent) {
+		if (!w || !m_gameMode) {
 			GetGame().GetCallqueue().Remove(UpdateTimer);
 			return;
 		};
 		
-		auto time = m_GameModeComponent.GetRemainingTime();
+		auto time = m_gameMode.GetVotingRemainingTime();
 		if (time == int.MAX) {
 			if (w.IsVisible()) w.SetVisible(false);
 			return;

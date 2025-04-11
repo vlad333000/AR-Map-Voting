@@ -56,6 +56,10 @@ class V30_MapVoting_Choice {
 	void Play();
 	
 	V30_MapVoting_PreviewData GetPreviewData();
+	
+	static V30_MapVoting_Choice FromConfig(notnull V30_Json_object config) {
+		// TODO
+	};
 };
 
 class V30_MapVoting_ChoiceProxy : V30_MapVoting_Choice {
@@ -236,5 +240,10 @@ class V30_MapVoting_ChoiceRandom : V30_MapVoting_ChoiceWrapper {
 	};
 };
 
-// TODO: V30_MapVoting_ChoiceRandomList
+class V30_MapVoting_ChoiceRandomList : V30_MapVoting_ChoiceWrapper {
+	// TODO
+};
 
+class V30_MapVoting_ChoiceRepeat : V30_MapVoting_ChoiceWrapper {
+	// TODO
+};
