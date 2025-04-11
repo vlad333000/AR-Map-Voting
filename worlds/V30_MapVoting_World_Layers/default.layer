@@ -27,7 +27,7 @@ V30_MapVoting_GameMode V30_MapVoting_GameMode1 : "{90B80F466134E2A5}Prefabs/MP/M
 }
 SCR_FactionManager V30_MapVoting_FactionManager1 : "{C46BF1AB7177139A}Prefabs/MP/Managers/Factions/V30_MapVoting_FactionManager.et" {
 }
-MusicManager : "{359452CCDBDD03F5}Prefabs/Sounds/Music/MusicManager_Base.et" {
+MusicManager : "{359452CCDBDD03F5}Prefabs/Sounds/Music/MusicManager_Campaign.et" {
  Music {
   ScriptedMusic "{620413A10B1F9A35}" {
    Acp "{C2DCD57F345AC0E4}Sounds/UI/Golosovanie.acp"
