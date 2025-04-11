@@ -198,7 +198,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	protected void RplSave_Choice(ScriptBitWriter writer, V30_MapVoting_ChoiceId choiceId, V30_MapVoting_Choice choice) {
 		writer.WriteInt(choiceId);
 		//PrintFormat("		[%1]:", choiceId);
-		RplSave_Preview(writer, choice.GetPreview());
+		RplSave_Preview(writer, choice.GetPreviewData());
 	};
 	
 	protected void RplSave_Preview(ScriptBitWriter writer, V30_MapVoting_PreviewData choicePreview) {
@@ -645,7 +645,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	
 	protected void SendAllChoices() {
 		foreach (V30_MapVoting_ChoiceId choiceId, V30_MapVoting_Choice choice : m_AvaiableChoices) {
-			Rpc(RpcDo_SendChoice, choiceId, choice.GetPreview());
+			Rpc(RpcDo_SendChoice, choiceId, choice.GetPreviewData());
 		};
 		Rpc(RpcDo_SendAllChoices, m_AvaiableChoices.Count());
 	};
@@ -775,7 +775,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		PrintFormat("	Winner: [%1] = %2", m_WinnerId, m_AvaiableChoices.Get(m_WinnerId));
 		GetChoice(m_WinnerId).OnWinner();
 		
-		m_WinnerPreview = GetChoice(m_WinnerId).GetPreview();
+		m_WinnerPreview = GetChoice(m_WinnerId).GetPreviewData();
 		m_VoteState = V30_MapVoting_EVoteState.ENDED;
 	};
 	
