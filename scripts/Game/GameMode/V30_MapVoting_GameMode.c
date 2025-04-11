@@ -29,7 +29,7 @@ class V30_MapVoting_GameMode : SCR_BaseGameMode {
 	[Attribute("1", desc: "How many players should vote to start ThresholdTime.", uiwidget: "editbox", params: "0 inf", category: "Time")]
 	protected int m_ThresholdCount;
 	
-	[Attribute(desc: "Time between vote is ended and starting of loading next scenario (in ms)", defvalue: "14000", params: "0 inf")]
+	[Attribute(desc: "Time between vote is ended and starting of loading next scenario (in ms)", defvalue: "15000", params: "0 inf")]
 	protected int m_V30_MapVoting_startVotedMissionDelay;
 	
 	protected bool m_TimeTicking = false;
