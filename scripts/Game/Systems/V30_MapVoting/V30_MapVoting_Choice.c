@@ -128,6 +128,10 @@ class V30_MapVoting_Scenario {
 		SCR_MissionHeader header = SCR_ConfigHelperT<SCR_MissionHeader>.GetConfigObject(m_ResourceName);
 		return V30_MapVoting_PreviewData.Create(header.m_sPreviewImage, header.m_sName, header.m_sGameMode);
 	};
+	
+	static V30_MapVoting_Choice FromConfig(notnull V30_Json_object config) {
+		// TODO
+	};
 };
 
 class V30_MapVoting_Choice {
@@ -368,5 +372,10 @@ class V30_MapVoting_ChoiceRandom : V30_MapVoting_ChoiceWrapper {
 	};
 };
 
-// TODO: V30_MapVoting_ChoiceRandomList
+class V30_MapVoting_ChoiceRandomList : V30_MapVoting_ChoiceWrapper {
+	// TODO
+};
 
+class V30_MapVoting_ChoiceRepeat : V30_MapVoting_ChoiceWrapper {
+	// TODO
+};

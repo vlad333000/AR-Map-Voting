@@ -18,6 +18,8 @@ enum V30_MapVoting_EGiveVoteAbility {
 
 
 [ComponentEditorProps(category: "GameScripted/Misc", description: "")]
+// TODO: Move logic to GameSystem
+
 class V30_MapVoting_GameModeComponentClass : SCR_BaseGameModeComponentClass {
 };
 
@@ -42,6 +44,8 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	protected ref ScriptInvoker m_OnAllChoicesLoaded;
 	
 	protected ref ScriptInvoker m_OnPlayerVoteAbilityChanged;
+	
+	protected ref ScriptInvoker m_OnConfigLoaded;
 	
 	[RplProp()]
 	protected V30_MapVoting_ChoiceId m_WinnerId;
@@ -87,6 +91,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		m_OnVoteEnded = new ScriptInvoker();
 		m_OnChoiceLoaded = new ScriptInvoker();
 		m_OnAllChoicesLoaded = new ScriptInvoker();
+		m_OnConfigLoaded = new ScriptInvoker();
 		m_IsAllChoicesLoaded = false;
 		m_OnPlayerVoteChanged = new ScriptInvoker();
 		m_GiveVoteAbility = V30_MapVoting_EGiveVoteAbility.ALL;
@@ -123,7 +128,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		return m_WinnerPreview;
 	};
 	
-	protected void RunWinner() {
+	void RunWinner() {
 		if (m_RplComponent.Role() != RplRole.Authority) {
 			return;
 		};
@@ -319,28 +324,43 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 			return;
 		};
 		
-		auto jsonConfig = V30_Json_FileDeserializer("$profile:V30/MapVoting/config.json").Deserialize();
+		auto jsonConfigDeserializer = V30_Json_FileDeserializer("$profile:V30/MapVoting/config.json");
+		if (!jsonConfigDeserializer) {
+			PrintFormat("	Failed to create deserializer config.", level: LogLevel.ERROR);
+			return;
+		}
+		else if (!jsonConfigDeserializer.IsOpen()) {
+			PrintFormat("	Failed to open config.", level: LogLevel.ERROR);
+			return;
+		};
+		
+		auto jsonConfig = jsonConfigDeserializer.Deserialize();
 		if (!jsonConfig) {
 			PrintFormat("	Failed to deserialize config.", level: LogLevel.ERROR);
+			jsonConfigDeserializer.Close();
 			return;
 		}
 		else if (jsonConfig.IsNull()) {
 			PrintFormat("	Config is empty.", level: LogLevel.WARNING);
+			jsonConfigDeserializer.Close();
 			return;
 		};
 		
 		auto config = jsonConfig.AsObject();
 		if (!config) {
 			PrintFormat("	Root value of config is not an object %1.", jsonConfig, level: LogLevel.ERROR);
+			jsonConfigDeserializer.Close();
 			return;
 		};
 		
 		ParseConfig(config);
+		jsonConfigDeserializer.Close();
 		
 		foreach (V30_MapVoting_ChoiceId id, V30_MapVoting_Choice choice : m_AvaiableChoices) {
 			OnChoiceLoaded(id, choice);
 		};
 		OnAllChoicesLoaded(m_AvaiableChoices);
+		OnConfigLoaded(config);
 	};
 	
 	protected void ParseConfig(notnull V30_Json_object config) {
@@ -388,7 +408,10 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 			if (skipRepeats > 0) {
 				auto path = "$profile:V30/MapVoting/last.json";
 				if (FileIO.FileExists(path)) {
-					auto value = V30_Json_FileDeserializer(path).Deserialize();
+					auto valueDeserializer = V30_Json_FileDeserializer(path);
+					auto value = valueDeserializer.Deserialize();
+					valueDeserializer.Close();
+					
 					if (!value) {
 						PrintFormat("		Failed to deserialize '%1'.", path, level: LogLevel.ERROR);
 					}
@@ -495,6 +518,9 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 					};
 					break;
 				};
+				case V30_Json_EValueType.NULL: {
+					break;
+				};
 				default: {
 					PrintFormat("    'voteAbility' is not a string", level: LogLevel.ERROR);
 					break;
@@ -576,6 +602,14 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		PrintFormat("%1.OnAllChoicesLoaded(%2[%3])", this, choices, choices.Count());
 		m_IsAllChoicesLoaded = true;
 		m_OnAllChoicesLoaded.Invoke(this, choices);
+	};
+	
+	protected event void OnConfigLoaded(notnull V30_Json_object config) {
+		m_OnConfigLoaded.Invoke(this, config);
+	};
+	
+	ScriptInvoker GetOnConfigLoaded() {
+		return m_OnConfigLoaded;
 	};
 	
 	ScriptInvoker GetOnAllChoicesLoaded() {
@@ -721,7 +755,9 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		if (m_RememberPreviousChoices) {
 			auto choiceId = m_WinnerId;
 			while (V30_MapVoting_ChoiceWrapper.Cast(GetChoice(choiceId))) choiceId = V30_MapVoting_ChoiceWrapper.Cast(GetChoice(choiceId)).GetChoiceId();
-			V30_Json_FileSerializer("$profile:V30/MapVoting/last.json").Serialize(V30_Json_int(choiceId));
+			auto serializer = V30_Json_FileSerializer("$profile:V30/MapVoting/last.json");
+			serializer.Serialize(V30_Json_int(choiceId));
+			serializer.Close();
 		};
 		
 		Rpc(RpcDo_OnVoteEnded, m_WinnerId, m_WinnerPreview);
