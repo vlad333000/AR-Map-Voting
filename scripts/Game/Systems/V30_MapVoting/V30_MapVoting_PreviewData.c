@@ -1,14 +1,14 @@
 class V30_MapVoting_PreviewData {
 	protected ResourceName m_Image;
-	
+
 	protected string m_Title;
-	
+
 	protected string m_SubTitle;
-	
+
 	void V30_MapVoting_PreviewData() {
 		return;
 	};
-	
+
 	static V30_MapVoting_PreviewData Create(ResourceName image = "{31F6670FAB57B6FE}UI/Textures/V30_MapVoting_Choice_UnknownImage.edds", string title = "#AR-V30_MapVoting_UnknownChoiceTitle", string subTitle = "#AR-V30_MapVoting_UnknownChoiceSubTitle") {
 		auto data = new V30_MapVoting_PreviewData();
 		data.m_Image = image;
@@ -16,19 +16,19 @@ class V30_MapVoting_PreviewData {
 		data.m_SubTitle = subTitle;
 		return data;
 	};
-	
+
 	ResourceName GetImage() {
 		return m_Image;
 	};
-	
+
 	string GetTitle() {
 		return m_Title;
 	};
-	
+
 	string GetSubTitle() {
 		return m_SubTitle;
 	};
-	
+
 	static bool Extract(V30_MapVoting_PreviewData instance, ScriptCtx ctx, SSnapSerializerBase snapshot) {
 		snapshot.SerializeString(instance.m_Image);
 		snapshot.SerializeString(instance.m_Title);
