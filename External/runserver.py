@@ -48,7 +48,7 @@ def run(exe: str, profile: str, config_template_path: str = "config.template.jso
             # Step 3: Run the executable with updated arguments
             result = subprocess.run(
                 [exe] + new_args,
-                check=False,
+                check=True,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 text=True
