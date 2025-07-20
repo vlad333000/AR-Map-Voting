@@ -1,5 +1,8 @@
 # JIP-FIX-V1
 
+> [!IMPORTANT]
+> These scripts is not fully tested, so feedback is required!
+
 ## Setup
 
 1. Install `Python 3`.
