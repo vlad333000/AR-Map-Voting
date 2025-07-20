@@ -1,39 +1,39 @@
 class V30_MapVoting_VoteComponent : ScriptedWidgetComponent {
 	[Attribute("", desc: "Name of widget for number of votes for this option.", uiwidget: UIWidgets.EditBox)];
 	protected string m_sVoteCountWidgetName;
-	
+
 	[Attribute("", desc: "Name of widget for check mark.", uiwidget: UIWidgets.EditBox)];
 	protected string m_sCheckWidgetName;
-	
+
 	[Attribute("", desc: "Name of widget for image.", uiwidget: UIWidgets.EditBox)];
 	protected string m_sImageWidgetName;
-	
+
 	[Attribute("", desc: "Name of widget for title text.", uiwidget: UIWidgets.EditBox)];
 	protected string m_sTitleWidgetName;
-	
+
 	[Attribute("", desc: "Name of widget for sub-title text.", uiwidget: UIWidgets.EditBox)];
 	protected string m_sSubTitleWidgetName;
-	
+
 	protected V30_MapVoting_ChoiceId m_ChoiceId;
-	
+
 	protected ref V30_MapVoting_Choice m_Choice;
-	
+
 	protected ButtonWidget m_RootWidget;
-	
+
 	protected SCR_ButtonBaseComponent m_ButtonComponent;
-	
+
 	protected TextWidget m_VoteCountWidget;
-	
+
 	protected Widget m_CheckWidget;
-	
+
 	protected ImageWidget m_ImageWidget;
-	
+
 	protected TextWidget m_TitleWidget;
-	
+
 	protected TextWidget m_SubTitleWidget;
-	
+
 	protected V30_MapVoting_PlayerControllerComponent m_PlayerControllerComponent;
-	
+
 	override event void HandlerAttached(Widget w) {
 		super.HandlerAttached(w);
 		m_ChoiceId = V30_MapVoting_NoChoice;
@@ -49,7 +49,7 @@ class V30_MapVoting_VoteComponent : ScriptedWidgetComponent {
 		if (!GetGame().InPlayMode()) return;
 		GetGame().GetCallqueue().CallLater(DelayedAddOnPlayerVoteChanged, repeat: true);
 	};
-	
+
 	protected void DelayedAddOnPlayerVoteChanged() {
 		auto game = GetGame();
 		if (!game) return;
@@ -60,7 +60,7 @@ class V30_MapVoting_VoteComponent : ScriptedWidgetComponent {
 		m_PlayerControllerComponent.GetOnVoteChanged().Insert(OnPlayerVoteChanged);
 		GetGame().GetCallqueue().Remove(DelayedAddOnPlayerVoteChanged);
 	};
-	
+
 	void SetupChoice(V30_MapVoting_ChoiceId choiceId, notnull V30_MapVoting_Choice choice) {
 		m_ChoiceId = choiceId;
 		m_Choice = choice;
@@ -77,28 +77,28 @@ class V30_MapVoting_VoteComponent : ScriptedWidgetComponent {
 		choice.GetOnPlayerVoteAdded().Insert(OnChoiceVoteAdded);
 		choice.GetOnPlayerVoteRemoved().Insert(OnChoiceVoteRemoved);
 	};
-	
+
 	V30_MapVoting_Choice GetChoice() {
 		return m_Choice;
 	};
-	
+
 	protected void OnClicked(SCR_ButtonBaseComponent component) {
 		V30_MapVoting_PlayerControllerComponent.GetLocalInstance().SetVote(m_ChoiceId);
 	};
-	
+
 	protected void OnChoiceVoteAdded(V30_MapVoting_Choice choice, int playerId) {
 		UpdateVoteCount();
 	};
-	
+
 	protected void OnChoiceVoteRemoved(V30_MapVoting_Choice choice, int playerId) {
 		UpdateVoteCount();
 	};
-	
+
 	protected void UpdateVoteCount() {
 		// TODO: Add player's vote extrapolation
 		if (m_VoteCountWidget) m_VoteCountWidget.SetText(m_Choice.CountVotes().ToString());
 	};
-	
+
 	protected void OnPlayerVoteChanged(V30_MapVoting_PlayerControllerComponent component, V30_MapVoting_ChoiceId choiceId, V30_MapVoting_ChoiceId oldChoiceId) {
 		if (m_CheckWidget) {
 			if (choiceId == m_ChoiceId) {
