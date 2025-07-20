@@ -53,7 +53,7 @@ class V30_MapVoting_Choice {
 
 	event void OnWinner();
 
-	void Play();
+	V30_MapVoting_RunData GetRunData();
 
 	V30_MapVoting_PreviewData GetPreviewData();
 
@@ -114,34 +114,8 @@ class V30_MapVoting_ChoiceResource : V30_MapVoting_Choice {
 
 	protected static string m_InitialAddonsList;
 
-	override void Play() {
-		PrintFormat("%1.Play()", this);
-
-		auto initialAddonsList = GetInitialAddonsList();
-		PrintFormat("	addonsList.$initial = '%1'", GetInitialAddonsList());
-
-		auto currentAddonsList = GetCurrentAddonsList();
-		PrintFormat("	addonsList.$current = '%1'", GetCurrentAddonsList());
-
-		auto addonsList = m_AddonsList;
-		PrintFormat("	addonsList = '%1'", addonsList);
-		addonsList.Replace("$initial", initialAddonsList);
-		addonsList.Replace("$current", currentAddonsList);
-
-		PrintFormat("	RequestScenarioChangeTransition('%1', '%2')", m_ResourceName, addonsList);
-		bool r = GameStateTransitions.RequestScenarioChangeTransition(m_ResourceName, addonsList); // GetGame().PlayGameConfig(m_ResourceName, addonsList);
-		if (!r) {
-			m_Repeats += 1;
-			if (m_Repeats >= s_MaxRepeats) {
-				PrintFormat("	Failed to RequestScenarioChangeTransition in %1 time(s), shutdown the server.", s_MaxRepeats, level: LogLevel.FATAL);
-				GetGame().RequestClose();
-				//GameStateTransitions.RequestGameTerminateTransition();
-				return;
-			};
-
-			PrintFormat("	Failed to RequestScenarioChangeTransition in %1 time(s), repeat in 1000 ms", m_Repeats, level: LogLevel.ERROR);
-			GetGame().GetCallqueue().CallLater(Play, delay: 1.0 * 1000);
-		};
+	override V30_MapVoting_RunData GetRunData() {
+		return new V30_MapVoting_RunData_Scenario(m_ResourceName, m_AddonsList);
 	};
 
 	static string GetInitialAddonsList() {
@@ -212,8 +186,8 @@ class V30_MapVoting_ChoiceRandom : V30_MapVoting_ChoiceWrapper {
 		return m_SelectedChoiceId != V30_MapVoting_NoChoice;
 	};
 
-	override void Play() {
-		GetChoice().Play();
+	override V30_MapVoting_RunData GetRunData() {
+		return GetChoice().GetRunData();
 	};
 
 	override void OnVoteEnd() {

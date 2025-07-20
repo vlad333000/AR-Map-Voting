@@ -82,6 +82,8 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 
 	protected int m_VotersCount;
 
+	protected ref V30_MapVoting_Runner m_Runner;
+
 	void V30_MapVoting_GameModeComponent(IEntityComponentSource src, IEntity ent, IEntity parent) {
 		m_ChoiceId = 0;
 		m_AvaiableChoices = new map<V30_MapVoting_ChoiceId, ref V30_MapVoting_Choice>();
@@ -133,13 +135,15 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 			return;
 		};
 
-		auto game = GetGame();
-		auto winner = GetChoice(m_WinnerId);
-		winner.Play();
-		//auto resourceName = m_WinnerScenario.GetResourceName();
-		//auto addonsList = m_WinnerScenario.GetAddonsList();
-		//PrintFormat("Next scenario: resourceName = '%1', addonList = '%1'", resourceName, addonsList);
-		//m_WinnerScenario.Play();
+		auto runner = GetRunner();
+		auto winnerId = GetWinnerChoice();
+		auto winner = GetChoice(winnerId);
+		auto winnerRunData = winner.GetRunData();
+		runner.Run(winnerRunData);
+	};
+
+	V30_MapVoting_Runner GetRunner() {
+		return m_Runner;
 	};
 
 	static V30_MapVoting_GameModeComponent GetInstance() {
@@ -527,6 +531,8 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 				};
 			};
 		};
+
+		m_Runner = new V30_MapVoting_Runner_RequestScenarioChangeTransition();
 	};
 
 	protected void ParseConfigMode(string mode, notnull V30_Json_object config) {
@@ -992,5 +998,20 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 
 	V30_MapVoting_PlayerControllerComponent GetPlayerControllerComponent(int playerId) {
 		return V30_MapVoting_PlayerControllerComponent.GetInstance(playerId);
+	};
+};
+
+class V30_MapVoting_Runner {
+	protected void V30_MapVoting_WinnerRunner();
+
+	void Run(notnull V30_MapVoting_RunData runData);
+};
+
+class V30_MapVoting_Runner_RequestScenarioChangeTransition : V30_MapVoting_Runner {
+	override void Run(notnull V30_MapVoting_RunData runData) {
+		auto runDataScenario = V30_MapVoting_RunData_Scenario.Cast(runData);
+		auto scenarioId = runDataScenario.GetScenarioId();
+		auto addonsList = runDataScenario.GetAddonsList();
+		GameStateTransitions.RequestScenarioChangeTransition(scenarioId, addonsList);
 	};
 };
