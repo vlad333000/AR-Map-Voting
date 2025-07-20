@@ -547,6 +547,10 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 							m_Runner = new V30_MapVoting_Runner_Podval(url, serverId);
 							break;
 						};
+						case "ScriptedRestart": {
+							m_Runner = new V30_MapVoting_Runner_ScriptedRestart();
+							break;
+						};
 						default : {
 							PrintFormat("    Option 'runMethod' has unsupported value!", level: LogLevel.ERROR);
 							break;
