@@ -49,27 +49,35 @@ modded class SCR_BaseGameMode {
 			PrintFormat("[V30][MapVoting] Failed to load resource \"%1\" as mission!", resourceName, level: LogLevel.WARNING);
 		};
 
-		string resourceStr = resourceName;
-		auto addonsList = "";
-
-		auto addons = new array<string>();
-		PrintFormat("[V30][MapVoting] SCR_BaseGameMode::GetLoadedAddons(%1)", addons, level: LogLevel.DEBUG);
-		GameProject.GetLoadedAddons(addons);
-		PrintFormat("[V30][MapVoting]     %1 addon(s):", addons.Count(), level: LogLevel.DEBUG);
-		foreach (auto i, auto addon : addons) {
-			PrintFormat("[V30][MapVoting]         [%1] = \"%2\"", i, addon, level: LogLevel.DEBUG);
-			if (i > 0) {
-				addonsList += ",";
+		auto jsonConfigDeserializer = V30_Json_FileDeserializer("$profile:V30/MapVoting/config.json");
+		auto jsonConfig = jsonConfigDeserializer.Deserialize();
+		auto config = jsonConfig.AsObject();
+		
+		V30_MapVoting_Runner runner;
+		auto runMethod = config.GetAt("runMethod");
+		if (runMethod && !runMethod.IsNull()) {
+			switch (runMethod.AsString().Get()) {
+				case "RequestScenarioChangeTransition": {
+					runner = new V30_MapVoting_Runner_RequestScenarioChangeTransition();
+					break;
+				};
+				case "Podval": {
+					auto url = config.GetAt("podvalUrl").AsString().Get();
+					auto serverId = config.GetAt("podvalServerId").AsString().Get();
+					runner = new V30_MapVoting_Runner_Podval(url, serverId);
+					break;
+				};
+				default : {
+					runner = new V30_MapVoting_Runner_RequestScenarioChangeTransition();
+					break;
+				};
 			};
-			addonsList += addon;
-		};
-
-		PrintFormat("[V30][MapVoting] SCR_BaseGameMode::RequestScenarioChangeTransition(\"%1\", \"%2\")", resourceStr, addonsList, level: LogLevel.NORMAL);
-		if (GameStateTransitions.RequestScenarioChangeTransition(resourceStr, addonsList)) {
-			PrintFormat("[V30][MapVoting] Server transition request successfull!", level: LogLevel.NORMAL);
 		}
 		else {
-			PrintFormat("[V30][MapVoting] Server transition request failed!", level: LogLevel.ERROR);
+			runner = new V30_MapVoting_Runner_RequestScenarioChangeTransition();
 		};
+		
+		auto runData = new V30_MapVoting_RunData_Scenario(resourceName, "");
+		runner.Run(runData);
 	};
 };

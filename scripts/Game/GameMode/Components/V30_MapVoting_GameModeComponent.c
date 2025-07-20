@@ -541,6 +541,12 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 							m_Runner = new V30_MapVoting_Runner_RequestScenarioChangeTransition();
 							break;
 						};
+						case "Podval": {
+							auto url = config.GetAt("podvalUrl").AsString().Get();
+							auto serverId = config.GetAt("podvalServerId").AsString().Get();
+							m_Runner = new V30_MapVoting_Runner_Podval(url, serverId);
+							break;
+						};
 						default : {
 							PrintFormat("    Option 'runMethod' has unsupported value!", level: LogLevel.ERROR);
 							break;
@@ -1037,5 +1043,27 @@ class V30_MapVoting_Runner_RequestScenarioChangeTransition : V30_MapVoting_Runne
 		auto scenarioId = runDataScenario.GetScenarioId();
 		auto addonsList = runDataScenario.GetAddonsList();
 		GameStateTransitions.RequestScenarioChangeTransition(scenarioId, addonsList);
+	};
+};
+
+class V30_MapVoting_Runner_Podval : V30_MapVoting_Runner {
+	protected string url;
+
+	protected string serverId;
+
+	void V30_MapVoting_Runner_Podval(string url, string serverId) {
+		this.url = url;
+		this.serverId = serverId;
+	};
+
+	override void Run(notnull V30_MapVoting_RunData runData) {
+		auto runDataScenario = V30_MapVoting_RunData_Scenario.Cast(runData);
+		auto scenarioId = runDataScenario.GetScenarioId();
+		auto game = GetGame();
+		auto restApi = game.GetRestApi();
+		auto context = restApi.GetContext(url);
+		auto query = string.Format("?scenarioId=%1&serverId=%2", scenarioId, serverId);
+		context.GET_now(query);
+		game.RequestClose();
 	};
 };
