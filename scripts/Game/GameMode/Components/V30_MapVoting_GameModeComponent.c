@@ -532,7 +532,31 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 			};
 		};
 
-		m_Runner = new V30_MapVoting_Runner_RequestScenarioChangeTransition();
+		auto runMethod = config.GetAt("runMethod");
+		if (runMethod && !runMethod.IsNull()) {
+			switch (runMethod.GetType()) {
+				case V30_Json_EValueType.STRING: {
+					switch (runMethod.AsString().Get()) {
+						case "RequestScenarioChangeTransition": {
+							m_Runner = new V30_MapVoting_Runner_RequestScenarioChangeTransition();
+							break;
+						};
+						default : {
+							PrintFormat("    Option 'runMethod' has unsupported value!", level: LogLevel.ERROR);
+							break;
+						};
+					};
+					break;
+				};
+				default : {
+					PrintFormat("    Option 'runMethod' has unsupported type!", level: LogLevel.ERROR);
+					break;
+				};
+			};
+		}
+		else {
+			m_Runner = new V30_MapVoting_Runner_RequestScenarioChangeTransition();
+		};
 	};
 
 	protected void ParseConfigMode(string mode, notnull V30_Json_object config) {
