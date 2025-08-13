@@ -78,6 +78,9 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	[Attribute("0", desc: "Who can vote (NONE for full scripted-base).", uiwidget: UIWidgets.ComboBox, category: "Vote", enums: ParamEnumArray.FromEnum(V30_MapVoting_EGiveVoteAbility))]
 	protected V30_MapVoting_EGiveVoteAbility m_GiveVoteAbility;
 
+	[Attribute("true", desc: "Only Admins and GM can talk during vote")]
+	protected bool m_AllowsCommForAdminOnly;
+
 	protected ref set<int> m_Voters;
 
 	protected int m_VotersCount;
@@ -734,6 +737,21 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		array<int> playerIds = new array<int>();
 		playerManager.GetPlayers(playerIds);
 		foreach (int playerId : playerIds) {
+			// ---------------------------------------------------------------------------
+			Print("[GTG V30 Map Voting - StartVote]", LogLevel.WARNING);
+			auto pc = playerManager.GetPlayerController(playerId);
+			if (pc && m_AllowsCommForAdminOnly)
+			{
+				// Disable speach / listen component for player
+				pc.SetPlayerMutedState(playerId, true);
+				
+				// Lets Admins and Session_Admins and GameMaster Talk
+				if (playerManager.GetPlayerRoles(playerId) & (EPlayerRole.ADMINISTRATOR | EPlayerRole.SESSION_ADMINISTRATOR | EPlayerRole.GAME_MASTER)) 
+				{
+					pc.SetPlayerMutedState(playerId, false);
+				};
+			}
+			// ---------------------------------------------------------------------------
 			switch (m_GiveVoteAbility) {
 				case V30_MapVoting_EGiveVoteAbility.ADMINISTRATORS: {
 					if (playerManager.GetPlayerRoles(playerId) & (EPlayerRole.ADMINISTRATOR)) {
