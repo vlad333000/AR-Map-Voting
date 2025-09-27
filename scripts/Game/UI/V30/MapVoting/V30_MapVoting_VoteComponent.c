@@ -109,4 +109,8 @@ class V30_MapVoting_VoteComponent : ScriptedWidgetComponent {
 			};
 		};
 	};
+
+	/*sealed*/ static V30_MapVoting_VoteComponent GetInstance(notnull Widget w) {
+		return V30_MapVoting_VoteComponent.Cast(w.FindHandler(V30_MapVoting_VoteComponent));
+	};
 };
