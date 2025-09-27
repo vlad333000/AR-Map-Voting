@@ -1,4 +1,4 @@
-class V30_MapVoting_VoteComponent : ScriptedWidgetComponent {
+class V30_MapVoting_ChoiceUIComponent : ScriptedWidgetComponent {
 	[Attribute("", desc: "Name of widget for number of votes for this option.", uiwidget: UIWidgets.EditBox)];
 	protected string m_sVoteCountWidgetName;
 
@@ -110,7 +110,7 @@ class V30_MapVoting_VoteComponent : ScriptedWidgetComponent {
 		};
 	};
 
-	/*sealed*/ static V30_MapVoting_VoteComponent GetInstance(notnull Widget w) {
-		return V30_MapVoting_VoteComponent.Cast(w.FindHandler(V30_MapVoting_VoteComponent));
+	/*sealed*/ static V30_MapVoting_ChoiceUIComponent GetInstance(notnull Widget w) {
+		return V30_MapVoting_ChoiceUIComponent.Cast(w.FindHandler(V30_MapVoting_ChoiceUIComponent));
 	};
 };
