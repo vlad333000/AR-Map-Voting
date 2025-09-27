@@ -1,4 +1,14 @@
-class V30_MapVoting_ChoiceUIComponent : ScriptedWidgetComponent {
+class V30_MapVoting_ChoiceUIComponent : SCR_ScriptedWidgetComponent {
+	/*modded*/ void SetupChoice(notnull V30_MapVoting_GameModeComponent votingComponent, V30_MapVoting_ChoiceId choiceId);
+
+	/*modded*/ void ClearChoice();
+
+	/*sealed*/ static V30_MapVoting_ChoiceUIComponent GetInstance(notnull Widget w) {
+		return V30_MapVoting_ChoiceUIComponent.Cast(w.FindHandler(V30_MapVoting_ChoiceUIComponent));
+	};
+};
+
+class V30_MapVoting_SimpleChoiceUIComponent : V30_MapVoting_ChoiceUIComponent {
 	[Attribute("", desc: "Name of widget for number of votes for this option.", uiwidget: UIWidgets.EditBox)];
 	protected string m_sVoteCountWidgetName;
 
@@ -61,7 +71,8 @@ class V30_MapVoting_ChoiceUIComponent : ScriptedWidgetComponent {
 		GetGame().GetCallqueue().Remove(DelayedAddOnPlayerVoteChanged);
 	};
 
-	void SetupChoice(V30_MapVoting_ChoiceId choiceId, notnull V30_MapVoting_Choice choice) {
+	/*sealed*/ override void SetupChoice(notnull V30_MapVoting_GameModeComponent votingComponent, V30_MapVoting_ChoiceId choiceId) {
+		auto choice = votingComponent.GetChoice(choiceId);
 		m_ChoiceId = choiceId;
 		m_Choice = choice;
 		auto choicePreview = choice.GetPreviewData();
@@ -76,6 +87,24 @@ class V30_MapVoting_ChoiceUIComponent : ScriptedWidgetComponent {
 		if (m_SubTitleWidget) m_SubTitleWidget.SetText(choicePreview.GetSubTitle());
 		choice.GetOnPlayerVoteAdded().Insert(OnChoiceVoteAdded);
 		choice.GetOnPlayerVoteRemoved().Insert(OnChoiceVoteRemoved);
+	};
+
+	/*sealed*/ override void ClearChoice() {
+		if (m_VoteCountWidget)
+			m_VoteCountWidget.SetText("—");
+		if (m_ImageWidget) {
+			m_ImageWidget.LoadImageTexture(0, "{FB84DD112A84AB32}UI/Textures/LoadingScreen/PlaceholderScenery_UI.edds");
+			int x, y;
+			m_ImageWidget.GetImageSize(0, x, y);
+			m_ImageWidget.SetSize(x, y);
+		};
+		if (m_TitleWidget)
+			m_TitleWidget.SetText("#AR-V30_MapVoting_MenuChoiceTitle");
+		if (m_SubTitleWidget)
+			m_SubTitleWidget.SetText("#AR-V30_MapVoting_MenuChoiceSubTitle");
+
+		m_Choice.GetOnPlayerVoteAdded().Remove(OnChoiceVoteAdded);
+		m_Choice.GetOnPlayerVoteRemoved().Remove(OnChoiceVoteRemoved);
 	};
 
 	V30_MapVoting_Choice GetChoice() {
@@ -110,7 +139,7 @@ class V30_MapVoting_ChoiceUIComponent : ScriptedWidgetComponent {
 		};
 	};
 
-	/*sealed*/ static V30_MapVoting_ChoiceUIComponent GetInstance(notnull Widget w) {
-		return V30_MapVoting_ChoiceUIComponent.Cast(w.FindHandler(V30_MapVoting_ChoiceUIComponent));
+	/*sealed*/ static V30_MapVoting_SimpleChoiceUIComponent GetSimpleInstance(notnull Widget w) {
+		return V30_MapVoting_SimpleChoiceUIComponent.Cast(V30_MapVoting_ChoiceUIComponent.GetInstance(w));
 	};
 };

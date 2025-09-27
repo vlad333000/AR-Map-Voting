@@ -108,7 +108,7 @@ class V30_MapVoting_Menu : ChimeraMenuBase {
 
 		foreach (V30_MapVoting_ChoiceId choiceId, V30_MapVoting_Choice choice : choices) {
 			auto choiceComponent = V30_MapVoting_ChoiceUIComponent.Cast(option.FindHandler(V30_MapVoting_ChoiceUIComponent));
-			choiceComponent.SetupChoice(choiceId, choice);
+			choiceComponent.SetupChoice(component, choiceId);
 
 			option.SetEnabled(true);
 			option.SetVisible(true);

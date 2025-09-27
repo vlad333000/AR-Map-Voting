@@ -13,7 +13,7 @@ ButtonWidgetClass {
    m_ColorFocus 0.76 0.392 0.08 1
    m_bSetClickColor 0
   }
-  V30_MapVoting_ChoiceUIComponent "{61FA6BC764C37F52}" {
+  V30_MapVoting_SimpleChoiceUIComponent "{61FA6BC764C37F52}" {
    m_sVoteCountWidgetName "VoteCount"
    m_sCheckWidgetName "Check"
    m_sImageWidgetName "MapImage"
