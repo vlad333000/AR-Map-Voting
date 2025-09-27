@@ -2,6 +2,12 @@ FrameWidgetClass {
  Name "Choices"
  Slot OverlayWidgetSlot "{61FA6BFF1AC5397E}" {
  }
+ components {
+  V30_MapVoting_SimpleScreenUIComponent "{66769C212F99D706}" {
+   m_ContentWidgetName "Choices"
+   m_ContentColumns 5
+  }
+ }
  {
   ScaleWidgetClass "{61FAD50F9353D9DE}" {
    Name "ScaleWrapper"
@@ -36,105 +42,6 @@ FrameWidgetClass {
         VerticalAlign 1
         Padding 0 32 0 64
         SizeMode Fill
-       }
-       {
-        ButtonWidgetClass "{61FCA61C1C14FC0A}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
-         Name "Choice0"
-         Slot UniformGridWidgetSlot "{61FA6BF974D723D4}" {
-         }
-        }
-        ButtonWidgetClass "{61FCA61C1C14FC0C}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
-         Name "Choice1"
-         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
-          Column 1
-         }
-        }
-        ButtonWidgetClass "{61FCA61C1C14FC01}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
-         Name "Choice2"
-         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
-          Column 2
-         }
-        }
-        ButtonWidgetClass "{61FCA61C1C14FC05}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
-         Name "Choice3"
-         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
-          Column 3
-         }
-        }
-        ButtonWidgetClass "{61FCA61C1C14FC78}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
-         Name "Choice4"
-         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
-          Column 4
-         }
-        }
-        ButtonWidgetClass "{61FCA61C1C14FC7F}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
-         Name "Choice5"
-         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
-          Row 1
-         }
-        }
-        ButtonWidgetClass "{61FCA61C1C14FC72}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
-         Name "Choice6"
-         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
-          Row 1
-          Column 1
-         }
-        }
-        ButtonWidgetClass "{61FCA61C1C14FC70}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
-         Name "Choice7"
-         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
-          Row 1
-          Column 2
-         }
-        }
-        ButtonWidgetClass "{61FCA61C1C14FC76}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
-         Name "Choice8"
-         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
-          Row 1
-          Column 3
-         }
-        }
-        ButtonWidgetClass "{61FCA61C1C14FC75}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
-         Name "Choice9"
-         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
-          Row 1
-          Column 4
-         }
-        }
-        ButtonWidgetClass "{61FCA61C1C14FC6B}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
-         Name "Choice10"
-         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
-          Row 2
-         }
-        }
-        ButtonWidgetClass "{61FCA61C1C14FC6E}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
-         Name "Choice11"
-         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
-          Row 2
-          Column 1
-         }
-        }
-        ButtonWidgetClass "{61FCA61C1C14FC6C}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
-         Name "Choice12"
-         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
-          Row 2
-          Column 2
-         }
-        }
-        ButtonWidgetClass "{61FCA61C1C14FC62}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
-         Name "Choice13"
-         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
-          Row 2
-          Column 3
-         }
-        }
-        ButtonWidgetClass "{61FCA61C1C14FC61}" : "{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout" {
-         Name "Choice14"
-         Slot UniformGridWidgetSlot "{61FA6BF97720BE19}" {
-          Row 2
-          Column 4
-         }
-        }
        }
       }
       OverlayWidgetClass "{61FCA61C1C14FC67}" {

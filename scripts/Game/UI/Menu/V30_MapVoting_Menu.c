@@ -104,16 +104,9 @@ class V30_MapVoting_Menu : ChimeraMenuBase {
 	};
 
 	protected void OnAllChoicesLoaded(notnull V30_MapVoting_GameModeComponent component, notnull map<V30_MapVoting_ChoiceId, ref V30_MapVoting_Choice> choices) {
-		auto option = m_Choices.GetChildren();
-
-		foreach (V30_MapVoting_ChoiceId choiceId, V30_MapVoting_Choice choice : choices) {
-			auto choiceComponent = V30_MapVoting_ChoiceUIComponent.Cast(option.FindHandler(V30_MapVoting_ChoiceUIComponent));
-			choiceComponent.SetupChoice(component, choiceId);
-
-			option.SetEnabled(true);
-			option.SetVisible(true);
-			option = option.GetSibling();
-		};
+		auto screenWidget = GetRootWidget().FindAnyWidget("ChoicesWrapper");
+		auto screenUiComponent = V30_MapVoting_ScreenUIComponent.GetInstance(screenWidget);
+		screenUiComponent.SetupScreen(component);
 
 		m_Choices.SetEnabled(true);
 		m_Choices.SetVisible(true);
