@@ -11,6 +11,10 @@ FrameWidgetClass {
   SizeY -1050
   OffsetBottom 0
  }
+ components {
+  V30_MapVoting_MenuUIComponent "{667686146777F416}" {
+  }
+ }
  {
   OverlayWidgetClass "{61FA6BFA264F365C}" : "{A5D822A6CBEB8003}UI/layouts/Menus/Common/MenuBackground-NoScripts.layout" {
    Name "Background"
@@ -35,44 +39,6 @@ FrameWidgetClass {
      Slot OverlayWidgetSlot "{61FA6BFF1AC5397E}" {
       HorizontalAlign 3
       VerticalAlign 3
-     }
-     {
-      ScaleWidgetClass "{61FAD50F9353D9DE}" {
-       Prefab "{61FAD50F9353D9DE}"
-       {
-        VerticalLayoutWidgetClass "{61FCA61C1C14FC1D}" {
-         Prefab "{61FCA61C1C14FC1D}"
-         {
-          OverlayWidgetClass "{61FCA61C1C14FC67}" {
-           Prefab "{61FCA61C1C14FC67}"
-           {
-            HorizontalLayoutWidgetClass "{61FCA61C1C14FC57}" {
-             Prefab "{61FCA61C1C14FC57}"
-             {
-              ButtonWidgetClass "{62066D72AB49F5FB}" : "{08CF3B69CB1ACBC4}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButton.layout" {
-               Name "EndVoteButton"
-               Slot LayoutSlot "{62066D72AB49F5DC}" {
-                HorizontalAlign 3
-                VerticalAlign 3
-                Padding 0 0 20 0
-               }
-               "Is Enabled" 0
-               "Is Visible" 0
-               components {
-                SCR_InputButtonComponent "{5D346C3DD81D95CD}" {
-                 m_sActionName "EditorToggle"
-                 m_sLabel "End Vote"
-                }
-               }
-              }
-             }
-            }
-           }
-          }
-         }
-        }
-       }
-      }
      }
     }
     OverlayWidgetClass "{61FAD5079F53D766}" {

@@ -1,21 +1,25 @@
-class V30_MapVoting_RemainingTimeComponentWidgetComponent : SCR_ScriptedWidgetComponent {
-	protected V30_MapVoting_GameMode m_gameMode;
+class V30_MapVoting_RemainingTimeComponentWidgetComponent : V30_MapVoting_WidgetComponent {
+	protected /*private*/ V30_MapVoting_GameMode m_VotingGameMode;
 
-	override void HandlerAttached(Widget w) {
-		super.HandlerAttached(w);
-
-		m_gameMode = V30_MapVoting_GameMode.Cast(GetGame().GetGameMode());
-
-		GetGame().GetCallqueue().CallLater(UpdateTimer, delay: 0.5 * 1000, repeat: true, param1: w);
+	/*sealed*/ override void Setup(notnull V30_MapVoting_GameModeComponent votingComponent) {
+		super.Setup(votingComponent);
+		m_VotingGameMode = V30_MapVoting_GameMode.Cast(votingComponent.GetOwner());
+		GetGame().GetCallqueue().CallLater(UpdateTimer, delay: 0.5 * 1000, repeat: true);
 	};
 
-	protected void UpdateTimer(Widget w) {
-		if (!w || !m_gameMode) {
+	/*sealed*/ V30_MapVoting_GameMode GetVotingGameMode() {
+		return m_VotingGameMode;
+	};
+
+	/*sealed*/ protected /*private*/ void UpdateTimer() {
+		auto w = GetRootWidget();
+
+		if (!w || !m_VotingGameMode) {
 			GetGame().GetCallqueue().Remove(UpdateTimer);
 			return;
 		};
 
-		auto time = m_gameMode.GetVotingRemainingTime();
+		auto time = m_VotingGameMode.GetVotingRemainingTime();
 		if (time == int.MAX) {
 			if (w.IsVisible()) w.SetVisible(false);
 			return;
@@ -33,16 +37,11 @@ class V30_MapVoting_RemainingTimeComponentWidgetComponent : SCR_ScriptedWidgetCo
 		TextWidget.Cast(w).SetText(string.Format("%1:%2", minutes, seconds));
 	};
 
-	//------------------------------------------------------------------------------------------------
-	override void HandlerDeattached(Widget w) {
+	override event void HandlerDeattached(Widget w) {
+		if (IsSetup()) {
+			m_VotingGameMode = null;
+			GetGame().GetCallqueue().Remove(UpdateTimer);
+		};
 		super.HandlerDeattached(w);
-
-		auto game = GetGame();
-		if (!game) return;
-
-		auto callqueue = game.GetCallqueue();
-		if (!callqueue) return;
-
-		callqueue.Remove(UpdateTimer);
 	};
 };

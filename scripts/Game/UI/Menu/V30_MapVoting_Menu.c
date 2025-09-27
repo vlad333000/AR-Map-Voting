@@ -5,15 +5,9 @@ class V30_MapVoting_Menu : ChimeraMenuBase {
 
 	protected SCR_InputButtonComponent m_VONButtonDirectComponent;
 
-	protected SCR_InputButtonComponent m_RemoveVoteButtonComponent;
-
-	protected SCR_InputButtonComponent m_EndVoteButtonComponent;
-
 	protected SCR_ChatPanel m_ChatPanel;
 
 	protected SCR_HUDMenuComponent m_HUDMenuComponent;
-
-	protected ButtonWidget m_EndVoteButton;
 
 	protected Widget m_Choices;
 
@@ -69,30 +63,11 @@ class V30_MapVoting_Menu : ChimeraMenuBase {
 		m_Choices.SetEnabled(false);
 		m_Choices.SetVisible(false);
 
-		auto choice = m_Choices.GetChildren();
-		while (choice) {
-			choice.SetEnabled(false);
-			choice.SetVisible(false);
-			choice = choice.GetSibling();
-		};
-
 		auto removeVoteButton = root.FindAnyWidget("RemoveVoteButton");
 		if (removeVoteButton && !V30_MapVoting_GameModeComponent.GetInstance().IsAllowsVoteRemove()) {
 			removeVoteButton.SetEnabled(false);
 			removeVoteButton.SetVisible(false);
 		};
-
-		m_RemoveVoteButtonComponent = SCR_InputButtonComponent.GetInputButtonComponent("RemoveVoteButton", root);
-		if (m_RemoveVoteButtonComponent) m_RemoveVoteButtonComponent.m_OnActivated.Insert(OnRemoveVote);
-
-
-		m_EndVoteButton = ButtonWidget.Cast(root.FindAnyWidget("EndVoteButton"));
-		if (m_EndVoteButton) {
-			GetGame().GetCallqueue().CallLater(updateAdminRole, repeat: true, delay: 1.0 * 1000);
-		};
-
-		m_EndVoteButtonComponent = SCR_InputButtonComponent.GetInputButtonComponent("EndVoteButton", root);
-		if (m_EndVoteButtonComponent) m_EndVoteButtonComponent.m_OnActivated.Insert(OnEndVote);
 
 		auto component = V30_MapVoting_GameModeComponent.GetInstance();
 		if (component.IsAllChoicesLoaded()) {
@@ -105,8 +80,8 @@ class V30_MapVoting_Menu : ChimeraMenuBase {
 
 	protected void OnAllChoicesLoaded(notnull V30_MapVoting_GameModeComponent component, notnull map<V30_MapVoting_ChoiceId, ref V30_MapVoting_Choice> choices) {
 		auto screenWidget = GetRootWidget().FindAnyWidget("ChoicesWrapper");
-		auto screenUiComponent = V30_MapVoting_ScreenUIComponent.GetInstance(screenWidget);
-		screenUiComponent.SetupScreen(component);
+		auto screenUiComponent = V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_ScreenUIComponent>.FindHandler(screenWidget);
+		screenUiComponent.Setup(component);
 
 		m_Choices.SetEnabled(true);
 		m_Choices.SetVisible(true);
@@ -139,31 +114,5 @@ class V30_MapVoting_Menu : ChimeraMenuBase {
 		super.OnMenuFocusLost();
 		m_Hud.RemoveFromHierarchy();
 		m_Hud = null;
-	};
-
-
-	protected void OnRemoveVote() {
-		if (!V30_MapVoting_GameModeComponent.GetInstance().IsAllowsVoteRemove()) return;
-		V30_MapVoting_PlayerControllerComponent.GetLocalInstance().ClearVote();
-	};
-
-	protected void updateAdminRole() {
-		if (!m_EndVoteButton) {
-			GetGame().GetCallqueue().Remove(updateAdminRole);
-			return;
-		};
-		if (!GetGame().GetPlayerController()) {
-			return;
-		};
-
-		auto isAdmin = SCR_Global.IsAdmin();
-		if (m_EndVoteButton.IsEnabled() != isAdmin) {
-			m_EndVoteButton.SetVisible(isAdmin);
-			m_EndVoteButton.SetEnabled(isAdmin);
-		};
-	};
-
-	protected void OnEndVote() {
-		V30_MapVoting_PlayerControllerComponent.GetLocalInstance().EndVote();
 	};
 };

@@ -1,13 +1,43 @@
 class V30_MapVoting_ScreenUIComponent : SCR_ScriptedWidgetComponent {
-    /*modded*/ void SetupScreen(notnull V30_MapVoting_GameModeComponent votingComponent);
+    protected /*private*/ V30_MapVoting_GameModeComponent m_VotingComponent;
 
-    /*modded*/ void ClearScreen();
+    /*modded*/ void Setup(notnull V30_MapVoting_GameModeComponent votingComponent) {
+        m_VotingComponent = votingComponent;
+    };
 
-    /*modded*/ V30_MapVoting_ChoiceUIComponent FindChoice(V30_MapVoting_ChoiceId choiceId);
+    void GetChoices(notnull array<V30_MapVoting_ChoiceUIComponent> handlers) {
+        auto widget = GetRootWidget();
+        V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_ChoiceUIComponent>.FindChildrenHandlers(widget, handlers, true);
+    };
 
-	/*sealed*/ static V30_MapVoting_ScreenUIComponent GetInstance(notnull Widget widget) {
-		return V30_MapVoting_ScreenUIComponent.Cast(widget.FindHandler(V30_MapVoting_ScreenUIComponent));
-	};
+    V30_MapVoting_ChoiceUIComponent GetFocusedChoice() {
+        auto focusedWidget = GetGame().GetWorkspace().GetFocusedWidget();
+        if (!focusedWidget)
+            return null;
+
+        auto focusedChoice = V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_ChoiceUIComponent>.FindHandler(focusedWidget);
+        if (!focusedChoice)
+            return null;
+
+        auto screenWidget = GetRootWidget();
+        auto parentWidget = focusedWidget.GetParent();
+        while (parentWidget) {
+            if (screenWidget == parentWidget)
+                return focusedChoice;
+            parentWidget = parentWidget.GetParent();
+        };
+        return null;
+    };
+
+    V30_MapVoting_ChoiceUIComponent GetChoice(V30_MapVoting_ChoiceId choiceId) {
+        auto handlers = new array<V30_MapVoting_ChoiceUIComponent>();
+        GetChoices(handlers);
+
+        foreach (auto handler : handlers)
+            if (choiceId == handler.GetChoiceId())
+                return handler;
+        return null;
+    };
 };
 
 class V30_MapVoting_SimpleScreenUIComponent : V30_MapVoting_ScreenUIComponent {
@@ -22,7 +52,37 @@ class V30_MapVoting_SimpleScreenUIComponent : V30_MapVoting_ScreenUIComponent {
     [Attribute("{1258C211D43EEB69}UI/layouts/V30/MapVoting/V30_MapVoting_Choice.layout", params: "layout")]
     protected /*private*/ ResourceName m_ChoiceLayout;
 
-    protected /*private*/ V30_MapVoting_GameModeComponent m_VotingComponent;
+    [Attribute("")]
+    protected /*private*/ string m_TimerWidgetName;
+
+    protected /*private*/ Widget m_TimerWidget;
+
+    [Attribute("")]
+    protected /*private*/ string m_VotedPlayerCountWidgetName;
+
+    protected /*private*/ Widget m_VotedPlayerCountWidget;
+
+    [Attribute("")]
+    protected /*private*/ string m_VotingPlayerCountWidgetName;
+
+    protected /*private*/ Widget m_VotingPlayerCountWidget;
+
+    [Attribute("")]
+    protected /*private*/ string m_VoteWidgetName;
+
+    protected /*private*/ Widget m_VoteWidget;
+
+    [Attribute("")]
+    protected /*private*/ string m_RemoveVoteWidgetName;
+
+    protected /*private*/ Widget m_RemoveVoteWidget;
+
+    [Attribute("")]
+    protected /*private*/ string m_EndVoteWidgetName;
+
+    protected /*private*/ Widget m_EndVoteWidget;
+
+    protected /*private*/ ref map<V30_MapVoting_ChoiceId, V30_MapVoting_ChoiceUIComponent> m_ChoiceUiComponents;
 
     protected /*private*/ int m_ChoiceIndex;
 
@@ -30,7 +90,14 @@ class V30_MapVoting_SimpleScreenUIComponent : V30_MapVoting_ScreenUIComponent {
         super.HandlerAttached(w);
 
         m_ContentWidget = w.FindAnyWidget(m_ContentWidgetName);
+        m_TimerWidget = w.FindAnyWidget(m_TimerWidgetName);
+        m_VotedPlayerCountWidget = w.FindAnyWidget(m_VotedPlayerCountWidgetName);
+        m_VotingPlayerCountWidget = w.FindAnyWidget(m_VotingPlayerCountWidgetName);
+        m_VoteWidget = w.FindAnyWidget(m_VoteWidgetName);
+        m_RemoveVoteWidget = w.FindAnyWidget(m_RemoveVoteWidgetName);
+        m_EndVoteWidget = w.FindAnyWidget(m_EndVoteWidgetName);
         m_ChoiceIndex = 0;
+        m_ChoiceUiComponents = new map<V30_MapVoting_ChoiceId, V30_MapVoting_ChoiceUIComponent>();
     };
 
     /*sealed*/ string GetContentWidgetName() {
@@ -45,20 +112,41 @@ class V30_MapVoting_SimpleScreenUIComponent : V30_MapVoting_ScreenUIComponent {
         return m_ChoiceLayout;
     };
 
-    /*sealed*/ override void SetupScreen(notnull V30_MapVoting_GameModeComponent votingComponent) {
-        m_VotingComponent = votingComponent;
+    /*sealed*/ V30_MapVoting_GameModeComponent GetVotingComponent() {
+        return m_VotingComponent;
+    };
+
+    /*sealed*/ override V30_MapVoting_ChoiceUIComponent GetChoice(V30_MapVoting_ChoiceId choiceId) {
+        return m_ChoiceUiComponents.Get(choiceId);
+    };
+
+    /*sealed*/ override void Setup(notnull V30_MapVoting_GameModeComponent votingComponent) {
+		super.Setup(votingComponent);
         if (!votingComponent.IsAllChoicesLoaded()) {
             votingComponent.GetOnAllChoicesLoaded().Insert(OnAllChoicesLoaded);
-            return;
+        }
+        else {
+            auto choices = votingComponent.GetAllChoices();
+            OnAllChoicesLoaded(votingComponent, choices);
         };
 
-        auto choices = votingComponent.GetAllChoices();
-        OnAllChoicesLoaded(votingComponent, choices);
+        if (m_TimerWidget)
+			V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_RemainingTimeComponentWidgetComponent>.FindHandler(m_TimerWidget).Setup(votingComponent);
+        if (m_VotedPlayerCountWidget)
+			V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_VotedPlayerCountComponent>.FindHandler(m_VotedPlayerCountWidget).Setup(votingComponent);
+        if (m_VotingPlayerCountWidget)
+			V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_VotingPlayerCountComponent>.FindHandler(m_VotingPlayerCountWidget).Setup(votingComponent);
+        if (m_VoteWidget)
+			V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_VoteButtonWidgetComponent>.FindHandler(m_VoteWidget).Setup(votingComponent);
+        if (m_RemoveVoteWidget)
+			V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_RemoveVoteButtonWidgetComponent>.FindHandler(m_RemoveVoteWidget).Setup(votingComponent);
+        if (m_EndVoteWidget)
+			V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_EndVoteButtonWidgetComponent>.FindHandler(m_EndVoteWidget).Setup(votingComponent);
     };
 
     /*sealed*/ protected /*private*/ event void OnAllChoicesLoaded(notnull V30_MapVoting_GameModeComponent votingComponent, notnull map<V30_MapVoting_ChoiceId, ref V30_MapVoting_Choice> choices) {
         foreach (auto choiceId, auto choice : choices)
-            AddChoice(choiceId);
+            m_ChoiceUiComponents.Set(choiceId, AddChoice(choiceId));
     };
 
     /*sealed*/ protected /*private*/ V30_MapVoting_ChoiceUIComponent AddChoice(V30_MapVoting_ChoiceId choiceId) {

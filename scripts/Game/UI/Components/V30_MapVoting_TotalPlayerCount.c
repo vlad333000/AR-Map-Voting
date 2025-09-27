@@ -1,20 +1,23 @@
 class V30_MapVoting_TotalPlayerCountComponent : SCR_ScriptedWidgetComponent {
-	protected TextWidget m_Root;
-
 	override void HandlerAttached(Widget w) {
 		super.HandlerAttached(w);
-		m_Root = TextWidget.Cast(w);
 		GetGame().GetCallqueue().CallLater(UpdatePlayerCount, delay: 1 * 1000, repeat: true);
 	};
 
-	protected void UpdatePlayerCount() {
-		if (!m_Root) return;
-		m_Root.SetText(GetGame().GetPlayerManager().GetPlayerCount().ToString());
+	/*sealed*/ protected /*private*/ void UpdatePlayerCount() {
+		auto playerCount = GetGame().GetPlayerManager().GetPlayerCount();
+		auto text = playerCount.ToString();
+		SetText(text);
+	};
+
+	/*sealed*/ protected /*private*/ void SetText(string text) {
+		auto widget = GetRootWidget();
+		auto textWidget = TextWidget.Cast(widget);
+		textWidget.SetText(text);
 	};
 
 	override void HandlerDeattached(Widget w) {
-		super.HandlerDeattached(w);
-		m_Root = null;
 		GetGame().GetCallqueue().Remove(UpdatePlayerCount);
-	}
-}
+		super.HandlerDeattached(w);
+	};
+};

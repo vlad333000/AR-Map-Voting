@@ -6,6 +6,12 @@ FrameWidgetClass {
   V30_MapVoting_SimpleScreenUIComponent "{66769C212F99D706}" {
    m_ContentWidgetName "Choices"
    m_ContentColumns 5
+   m_TimerWidgetName "RemainingTime"
+   m_VotedPlayerCountWidgetName "PlayersVoted"
+   m_VotingPlayerCountWidgetName "PlayersCount"
+   m_VoteWidgetName "SelectButton"
+   m_RemoveVoteWidgetName "RemoveVoteButton"
+   m_EndVoteWidgetName "EndVoteButton"
   }
  }
  {
@@ -33,6 +39,26 @@ FrameWidgetClass {
       OverlayWidgetClass "{61FCA61C1C14FC10}" : "{7D8BC3BCB56EC349}UI/layouts/V30/MapVoting/V30_MapVoting_Screen_Header.layout" {
        Name "Header"
        Slot LayoutSlot "{61FAD50D71B1B2DC}" {
+       }
+       {
+        OverlayWidgetClass "{61FA6BE60136CC54}" {
+         Prefab "{61FA6BE60136CC54}"
+         {
+          HorizontalLayoutWidgetClass "{61FA6BFFA1717DC8}" {
+           Prefab "{61FA6BFFA1717DC8}"
+           {
+            TextWidgetClass "{61FA6BF8CFFBC4BC}" {
+             Prefab "{61FA6BF8CFFBC4BC}"
+             Text "—"
+            }
+            TextWidgetClass "{61FA6BFF83D82C35}" {
+             Prefab "{61FA6BFF83D82C35}"
+             Text "—"
+            }
+           }
+          }
+         }
+        }
        }
       }
       UniformGridLayoutWidgetClass "{61FCA61C1C14FC14}" {
@@ -69,6 +95,24 @@ FrameWidgetClass {
           HorizontalAlign 2
          }
          {
+          ButtonWidgetClass "{667708D759885C06}" : "{08CF3B69CB1ACBC4}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButton.layout" {
+           Name "EndVoteButton"
+           Slot LayoutSlot "{667708D759885C69}" {
+            HorizontalAlign 3
+            VerticalAlign 3
+            Padding 0 0 20 0
+           }
+           "Is Enabled" 0
+           "Is Visible" 0
+           components {
+            SCR_InputButtonComponent "{5D346C3DD81D95CD}" {
+             m_sActionName ""
+             m_sLabel "End Vote"
+            }
+            V30_MapVoting_EndVoteButtonWidgetComponent "{667708D488DE1102}" {
+            }
+           }
+          }
           ButtonWidgetClass "{62066D7300BC21B7}" : "{08CF3B69CB1ACBC4}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButton.layout" {
            Name "RemoveVoteButton"
            Slot LayoutSlot "{62066D7300BC218B}" {
@@ -81,6 +125,8 @@ FrameWidgetClass {
              m_sActionName "MenuRefresh"
              m_sLabel "Remove Vote"
             }
+            V30_MapVoting_RemoveVoteButtonWidgetComponent "{667708D09DD3DEAF}" {
+            }
            }
           }
           ButtonWidgetClass "{61FCA61C1C14FC54}" : "{08CF3B69CB1ACBC4}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButton.layout" {
@@ -89,9 +135,10 @@ FrameWidgetClass {
            }
            components {
             SCR_InputButtonComponent "{5D346C3DD81D95CD}" {
-             m_sSoundClicked ""
              m_sActionName "MenuSelect"
              m_sLabel "#AR-Editor_ContentBrowser_ButtonSelect"
+            }
+            V30_MapVoting_VoteButtonWidgetComponent "{667708DEEAB369F0}" {
             }
            }
           }

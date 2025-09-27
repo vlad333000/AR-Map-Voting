@@ -1,7 +1,47 @@
 class V30_MapVoting_ChoiceUIComponent : SCR_ScriptedWidgetComponent {
-	/*modded*/ void SetupChoice(notnull V30_MapVoting_GameModeComponent votingComponent, V30_MapVoting_ChoiceId choiceId);
+	protected /*private*/ V30_MapVoting_GameModeComponent m_VotingComponent;
+	
+	protected /*private*/ V30_MapVoting_ChoiceId m_ChoiceId;
+	
+	override event void HandlerAttached(Widget w) {
+		super.HandlerAttached(w);
+		m_VotingComponent = null;
+		m_ChoiceId = V30_MapVoting_NoChoice;
+	};
+	
+	override event void HandlerDeattached(Widget w) {
+		m_VotingComponent = null;
+		m_ChoiceId = V30_MapVoting_NoChoice;
+		super.HandlerDeattached(w);
+	};
+	
+	/*modded*/ void SetupChoice(notnull V30_MapVoting_GameModeComponent votingComponent, V30_MapVoting_ChoiceId choiceId) {
+		m_VotingComponent = votingComponent;
+		m_ChoiceId = choiceId;
+	};
 
-	/*modded*/ void ClearChoice();
+	/*modded*/ void ClearChoice() {
+		m_VotingComponent = null;
+		m_ChoiceId = V30_MapVoting_NoChoice;
+	};
+	
+	/*sealed*/ void Vote() {
+		auto choiceId = GetChoiceId();
+		V30_MapVoting_PlayerControllerComponent.GetLocalInstance().SetVote(choiceId);
+	};
+	
+	/*sealed*/ V30_MapVoting_GameModeComponent GetVotingComponent() {
+		return m_VotingComponent;
+	};
+	
+	/*sealed*/ V30_MapVoting_ChoiceId GetChoiceId() {
+		return m_ChoiceId;
+	};
+	
+	/*sealed*/ V30_MapVoting_Choice GetChoice() {
+		auto choiceId = GetChoiceId();
+		return m_VotingComponent.GetChoice(choiceId);
+	};
 
 	/*sealed*/ static V30_MapVoting_ChoiceUIComponent GetInstance(notnull Widget w) {
 		return V30_MapVoting_ChoiceUIComponent.Cast(w.FindHandler(V30_MapVoting_ChoiceUIComponent));
@@ -23,8 +63,6 @@ class V30_MapVoting_SimpleChoiceUIComponent : V30_MapVoting_ChoiceUIComponent {
 
 	[Attribute("", desc: "Name of widget for sub-title text.", uiwidget: UIWidgets.EditBox)];
 	protected string m_sSubTitleWidgetName;
-
-	protected V30_MapVoting_ChoiceId m_ChoiceId;
 
 	protected ref V30_MapVoting_Choice m_Choice;
 
@@ -107,12 +145,8 @@ class V30_MapVoting_SimpleChoiceUIComponent : V30_MapVoting_ChoiceUIComponent {
 		m_Choice.GetOnPlayerVoteRemoved().Remove(OnChoiceVoteRemoved);
 	};
 
-	V30_MapVoting_Choice GetChoice() {
-		return m_Choice;
-	};
-
 	protected void OnClicked(SCR_ButtonBaseComponent component) {
-		V30_MapVoting_PlayerControllerComponent.GetLocalInstance().SetVote(m_ChoiceId);
+		Vote();
 	};
 
 	protected void OnChoiceVoteAdded(V30_MapVoting_Choice choice, int playerId) {
@@ -141,5 +175,26 @@ class V30_MapVoting_SimpleChoiceUIComponent : V30_MapVoting_ChoiceUIComponent {
 
 	/*sealed*/ static V30_MapVoting_SimpleChoiceUIComponent GetSimpleInstance(notnull Widget w) {
 		return V30_MapVoting_SimpleChoiceUIComponent.Cast(V30_MapVoting_ChoiceUIComponent.GetInstance(w));
+	};
+
+	override event bool OnFocus(Widget w, int x, int y) {
+		PrintFormat("[V30_MapVoting_SimpleChoiceUIComponent] OnFocus: %1, %2, %3", w, x, y);
+		return false;
+	};
+	override event bool OnFocusLost(Widget w, int x, int y) {
+		PrintFormat("[V30_MapVoting_SimpleChoiceUIComponent] OnFocusLost: %1, %2, %3", w, x, y);
+		return false;
+	};
+	override event bool OnMouseEnter(Widget w, int x, int y) {
+		PrintFormat("[V30_MapVoting_SimpleChoiceUIComponent] OnMouseEnter: %1, %2, %3", w, x, y);
+		return false;
+	};
+	override event bool OnMouseLeave(Widget w, Widget enterW, int x, int y) {
+		PrintFormat("[V30_MapVoting_SimpleChoiceUIComponent] OnMouseLeave: %1, %2, %3, %4", w, enterW, x, y);
+		return false;
+	};
+	override event bool OnController(Widget w, ControlID control, int value) {
+		PrintFormat("[V30_MapVoting_SimpleChoiceUIComponent] OnController: %1, %2, %3", w, SCR_Enum.GetEnumName(ControlID, control), value);
+		return false;
 	};
 };
