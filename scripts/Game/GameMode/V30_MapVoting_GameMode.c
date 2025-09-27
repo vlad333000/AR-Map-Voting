@@ -68,7 +68,7 @@ class V30_MapVoting_GameMode : SCR_BaseGameMode {
 	override protected void OnGameModeStart() {
 		super.OnGameModeStart();
 
-		if (IsMaster()) {
+		if (IsMaster() && m_V30_MapVoting_gameModeComponent.IsAutoStartEnabled()) {
 			m_V30_MapVoting_gameModeComponent.StartVote();
 		};
 

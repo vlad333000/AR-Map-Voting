@@ -60,6 +60,9 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 
 	protected ref ScriptInvoker m_OnPlayerVoteChanged;
 
+	[Attribute("true", desc: "Enables auto start of voting. If disabled manual call of StartVote() is required!", category: "Vote")]
+	protected bool m_AutoStartEnabled;
+
 	[Attribute("true", desc: "Set seed for randomization on vote end", category: "Vote")]
 	protected bool m_SetRandomizationSeed;
 
@@ -100,6 +103,10 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		m_Voters = new set<int>();
 		m_OnPlayerVoteAbilityChanged = new ScriptInvoker();
 		m_VotersCount = 0;
+	};
+
+	bool IsAutoStartEnabled() {
+		return m_AutoStartEnabled;
 	};
 
 	bool IsAllowsVoteRemove() {
