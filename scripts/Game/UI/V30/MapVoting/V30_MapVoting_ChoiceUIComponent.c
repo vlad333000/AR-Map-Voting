@@ -1,21 +1,21 @@
 class V30_MapVoting_ChoiceUIComponent : SCR_ScriptedWidgetComponent {
-	protected /*private*/ V30_MapVoting_GameModeComponent m_VotingComponent;
-	
+	protected /*private*/ V30_MapVoting_VotingComponent m_VotingComponent;
+
 	protected /*private*/ V30_MapVoting_ChoiceId m_ChoiceId;
-	
+
 	override event void HandlerAttached(Widget w) {
 		super.HandlerAttached(w);
 		m_VotingComponent = null;
 		m_ChoiceId = V30_MapVoting_NoChoice;
 	};
-	
+
 	override event void HandlerDeattached(Widget w) {
 		m_VotingComponent = null;
 		m_ChoiceId = V30_MapVoting_NoChoice;
 		super.HandlerDeattached(w);
 	};
-	
-	/*modded*/ void SetupChoice(notnull V30_MapVoting_GameModeComponent votingComponent, V30_MapVoting_ChoiceId choiceId) {
+
+	/*modded*/ void SetupChoice(notnull V30_MapVoting_VotingComponent votingComponent, V30_MapVoting_ChoiceId choiceId) {
 		m_VotingComponent = votingComponent;
 		m_ChoiceId = choiceId;
 	};
@@ -24,20 +24,20 @@ class V30_MapVoting_ChoiceUIComponent : SCR_ScriptedWidgetComponent {
 		m_VotingComponent = null;
 		m_ChoiceId = V30_MapVoting_NoChoice;
 	};
-	
+
 	/*sealed*/ void Vote() {
 		auto choiceId = GetChoiceId();
 		V30_MapVoting_PlayerControllerComponent.GetLocalInstance().SetVote(choiceId);
 	};
-	
-	/*sealed*/ V30_MapVoting_GameModeComponent GetVotingComponent() {
+
+	/*sealed*/ V30_MapVoting_VotingComponent GetVotingComponent() {
 		return m_VotingComponent;
 	};
-	
+
 	/*sealed*/ V30_MapVoting_ChoiceId GetChoiceId() {
 		return m_ChoiceId;
 	};
-	
+
 	/*sealed*/ V30_MapVoting_Choice GetChoice() {
 		auto choiceId = GetChoiceId();
 		return m_VotingComponent.GetChoice(choiceId);
@@ -109,7 +109,7 @@ class V30_MapVoting_SimpleChoiceUIComponent : V30_MapVoting_ChoiceUIComponent {
 		GetGame().GetCallqueue().Remove(DelayedAddOnPlayerVoteChanged);
 	};
 
-	/*sealed*/ override void SetupChoice(notnull V30_MapVoting_GameModeComponent votingComponent, V30_MapVoting_ChoiceId choiceId) {
+	/*sealed*/ override void SetupChoice(notnull V30_MapVoting_VotingComponent votingComponent, V30_MapVoting_ChoiceId choiceId) {
 		auto choice = votingComponent.GetChoice(choiceId);
 		m_ChoiceId = choiceId;
 		m_Choice = choice;

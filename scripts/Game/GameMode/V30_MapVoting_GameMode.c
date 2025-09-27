@@ -46,7 +46,7 @@ class V30_MapVoting_GameMode : SCR_BaseGameMode {
 	protected int m_TimeLeft;
 
 
-	protected V30_MapVoting_GameModeComponent m_V30_MapVoting_gameModeComponent;
+	protected V30_MapVoting_VotingComponent m_V30_MapVoting_gameModeComponent;
 
 	void V30_MapVoting_GameMode(IEntitySource src, IEntity parent) {
 		SetEventMask(EntityEvent.INIT);
@@ -54,14 +54,14 @@ class V30_MapVoting_GameMode : SCR_BaseGameMode {
 
 	override protected event void EOnInit(IEntity owner) {
 		super.EOnInit(owner);
-		m_V30_MapVoting_gameModeComponent = V30_MapVoting_GameModeComponent.Cast(FindComponent(V30_MapVoting_GameModeComponent));
+		m_V30_MapVoting_gameModeComponent = V30_MapVoting_VotingComponent.Cast(FindComponent(V30_MapVoting_VotingComponent));
 		m_V30_MapVoting_gameModeComponent.GetOnConfigLoaded().Insert(OnConfigLoaded);
 		m_V30_MapVoting_gameModeComponent.GetOnVoteStarted().Insert(OnVoteStarted);
 		m_V30_MapVoting_gameModeComponent.GetOnVoteEnded().Insert(OnVoteEnded);
 		m_V30_MapVoting_gameModeComponent.GetOnPlayerVoteChanged().Insert(OnPlayerVoteChanged);
 	};
 
-	protected V30_MapVoting_GameModeComponent V30_MapVoting_GetGameModeComponent() {
+	protected V30_MapVoting_VotingComponent V30_MapVoting_GetGameModeComponent() {
 		return m_V30_MapVoting_gameModeComponent;
 	};
 
@@ -106,7 +106,7 @@ class V30_MapVoting_GameMode : SCR_BaseGameMode {
 		m_V30_MapVoting_gameModeComponent.RunWinner();
 	};
 
-	protected event void OnConfigLoaded(V30_MapVoting_GameModeComponent votingGameModeComponent, V30_Json_object config) {
+	protected event void OnConfigLoaded(V30_MapVoting_VotingComponent votingGameModeComponent, V30_Json_object config) {
 		auto time = config.GetAt("time");
 		if (time) {
 			switch (time.GetType()) {
@@ -211,7 +211,7 @@ class V30_MapVoting_GameMode : SCR_BaseGameMode {
 		};
 	};
 
-	protected event void OnVoteStarted(V30_MapVoting_GameModeComponent votingGameModeComponent) {
+	protected event void OnVoteStarted(V30_MapVoting_VotingComponent votingGameModeComponent) {
 		if (!IsMaster()) {
 			return;
 		};
@@ -219,7 +219,7 @@ class V30_MapVoting_GameMode : SCR_BaseGameMode {
 		GetGame().GetCallqueue().CallLater(UpdateTimersTicking);
 	};
 
-	protected event void OnVoteEnded(V30_MapVoting_GameModeComponent votingGameModeComponent, V30_MapVoting_ChoiceId winnerId) {
+	protected event void OnVoteEnded(V30_MapVoting_VotingComponent votingGameModeComponent, V30_MapVoting_ChoiceId winnerId) {
 		if (IsRunning()) {
 			EndGameMode(SCR_GameModeEndData.CreateSimple(EGameOverTypes.V30_MAPVOTING_NEXT_MAP));
 		};
@@ -230,7 +230,7 @@ class V30_MapVoting_GameMode : SCR_BaseGameMode {
 		GetGame().GetCallqueue().CallLater(V30_MapVoting_StartVotedMission, m_V30_MapVoting_startVotedMissionDelay, false);
 	};
 
-	event void OnPlayerVoteChanged(V30_MapVoting_GameModeComponent votingGameModeComponent, int playerId, V30_MapVoting_ChoiceId choiceId, V30_MapVoting_ChoiceId oldChoiceId) {
+	event void OnPlayerVoteChanged(V30_MapVoting_VotingComponent votingGameModeComponent, int playerId, V30_MapVoting_ChoiceId choiceId, V30_MapVoting_ChoiceId oldChoiceId) {
 		GetGame().GetCallqueue().CallLater(UpdateTimersTicking);
 	};
 

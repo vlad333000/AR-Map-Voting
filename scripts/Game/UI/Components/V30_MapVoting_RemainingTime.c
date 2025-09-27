@@ -1,7 +1,7 @@
 class V30_MapVoting_RemainingTimeComponentWidgetComponent : V30_MapVoting_WidgetComponent {
 	protected /*private*/ V30_MapVoting_GameMode m_VotingGameMode;
 
-	/*sealed*/ override void Setup(notnull V30_MapVoting_GameModeComponent votingComponent) {
+	/*sealed*/ override void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
 		super.Setup(votingComponent);
 		m_VotingGameMode = V30_MapVoting_GameMode.Cast(votingComponent.GetOwner());
 		GetGame().GetCallqueue().CallLater(UpdateTimer, delay: 0.5 * 1000, repeat: true);

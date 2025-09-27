@@ -1,5 +1,5 @@
 class V30_MapVoting_RemoveVoteButtonWidgetComponent : V30_MapVoting_ButtonWidgetComponent {
-    /*sealed*/ override void Setup(notnull V30_MapVoting_GameModeComponent votingComponent) {
+    /*sealed*/ override void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
         super.Setup(votingComponent);
         if (!GetVotingComponent().IsAllowsVoteRemove()) {
             auto widget = GetRootWidget();

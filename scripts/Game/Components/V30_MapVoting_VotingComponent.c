@@ -20,10 +20,10 @@ enum V30_MapVoting_EGiveVoteAbility {
 [ComponentEditorProps(category: "GameScripted/Misc", description: "")]
 // TODO: Move logic to GameSystem
 
-class V30_MapVoting_GameModeComponentClass : SCR_BaseGameModeComponentClass {
+class V30_MapVoting_VotingComponentClass : SCR_BaseGameModeComponentClass {
 };
 
-class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
+class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 	protected RplComponent m_RplComponent;
 
 	protected V30_MapVoting_ChoiceId m_ChoiceId;
@@ -90,7 +90,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 
 	protected ref V30_MapVoting_Runner m_Runner;
 
-	void V30_MapVoting_GameModeComponent(IEntityComponentSource src, IEntity ent, IEntity parent) {
+	void V30_MapVoting_VotingComponent(IEntityComponentSource src, IEntity ent, IEntity parent) {
 		m_ChoiceId = 0;
 		m_AvaiableChoices = new map<V30_MapVoting_ChoiceId, ref V30_MapVoting_Choice>();
 		m_PlayerChoices = new map<int, V30_MapVoting_ChoiceId>();
@@ -160,7 +160,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 		return m_Runner;
 	};
 
-	static V30_MapVoting_GameModeComponent GetInstance() {
+	static V30_MapVoting_VotingComponent GetInstance() {
 		auto game = GetGame();
 		if (!game) {
 			return null;
@@ -171,7 +171,7 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 			return null;
 		};
 
-		return V30_MapVoting_GameModeComponent.Cast(gameMode.FindComponent(V30_MapVoting_GameModeComponent));
+		return V30_MapVoting_VotingComponent.Cast(gameMode.FindComponent(V30_MapVoting_VotingComponent));
 	};
 
 	override protected bool RplSave(ScriptBitWriter writer) {

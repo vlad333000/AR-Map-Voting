@@ -1,7 +1,7 @@
 SCR_BaseGameMode {
  ID "56B2B479C6B96951"
  components {
-  V30_MapVoting_GameModeComponent "{6676861EB6D9B781}" {
+  V30_MapVoting_VotingComponent "{6676861EB6D9B781}" {
   }
  }
 }

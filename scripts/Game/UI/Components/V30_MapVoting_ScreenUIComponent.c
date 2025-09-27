@@ -1,7 +1,7 @@
 class V30_MapVoting_ScreenUIComponent : SCR_ScriptedWidgetComponent {
-    protected /*private*/ V30_MapVoting_GameModeComponent m_VotingComponent;
+    protected /*private*/ V30_MapVoting_VotingComponent m_VotingComponent;
 
-    /*modded*/ void Setup(notnull V30_MapVoting_GameModeComponent votingComponent) {
+    /*modded*/ void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
         m_VotingComponent = votingComponent;
     };
 
@@ -112,7 +112,7 @@ class V30_MapVoting_SimpleScreenUIComponent : V30_MapVoting_ScreenUIComponent {
         return m_ChoiceLayout;
     };
 
-    /*sealed*/ V30_MapVoting_GameModeComponent GetVotingComponent() {
+    /*sealed*/ V30_MapVoting_VotingComponent GetVotingComponent() {
         return m_VotingComponent;
     };
 
@@ -120,7 +120,7 @@ class V30_MapVoting_SimpleScreenUIComponent : V30_MapVoting_ScreenUIComponent {
         return m_ChoiceUiComponents.Get(choiceId);
     };
 
-    /*sealed*/ override void Setup(notnull V30_MapVoting_GameModeComponent votingComponent) {
+    /*sealed*/ override void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
 		super.Setup(votingComponent);
         if (!votingComponent.IsAllChoicesLoaded()) {
             votingComponent.GetOnAllChoicesLoaded().Insert(OnAllChoicesLoaded);
@@ -144,7 +144,7 @@ class V30_MapVoting_SimpleScreenUIComponent : V30_MapVoting_ScreenUIComponent {
 			V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_EndVoteButtonWidgetComponent>.FindHandler(m_EndVoteWidget).Setup(votingComponent);
     };
 
-    /*sealed*/ protected /*private*/ event void OnAllChoicesLoaded(notnull V30_MapVoting_GameModeComponent votingComponent, notnull map<V30_MapVoting_ChoiceId, ref V30_MapVoting_Choice> choices) {
+    /*sealed*/ protected /*private*/ event void OnAllChoicesLoaded(notnull V30_MapVoting_VotingComponent votingComponent, notnull map<V30_MapVoting_ChoiceId, ref V30_MapVoting_Choice> choices) {
         foreach (auto choiceId, auto choice : choices)
             m_ChoiceUiComponents.Set(choiceId, AddChoice(choiceId));
     };

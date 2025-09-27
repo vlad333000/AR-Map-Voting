@@ -1,5 +1,5 @@
 class V30_MapVoting_EndVoteButtonWidgetComponent : V30_MapVoting_ButtonWidgetComponent {
-    /*sealed*/ override void Setup(notnull V30_MapVoting_GameModeComponent votingComponent) {
+    /*sealed*/ override void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
 		super.Setup(votingComponent);
 		GetGame().GetCallqueue().CallLater(UpdateButtonAllowance, repeat: true, delay: 0.5 * 1000);
 	};

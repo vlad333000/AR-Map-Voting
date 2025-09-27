@@ -1,7 +1,7 @@
 class V30_MapVoting_WidgetComponent : SCR_ScriptedWidgetComponent {
-    protected /*private*/ V30_MapVoting_GameModeComponent m_VotingComponent;
+    protected /*private*/ V30_MapVoting_VotingComponent m_VotingComponent;
 
-    /*modded*/ void Setup(notnull V30_MapVoting_GameModeComponent votingComponent) {
+    /*modded*/ void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
         m_VotingComponent = votingComponent;
     };
 
@@ -9,7 +9,7 @@ class V30_MapVoting_WidgetComponent : SCR_ScriptedWidgetComponent {
         return GetVotingComponent();
     };
 
-    /*sealed*/ V30_MapVoting_GameModeComponent GetVotingComponent() {
+    /*sealed*/ V30_MapVoting_VotingComponent GetVotingComponent() {
         return m_VotingComponent;
     };
 

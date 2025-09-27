@@ -1,6 +1,6 @@
 class V30_MapVoting_GameOverScreenContentUIComponent : SCR_GameOverScreenContentUIComponent {
 	override void InitContent(SCR_GameOverScreenUIContentData endScreenUIContent) {
-		auto preview = V30_MapVoting_GameModeComponent.GetInstance().GetWinnerPreview();
+		auto preview = V30_MapVoting_VotingComponent.GetInstance().GetWinnerPreview();
 		endScreenUIContent.m_sImageTexture = preview.GetImage();
 		endScreenUIContent.m_sTitle = preview.GetTitle();
 		endScreenUIContent.m_sSubtitle = preview.GetSubTitle();

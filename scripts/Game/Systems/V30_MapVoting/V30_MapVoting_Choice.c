@@ -163,7 +163,7 @@ class V30_MapVoting_ChoiceWrapper : V30_MapVoting_Choice {
 	V30_MapVoting_ChoiceId GetChoiceId();
 
 	V30_MapVoting_Choice GetChoice() {
-		return V30_MapVoting_GameModeComponent.GetInstance().GetChoice(GetChoiceId());
+		return V30_MapVoting_VotingComponent.GetInstance().GetChoice(GetChoiceId());
 	};
 
 	override V30_MapVoting_PreviewData GetPreviewData() {
@@ -196,12 +196,12 @@ class V30_MapVoting_ChoiceRandom : V30_MapVoting_ChoiceWrapper {
 		super.OnVoteEnd();
 
 		auto ids = new array<V30_MapVoting_ChoiceId>();
-		foreach (V30_MapVoting_ChoiceId choiceId, V30_MapVoting_Choice choice : V30_MapVoting_GameModeComponent.GetInstance().GetAllChoices()) if (!V30_MapVoting_ChoiceWrapper.Cast(choice)) ids.Insert(choiceId);
+		foreach (V30_MapVoting_ChoiceId choiceId, V30_MapVoting_Choice choice : V30_MapVoting_VotingComponent.GetInstance().GetAllChoices()) if (!V30_MapVoting_ChoiceWrapper.Cast(choice)) ids.Insert(choiceId);
 		PrintFormat("	Candidates:");
-		foreach (V30_MapVoting_ChoiceId choiceId : ids) PrintFormat("		[%1] = %2", choiceId, V30_MapVoting_GameModeComponent.GetInstance().GetChoice(choiceId));
+		foreach (V30_MapVoting_ChoiceId choiceId : ids) PrintFormat("		[%1] = %2", choiceId, V30_MapVoting_VotingComponent.GetInstance().GetChoice(choiceId));
 
 		m_SelectedChoiceId = ids.GetRandomElement();
-		PrintFormat("	Selected: [%1] = %2",  m_SelectedChoiceId, V30_MapVoting_GameModeComponent.GetInstance().GetChoice(m_SelectedChoiceId));
+		PrintFormat("	Selected: [%1] = %2",  m_SelectedChoiceId, V30_MapVoting_VotingComponent.GetInstance().GetChoice(m_SelectedChoiceId));
 	};
 
 	override V30_MapVoting_PreviewData GetPreviewData() {

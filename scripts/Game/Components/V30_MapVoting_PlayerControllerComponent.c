@@ -41,7 +41,7 @@ class V30_MapVoting_PlayerControllerComponent : ScriptComponent {
 	[RplRpc(channel: RplChannel.Reliable, rcver: RplRcver.Server)]
 	protected void RpcAsk_EndVote() {
 		if (!SCR_Global.IsAdmin(PlayerController.Cast(GetOwner()).GetPlayerId())) return;
-		V30_MapVoting_GameModeComponent.GetInstance().EndVote();
+		V30_MapVoting_VotingComponent.GetInstance().EndVote();
 	};
 
 	void ClearVote() {
@@ -73,7 +73,7 @@ class V30_MapVoting_PlayerControllerComponent : ScriptComponent {
 	[RplRpc(channel: RplChannel.Reliable, rcver: RplRcver.Server)]
 	protected void RpcAsk_SendVote(V30_MapVoting_ChoiceId choiceId) {
 		if (!HasVoteAbility()) return;
-		V30_MapVoting_GameModeComponent.GetInstance().SetPlayerChoice(PlayerController.Cast(GetOwner()).GetPlayerId(), choiceId);
+		V30_MapVoting_VotingComponent.GetInstance().SetPlayerChoice(PlayerController.Cast(GetOwner()).GetPlayerId(), choiceId);
 	};
 
 	static V30_MapVoting_PlayerControllerComponent GetLocalInstance() {
