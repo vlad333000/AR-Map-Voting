@@ -63,6 +63,9 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 	[Attribute("true", desc: "Enables auto start of voting. If disabled manual call of StartVote() is required!", category: "Vote")]
 	protected bool m_AutoStartEnabled;
 
+	[Attribute("{06B7FB89806D9685}UI/layouts/V30/MapVoting/V30_MapVoting_Screen_Base.layout", desc: "Resource name for the vote screen layout.", category: "Vote", params: "layout")]
+	protected ResourceName m_ScreenLayout;
+
 	[Attribute("true", desc: "Set seed for randomization on vote end", category: "Vote")]
 	protected bool m_SetRandomizationSeed;
 
@@ -107,6 +110,10 @@ class V30_MapVoting_GameModeComponent : SCR_BaseGameModeComponent {
 
 	bool IsAutoStartEnabled() {
 		return m_AutoStartEnabled;
+	};
+
+	ResourceName GetScreenLayout() {
+		return m_ScreenLayout;
 	};
 
 	bool IsAllowsVoteRemove() {
