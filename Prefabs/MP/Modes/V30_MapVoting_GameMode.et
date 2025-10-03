@@ -6,6 +6,8 @@ V30_MapVoting_GameMode : "{0F307326459A1395}Prefabs/MP/Modes/GameMode_Base.et" {
     m_sForcedFaction "CIV"
    }
   }
+  V30_MapVoting_ScenarioVotingComponent "{6676861EB6D9B781}" {
+  }
   V30_MapVoting_GameOverScreenManagerComponent "{56DEC646298AD219}" {
    m_GameOverScreenConfig SCR_GameOverScreenConfig "{56DEC6462FFDD82D}" {
     m_aGameOverScreens {
