@@ -84,6 +84,9 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 	[Attribute("0", desc: "Who can vote (NONE for full scripted-base).", uiwidget: UIWidgets.ComboBox, category: "Vote", enums: ParamEnumArray.FromEnum(V30_MapVoting_EGiveVoteAbility))]
 	protected V30_MapVoting_EGiveVoteAbility m_GiveVoteAbility;
 
+	[Attribute("$profile:V30/MapVoting/config.json")]
+	protected string m_ConfigFilePath;
+
 	protected ref set<int> m_Voters;
 
 	protected int m_VotersCount;
@@ -357,12 +360,12 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 	protected void LoadConfig() {
 		PrintFormat("%1.LoadConfig()", this);
 
-		if (!FileIO.FileExists("$profile:V30/MapVoting/config.json")) {
-			PrintFormat("	Missing config file, it should be at '$profile:V30/MapVoting/config.json'.", level: LogLevel.ERROR);
+		if (!FileIO.FileExists(m_ConfigFilePath)) {
+			PrintFormat("	Missing config file, it should be at '%1'.", m_ConfigFilePath, level: LogLevel.ERROR);
 			return;
 		};
 
-		auto jsonConfigDeserializer = V30_Json_FileDeserializer("$profile:V30/MapVoting/config.json");
+		auto jsonConfigDeserializer = V30_Json_FileDeserializer(m_ConfigFilePath);
 		if (!jsonConfigDeserializer) {
 			PrintFormat("	Failed to create deserializer config.", level: LogLevel.ERROR);
 			return;
