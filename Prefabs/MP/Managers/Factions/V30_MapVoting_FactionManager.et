@@ -1,15 +1,7 @@
 SCR_FactionManager : "{A242612865F2A48E}Prefabs/MP/Managers/Factions/FactionManager_Base.et" {
  ID "56B2B4776E6E4499"
  Factions {
-  SCR_Faction "{607AA5C7A94496DA}" : "{3FA20B01D950D31F}Configs/Factions/CIV.conf" {
-   UIInfo SCR_FactionUIInfo "{56B49118D8D0A9C5}" {
-    Name "#AR-V30_MapVoting_FactionName"
-    Description "#AR-V30_MapVoting_FactionDescription"
-    m_sNameUpper "#AR-V30_MapVoting_FactionName_UC"
-   }
-   m_bIsPlayable 1
-   m_aFriendlyFactionsIds {
-   }
+  SCR_Faction "{6687295FCE2803D1}" : "{5F24ED2E8754F077}Configs/Factions/Electorate.conf" {
   }
  }
  m_bCanChangeFactionsPlayable 0
