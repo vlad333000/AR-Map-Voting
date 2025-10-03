@@ -176,6 +176,10 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 
 	override protected bool RplSave(ScriptBitWriter writer) {
 		//PrintFormat("%1.RplSave(%2)", this, writer);
+
+		if (!RplSaveConfig(writer))
+			return false;
+
 		writer.WriteInt(m_VoteState);
 		//PrintFormat("	m_VoteState = %1", m_VoteState);
 		if (IsVoteStarted() || IsVoteEnded()) {
@@ -192,6 +196,10 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 		};
 		return true;
 	};
+
+    protected bool RplSaveConfig(ScriptBitWriter writer) {
+		return true;
+    };
 
 	protected void RplSave_Choices(ScriptBitWriter writer) {
 		auto n = m_AvaiableChoices.Count();
@@ -230,6 +238,10 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 
 	override protected bool RplLoad(ScriptBitReader reader) {
 		PrintFormat("%1.RplLoad(%2)", this, reader);
+
+		if (!RplLoadConfig(reader))
+			return false;
+
 		reader.ReadInt(m_VoteState);
 		PrintFormat("	m_VoteState = %1", m_VoteState);
 		if (IsVoteStarted() || IsVoteEnded()) {
@@ -259,6 +271,10 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 
 		return true;
 	};
+
+    protected bool RplLoadConfig(ScriptBitReader reader) {
+		return true;
+    };
 
 	protected void RplLoad_Choices(ScriptBitReader reader) {
 		int n;
@@ -312,6 +328,10 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 		string subTitle;
 		reader.ReadString(subTitle);
 		choicePreviewData = V30_MapVoting_PreviewData.Create(resourceName, title, subTitle);
+	};
+
+	protected void SyncConfig() {
+		return;
 	};
 
 	protected event void OnVoteStateUpdated() {
@@ -741,6 +761,7 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 		};
 
 		LoadConfig();
+		SyncConfig();
 
 		SendAllChoices();
 
