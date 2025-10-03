@@ -569,6 +569,10 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 							m_Runner = new V30_MapVoting_DummyRunner();
 							break;
 						};
+						case "SimpleShutdown": {
+							m_Runner = new V30_MapVoting_SimpleShutdownRunner();
+							break;
+						};
 						default : {
 							PrintFormat("    Option 'runMethod' has unsupported value!", level: LogLevel.ERROR);
 							break;
