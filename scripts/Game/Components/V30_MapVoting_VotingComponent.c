@@ -87,6 +87,9 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 	[Attribute("$profile:V30/MapVoting/config.json")]
 	protected string m_ConfigFilePath;
 
+	[Attribute("$profile:V30/MapVoting/last.json")]
+	protected string m_PreviousChoicesFilePath;
+
 	protected ref set<int> m_Voters;
 
 	protected int m_VotersCount;
@@ -447,7 +450,7 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 			//};
 
 			if (skipRepeats > 0) {
-				auto path = "$profile:V30/MapVoting/last.json";
+				auto path = m_PreviousChoicesFilePath;
 				if (FileIO.FileExists(path)) {
 					auto valueDeserializer = V30_Json_FileDeserializer(path);
 					auto value = valueDeserializer.Deserialize();
@@ -841,7 +844,7 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 		if (m_RememberPreviousChoices) {
 			auto choiceId = m_WinnerId;
 			while (V30_MapVoting_ChoiceWrapper.Cast(GetChoice(choiceId))) choiceId = V30_MapVoting_ChoiceWrapper.Cast(GetChoice(choiceId)).GetChoiceId();
-			auto serializer = V30_Json_FileSerializer("$profile:V30/MapVoting/last.json");
+			auto serializer = V30_Json_FileSerializer(m_PreviousChoicesFilePath);
 			serializer.Serialize(V30_Json_int(choiceId));
 			serializer.Close();
 		};
