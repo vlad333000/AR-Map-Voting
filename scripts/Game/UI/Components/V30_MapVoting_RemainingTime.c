@@ -1,47 +1,86 @@
 class V30_MapVoting_RemainingTimeComponentWidgetComponent : V30_MapVoting_WidgetComponent {
-	protected /*private*/ V30_MapVoting_GameMode m_VotingGameMode;
-
-	/*sealed*/ override void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
+	override void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
 		super.Setup(votingComponent);
-		m_VotingGameMode = V30_MapVoting_GameMode.Cast(votingComponent.GetOwner());
-		GetGame().GetCallqueue().CallLater(UpdateTimer, delay: 0.5 * 1000, repeat: true);
-	};
 
-	/*sealed*/ V30_MapVoting_GameMode GetVotingGameMode() {
-		return m_VotingGameMode;
-	};
+		auto scenarioVotingComponent = V30_MapVoting_ScenarioVotingComponent.Cast(votingComponent);
+		scenarioVotingComponent.GetOnTimeLimitStarted().Insert(OnTimeLimitStarted);
+		scenarioVotingComponent.GetOnTimeLimitStopped().Insert(OnTimeLimitStopped);
+		scenarioVotingComponent.GetOnFastTimeLimitStarted().Insert(OnFastTimeLimitStarted);
+		scenarioVotingComponent.GetOnFastTimeLimitStopped().Insert(OnFastTimeLimitStopped);
+		scenarioVotingComponent.GetOnTimeTicking().Insert(OnTimeTicking);
 
-	/*sealed*/ protected /*private*/ void UpdateTimer() {
-		auto w = GetRootWidget();
+		GetRootWidget().SetVisible(false);
 
-		if (!w || !m_VotingGameMode) {
-			GetGame().GetCallqueue().Remove(UpdateTimer);
-			return;
-		};
-
-		auto time = m_VotingGameMode.GetVotingRemainingTime();
-		if (time == int.MAX) {
-			if (w.IsVisible()) w.SetVisible(false);
-			return;
-		}
-
-		if (!w.IsVisible()) w.SetVisible(true);
-
-		time /= 1000;
-		auto minutes = (time / 60).ToString();
-		auto seconds = (time % 60).ToString();
-
-		if (minutes.Length() == 1) minutes = "0" + minutes;
-		if (seconds.Length() == 1) seconds = "0" + seconds;
-
-		TextWidget.Cast(w).SetText(string.Format("%1:%2", minutes, seconds));
+		if (scenarioVotingComponent.IsTimeLimitTicking())
+			OnTimeLimitStarted(scenarioVotingComponent);
+		if (scenarioVotingComponent.IsFastTimeLimitTicking())
+			OnFastTimeLimitStarted(scenarioVotingComponent);
 	};
 
 	override event void HandlerDeattached(Widget w) {
 		if (IsSetup()) {
-			m_VotingGameMode = null;
-			GetGame().GetCallqueue().Remove(UpdateTimer);
+			auto scenarioVotingComponent = GetScenarioVotingComponent();
+			scenarioVotingComponent.GetOnTimeLimitStarted().Remove(OnTimeLimitStarted);
+			scenarioVotingComponent.GetOnTimeLimitStopped().Remove(OnTimeLimitStopped);
+			scenarioVotingComponent.GetOnFastTimeLimitStarted().Remove(OnFastTimeLimitStarted);
+			scenarioVotingComponent.GetOnFastTimeLimitStopped().Remove(OnFastTimeLimitStopped);
+			scenarioVotingComponent.GetOnTimeTicking().Remove(OnTimeTicking);
 		};
 		super.HandlerDeattached(w);
+	};
+
+
+
+	protected /*private*/ void OnTimeLimitStarted(notnull V30_MapVoting_ScenarioVotingComponent votingComponent) {
+		StartTimer();
+	};
+
+	protected /*private*/ void OnTimeLimitStopped(notnull V30_MapVoting_ScenarioVotingComponent votingComponent) {
+		if (!votingComponent.IsTimeTicking())
+			StopTimer();
+	};
+
+	protected /*private*/ void OnFastTimeLimitStarted(notnull V30_MapVoting_ScenarioVotingComponent votingComponent) {
+		StartTimer();
+	};
+
+	protected /*private*/ void OnFastTimeLimitStopped(notnull V30_MapVoting_ScenarioVotingComponent votingComponent) {
+		if (!votingComponent.IsTimeTicking())
+			StopTimer();
+	};
+
+
+
+	protected /*private*/ void StartTimer() {
+		GetRootWidget().SetVisible(true);
+	};
+
+	protected /*private*/ void StopTimer() {
+		GetRootWidget().SetVisible(false);
+	};
+
+	protected /*private*/ void OnTimeTicking(notnull V30_MapVoting_ScenarioVotingComponent votingComponent) {
+		auto remainingTime = votingComponent.GetRemainingTime();
+
+		auto time = remainingTime / 1000;
+		auto minutes = (time / 60).ToString();
+		auto seconds = (time % 60).ToString();
+		if (minutes.Length() == 1)
+			minutes = "0" + minutes;
+		if (seconds.Length() == 1)
+			seconds = "0" + seconds;
+
+		auto widget = GetRootWidget();
+		GetRootTextWidget().SetText(string.Format("%1:%2", minutes, seconds));
+	};
+
+
+
+	/*sealed*/ TextWidget GetRootTextWidget() {
+		return TextWidget.Cast(GetRootWidget());
+	};
+
+	/*sealed*/ V30_MapVoting_ScenarioVotingComponent GetScenarioVotingComponent() {
+		return V30_MapVoting_ScenarioVotingComponent.Cast(GetVotingComponent());
 	};
 };

@@ -144,9 +144,8 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 	};
 
 	void RunWinner() {
-		if (m_RplComponent.Role() != RplRole.Authority) {
+		if (!IsAuthority())
 			return;
-		};
 
 		auto runner = GetRunner();
 		auto winnerId = GetWinnerChoice();
@@ -751,9 +750,8 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 	};
 
 	void StartVote() {
-		if (m_RplComponent.Role() != RplRole.Authority) {
+		if (!IsAuthority())
 			return;
-		};
 
 		if (m_VoteState != V30_MapVoting_EVoteState.NOT_STARTED) {
 			return;
@@ -819,7 +817,7 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 	void EndVote() {
 		PrintFormat("%1.EndVote()", this);
 
-		if (m_RplComponent.Role() != RplRole.Authority) {
+		if (!IsAuthority()) {
 			PrintFormat("	Called on Non-Authority.", level: LogLevel.ERROR);
 			return;
 		};
@@ -912,7 +910,7 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 
 
 	void SetPlayerChoice(int playerId, V30_MapVoting_ChoiceId choiceId) {
-		if (m_RplComponent.Role() != RplRole.Authority) {
+		if (!IsAuthority()) {
 			PrintFormat("%1.SetPlayerChoice: Called on non-authority.", level: LogLevel.ERROR);
 			return;
 		};
@@ -1017,14 +1015,14 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 
 	// --------- Vote Ability --------- //
 	void SetPlayerVoteAbility(int playerId, bool voteAbility) {
-		if (m_RplComponent.Role() != RplRole.Authority) return;
+		if (!IsAuthority()) return;
 		if (!GetGame().GetPlayerManager().IsPlayerConnected(playerId)) return;
 		if (voteAbility) GivePlayerVoteAbility(playerId);
 		else TakePlayerVoterAbility(playerId);
 	};
 
 	void GivePlayerVoteAbility(int playerId) {
-		if (m_RplComponent.Role() != RplRole.Authority) return;
+		if (!IsAuthority()) return;
 		if (!GetGame().GetPlayerManager().IsPlayerConnected(playerId)) return;
 		if (IsPlayerHasVoteAbility(playerId)) return;
 		m_Voters.Insert(playerId);
@@ -1035,7 +1033,7 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 	};
 
 	void TakePlayerVoterAbility(int playerId) {
-		if (m_RplComponent.Role() != RplRole.Authority) return;
+		if (!IsAuthority()) return;
 		if (!GetGame().GetPlayerManager().IsPlayerConnected(playerId)) return;
 		if (!IsPlayerHasVoteAbility(playerId)) return;
 		m_Voters.RemoveItem(playerId);
@@ -1075,4 +1073,12 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 	V30_MapVoting_PlayerControllerComponent GetPlayerControllerComponent(int playerId) {
 		return V30_MapVoting_PlayerControllerComponent.GetInstance(playerId);
 	};
+
+    protected /*private*/ bool IsAuthority() {
+        if (!m_RplComponent)
+            return true;
+
+        auto rplRole = m_RplComponent.Role();
+        return rplRole == RplRole.Authority;
+    };
 };
