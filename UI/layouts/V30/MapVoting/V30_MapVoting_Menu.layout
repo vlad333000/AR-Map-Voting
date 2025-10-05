@@ -21,6 +21,53 @@ FrameWidgetClass {
    Slot FrameWidgetSlot "{552C9A0A8526D2AD}" {
    }
   }
+  OverlayWidgetClass "{6688B26E5354A09A}" {
+   Name "Waiting"
+   Slot FrameWidgetSlot "{6688B26E52483296}" {
+    Anchor 0.5 0.5 0.5 0.5
+    PositionX 0
+    OffsetLeft 0
+    PositionY -48
+    OffsetTop -48
+    SizeX 0
+    OffsetRight 0
+    SizeY 0
+    OffsetBottom 48
+    Alignment 0.5 0
+    SizeToContent 1
+   }
+   components {
+    V30_MapVoting_WaitingWidgetComponent "{668A81F94659FBB8}" {
+    }
+   }
+   {
+    VerticalLayoutWidgetClass "{6688B26F75F688A7}" {
+     Name "VerticalLayout0"
+     Slot OverlayWidgetSlot "{6688B26F75F68889}" {
+      HorizontalAlign 3
+      VerticalAlign 3
+     }
+     {
+      TextWidgetClass "{6688B26FFDB5EBD0}" : "{6F198A46CBC549CE}UI/layouts/WidgetLibrary/TextWidgets/Text_Heading1.layout" {
+       Name "Title"
+       Slot LayoutSlot "{668A81F9B20D66CC}" {
+        HorizontalAlign 1
+        VerticalAlign 0
+       }
+       Text "#AR-V30_MapVoting_MenuWaitingTitle"
+       "Horizontal Alignment" Center
+      }
+      TextWidgetClass "{6688B26C2C2FA322}" : "{3132F64DB8B4CB44}UI/layouts/WidgetLibrary/TextWidgets/Text_Body.layout" {
+       Name "Message"
+       Slot LayoutSlot "{6688B26C2C2FA31D}" {
+        HorizontalAlign 1
+       }
+       Text ""
+      }
+     }
+    }
+   }
+  }
   OverlayWidgetClass "{61FAD507983CD5B6}" {
    Name "Content"
    Slot FrameWidgetSlot "{61FAD507983CD582}" {

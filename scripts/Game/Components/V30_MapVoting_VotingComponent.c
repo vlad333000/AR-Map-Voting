@@ -968,7 +968,7 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 		super.OnPlayerConnected(playerId);
 		Rpc(RplDo_OnPlayerConnected, playerId);
 		RplDo_OnPlayerConnected(playerId);
-		if (IsVoteStarted() && m_GiveVoteAbility == V30_MapVoting_EGiveVoteAbility.ALL) GivePlayerVoteAbility(playerId);
+		if (m_GiveVoteAbility == V30_MapVoting_EGiveVoteAbility.ALL) GivePlayerVoteAbility(playerId);
 	};
 
 	[RplRpc(channel: RplChannel.Reliable, rcver: RplRcver.Broadcast)]
@@ -1055,6 +1055,14 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 
 	int CountPlayersWithVoteAbility() {
 		return m_VotersCount; //m_Voters.Count();
+	};
+
+	void GetPlayersWithVoteAbility(notnull array<int> playersWithVoteAbility) {
+		auto players = new array<int>();
+		GetGame().GetPlayerManager().GetPlayers(players);
+		foreach (auto player : players)
+			if (IsPlayerHasVoteAbility(player))
+				playersWithVoteAbility.Insert(player);
 	};
 
 	protected void OnPlayerVoteAbilityChanged(int playerId, bool hasVoteAbility) {

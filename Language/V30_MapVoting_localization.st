@@ -1,12 +1,6 @@
 StringTable {
  ItemClassName "CustomStringTableItem"
  Items {
-  CustomStringTableItem "{62045977E7D98675}" {
-   Id "AR-V30_MapVoting_FactionDescription"
-   Modified 1644452371
-   Author "Vlad333000"
-   LastChanged "Vlad333000"
-  }
   CustomStringTableItem "{62045977BA65F50D}" {
    Id "AR-V30_MapVoting_FactionName"
    Target_en_us "Electorate"
@@ -52,6 +46,14 @@ StringTable {
    Target_en_us "VOTE!"
    Target_ru_ru "ГОЛОСОВАНИЕ!"
    Modified 1644446218
+   Author "Vlad333000"
+   LastChanged "Vlad333000"
+  }
+  CustomStringTableItem "{6688B26F3FC0AA12}" {
+   Id "AR-V30_MapVoting_MenuWaitingTitle"
+   Target_en_us "Waiting for the voting to begin"
+   Target_ru_ru "Ожидание начала голосования"
+   Modified 1720235383
    Author "Vlad333000"
    LastChanged "Vlad333000"
   }
@@ -103,6 +105,22 @@ StringTable {
    Target_en_us "Random"
    Target_ru_ru "Случаный"
    Modified 1644446200
+   Author "Vlad333000"
+   LastChanged "Vlad333000"
+  }
+  CustomStringTableItem "{668AD0F9F308692A}" {
+   Id "AR-V30_MapVoting_SimplePreGame_WaitingDelay"
+   Target_en_us "Starting vote in %1"
+   Target_ru_ru "Начало голосования через %1"
+   Modified 1720375149
+   Author "Vlad333000"
+   LastChanged "Vlad333000"
+  }
+  CustomStringTableItem "{62045977E7D98675}" {
+   Id "AR-V30_MapVoting_SimplePreGame_WaitingPlayers"
+   Target_en_us "Waiting for %1 more player(s)"
+   Target_ru_ru "Ожидание еще %1 игрока(-ов)"
+   Modified 1720372719
    Author "Vlad333000"
    LastChanged "Vlad333000"
   }

@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{CC897243C4BADFE1}Prefabs/Characters/Core/V30_MapVoting_DefaultPlayerControllerMP.et"
+ Name "{225E51284CC95CFA}Prefabs/Characters/Core/DefaultPlayerControllerMP.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }

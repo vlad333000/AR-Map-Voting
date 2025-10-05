@@ -8,17 +8,31 @@ class V30_MapVoting_GameMode : SCR_BaseGameMode {
 	[Attribute(desc: "Time between vote is ended and starting of loading next scenario (in ms)", defvalue: "14000", params: "0 inf")]
 	protected int m_V30_MapVoting_startVotedMissionDelay;
 
+	protected V30_MapVoting_Menu m_Menu;
 
 	protected V30_MapVoting_ScenarioVotingComponent m_V30_MapVoting_gameModeComponent;
 
 	void V30_MapVoting_GameMode(IEntitySource src, IEntity parent) {
+		if (SCR_Global.IsEditMode())
+			return;
+
 		SetEventMask(EntityEvent.INIT);
 	};
 
 	override protected event void EOnInit(IEntity owner) {
 		super.EOnInit(owner);
+
+		if (SCR_Global.IsEditMode())
+			return;
+
 		m_V30_MapVoting_gameModeComponent = V30_MapVoting_ScenarioVotingComponent.Cast(FindComponent(V30_MapVoting_ScenarioVotingComponent));
 		m_V30_MapVoting_gameModeComponent.GetOnVoteEnded().Insert(OnVoteEnded);
+
+		if (System.IsConsoleApp())
+			return;
+
+		m_Menu = V30_MapVoting_Menu.Cast(GetGame().GetMenuManager().OpenMenu(ChimeraMenuPreset.V30_MapVoting_Menu));
+		m_Menu.Setup(m_V30_MapVoting_gameModeComponent);
 	};
 
 	protected V30_MapVoting_ScenarioVotingComponent V30_MapVoting_GetGameModeComponent() {
@@ -30,10 +44,6 @@ class V30_MapVoting_GameMode : SCR_BaseGameMode {
 
 		if (IsMaster() && m_V30_MapVoting_gameModeComponent.IsAutoStartEnabled()) {
 			m_V30_MapVoting_gameModeComponent.StartVote();
-		};
-
-		if (!System.IsConsoleApp()) {
-			GetGame().GetMenuManager().OpenMenu(ChimeraMenuPreset.V30_MapVoting_Menu);
 		};
 	};
 

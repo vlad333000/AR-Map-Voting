@@ -3,5 +3,10 @@ SCR_BaseGameMode {
  components {
   V30_MapVoting_PostGameVotingComponent "{6676861EB6D9B781}" {
   }
+  V30_MapVoting_SimplePreGameGameModeStateComponent "{668A81D95670F0CA}" {
+  }
+  V30_MapVoting_WorldTimestampSyncComponent "{668A81D90A6D323F}" {
+   m_SyncInterval 2500
+  }
  }
 }

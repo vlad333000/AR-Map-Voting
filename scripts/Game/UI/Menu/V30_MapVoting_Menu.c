@@ -1,4 +1,8 @@
 class V30_MapVoting_Menu : ChimeraMenuBase {
+	protected V30_MapVoting_VotingComponent m_VotingComponent;
+
+	protected V30_MapVoting_MenuUIComponent m_MenuUIComponent;
+
 	protected SCR_InputButtonComponent m_ChatButtonComponent;
 
 	protected SCR_InputButtonComponent m_PauseButtonComponent;
@@ -59,23 +63,23 @@ class V30_MapVoting_Menu : ChimeraMenuBase {
 
 		m_HUDMenuComponent = SCR_HUDMenuComponent.Cast(SCR_HUDMenuComponent.GetComponent(SCR_HUDMenuComponent, "HUD", root));
 
+		m_MenuUIComponent = V30_MapVoting_MenuUIComponent.Cast(root.FindHandler(V30_MapVoting_MenuUIComponent));
+
 		m_Choices = root.FindAnyWidget("Choices");
 		m_Choices.SetEnabled(false);
 		m_Choices.SetVisible(false);
+	};
 
-		auto removeVoteButton = root.FindAnyWidget("RemoveVoteButton");
-		if (removeVoteButton && !V30_MapVoting_VotingComponent.GetInstance().IsAllowsVoteRemove()) {
-			removeVoteButton.SetEnabled(false);
-			removeVoteButton.SetVisible(false);
-		};
+	/*saeled*/ void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
+		m_VotingComponent = votingComponent;
 
-		auto component = V30_MapVoting_VotingComponent.GetInstance();
-		if (component.IsAllChoicesLoaded()) {
-			GetGame().GetCallqueue().CallLater(OnAllChoicesLoaded, delay: 0, param1: component, param2: component.GetAllChoices());
-		}
-		else {
-			component.GetOnAllChoicesLoaded().Insert(OnAllChoicesLoaded);
-		};
+        auto menuUiComponent = V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_MenuUIComponent>.FindHandler(GetRootWidget());
+		menuUiComponent.Setup(votingComponent);
+
+		if (votingComponent.IsAllChoicesLoaded())
+			GetGame().GetCallqueue().CallLater(OnAllChoicesLoaded, delay: 0, param1: votingComponent, param2: votingComponent.GetAllChoices());
+		else
+			votingComponent.GetOnAllChoicesLoaded().Insert(OnAllChoicesLoaded);
 	};
 
 	protected void OnAllChoicesLoaded(notnull V30_MapVoting_VotingComponent component, notnull map<V30_MapVoting_ChoiceId, ref V30_MapVoting_Choice> choices) {
