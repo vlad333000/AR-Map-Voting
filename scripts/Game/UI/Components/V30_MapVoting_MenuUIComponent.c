@@ -39,5 +39,7 @@ class V30_MapVoting_MenuUIComponent : SCR_ScriptedWidgetComponent {
 
         m_ContentWidget.SetVisible(true);
         m_ContentWidget.SetEnabled(true);
+
+		SCR_UISoundEntity.SoundEvent(SCR_SoundEvent.SOUND_HUD_MAP_OPEN);
     };
 };
