@@ -13,6 +13,8 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
 
     protected /*private*/ V30_MapVoting_PreGameGameModeState_State m_State;
 
+	protected /*private*/ ref ScriptInvoker m_OnStateChanged;
+
     protected /*private*/ int m_PlayerCountLeft;
 
     protected /*private*/ WorldTimestamp m_StartWorldTimestamp;
@@ -20,7 +22,8 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
 
 
     void V30_MapVoting_SimplePreGameGameModeStateComponent(IEntityComponentSource src, IEntity ent, IEntity parent) {
-        m_State = V30_MapVoting_PreGameGameModeState_State.WAITING_PLAYERS;
+        m_State = V30_MapVoting_PreGameGameModeState_State.INITIAL;
+		m_OnStateChanged = new ScriptInvoker();
     };
 
     override protected event void OnPostInit(IEntity owner) {
@@ -33,14 +36,13 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
         m_RplComponent = V30_MapVoting_ComponentHelper<RplComponent>.FindComponent(owner);
         m_WorldTimestampSyncComponent = V30_MapVoting_ComponentHelper<V30_MapVoting_WorldTimestampSyncComponent>.FindComponent(owner);
 
+		if (SCR_Global.IsEditMode())
+			return;
+
         if (IsProxy())
             return;
 
-        m_VotingComponent.GetOnPlayerVoteAbilityChanged().Insert(OnPlayerVoteAbilityChanged);
-        auto playersWithVoteAbility = new array<int>();
-        m_VotingComponent.GetPlayersWithVoteAbility(playersWithVoteAbility);
-        foreach (auto player : playersWithVoteAbility)
-            OnPlayerVoteAbilityChanged(m_VotingComponent, player, true);
+        SetState(V30_MapVoting_PreGameGameModeState_State.WAITING_PLAYERS);
     };
 
     override protected event void EOnFrame(IEntity owner, float timeSlice) {
@@ -84,17 +86,58 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
 
 
 
-    protected /*private*/ void SetPlayerCountLeft(int playerCountLeft) {
-        Rpc(RpcDo_SetPlayerCountLeft, playerCountLeft);
-        RpcDo_SetPlayerCountLeft(playerCountLeft);
+    protected /*private*/ void UpdatePlayerCountLeft(int playerCountLeft) {
+        if (playerCountLeft < 0)
+            playerCountLeft = 0;
+
+        Rpc(RpcDo_UpdatePlayerCountLeft, playerCountLeft);
+        RpcDo_UpdatePlayerCountLeft(playerCountLeft);
+
+        if (playerCountLeft == 0)
+            SetState(V30_MapVoting_PreGameGameModeState_State.DELAY_START);
+        else if (GetState() == V30_MapVoting_PreGameGameModeState_State.DELAY_START)
+            SetState(V30_MapVoting_PreGameGameModeState_State.WAITING_PLAYERS);
+    };
+
+    protected /*private*/ int UpdatePlayerCountLeft() {
+        auto votingComponent = GetVotingComponent();
+        auto requiredPlayerCount = GetRequiredPlayerCount();
+        auto playerCount = votingComponent.CountPlayersWithVoteAbility();
+        auto playerCountLeft = requiredPlayerCount - playerCount;
+        UpdatePlayerCountLeft(playerCountLeft);
+        return playerCountLeft;
     };
 
     [RplRpc(channel: RplChannel.Reliable, rcver: RplRcver.Broadcast)]
-    protected /*private*/ void RpcDo_SetPlayerCountLeft(int playerCountLeft) {
+    protected /*private*/ void RpcDo_UpdatePlayerCountLeft(int playerCountLeft) {
         m_PlayerCountLeft = playerCountLeft;
-		auto message = GetMessage();
-        OnMessageUpdated(message);
+        OnMessageUpdated();
     };
+
+    protected /*private*/ void UpdateStartDelay(WorldTimestamp startWorldTimestamp) {
+        Rpc(RpcDo_UpdateStartDelay, startWorldTimestamp);
+        RpcDo_UpdateStartDelay(startWorldTimestamp);
+
+        auto now = GetGame().GetWorld().GetTimestamp();
+        if (now.GreaterEqual(startWorldTimestamp))
+            SetState(V30_MapVoting_PreGameGameModeState_State.FINISHED);
+    };
+
+    protected /*private*/ WorldTimestamp UpdateStartDelay() {
+        auto now = GetGame().GetWorld().GetTimestamp();
+        auto delay = GetStartDelay();
+        auto start = now.PlusMilliseconds(delay);
+        UpdateStartDelay(start);
+        return start;
+    };
+
+	[RplRpc(channel: RplChannel.Reliable, rcver: RplRcver.Broadcast)]
+    protected /*private*/ void RpcDo_UpdateStartDelay(WorldTimestamp startRemoteWorldTimestamp) {
+        m_StartWorldTimestamp = startRemoteWorldTimestamp;
+        OnMessageUpdated();
+    }
+
+
 
     protected /*private*/ void SetState(V30_MapVoting_PreGameGameModeState_State state) {
         Rpc(RpcDo_SetState, state);
@@ -103,61 +146,90 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
 
     [RplRpc(channel: RplChannel.Reliable, rcver: RplRcver.Broadcast)]
     protected /*private*/ void RpcDo_SetState(V30_MapVoting_PreGameGameModeState_State state) {
-        m_State = state;
-
         auto owner = GetOwner();
-        switch (state) {
-            case V30_MapVoting_PreGameGameModeState_State.WAITING_PLAYERS: {
-				if (!System.IsConsoleApp())
-                	ClearEventMask(owner, EntityEvent.FRAME);
-                ClearEventMask(owner, EntityEvent.FIXEDFRAME);
+
+        switch (m_State) {
+            case V30_MapVoting_PreGameGameModeState_State.INITIAL: {
                 break;
             };
-            case V30_MapVoting_PreGameGameModeState_State.WAITING_DELAY: {
-				auto now = GetGame().GetWorld().GetTimestamp();
-				m_StartWorldTimestamp = now.PlusMilliseconds(m_StartDelay);
-                if (m_StartDelay > 0.0) {
-					if (!System.IsConsoleApp())
-                		SetEventMask(owner, EntityEvent.FRAME);
-                    SetEventMask(owner, EntityEvent.FIXEDFRAME);
-				}
-                else if (!IsProxy()) {
-                    SetState(V30_MapVoting_PreGameGameModeState_State.FINISHED);
-                    return;
-                };
+            case V30_MapVoting_PreGameGameModeState_State.WAITING_PLAYERS: {
+                if (!IsProxy())
+                    m_VotingComponent.GetOnPlayerVoteAbilityChanged().Remove(OnPlayerVoteAbilityChanged);
+                break;
+            };
+            case V30_MapVoting_PreGameGameModeState_State.DELAY_START: {
+                if (!System.IsConsoleApp())
+                    ClearEventMask(owner, EntityEvent.FRAME);
+                if (!IsProxy())
+                    ClearEventMask(owner, EntityEvent.FIXEDFRAME);
                 break;
             };
             case V30_MapVoting_PreGameGameModeState_State.FINISHED: {
-				if (!System.IsConsoleApp())
-                	ClearEventMask(owner, EntityEvent.FRAME);
-                ClearEventMask(owner, EntityEvent.FIXEDFRAME);
-                Finish();
                 break;
             };
         };
-		auto message = GetMessage();
-        OnMessageUpdated(message);
+
+		auto stateOld = m_State;
+        m_State = state;
+
+        switch (m_State) {
+            case V30_MapVoting_PreGameGameModeState_State.INITIAL: {
+                break;
+            };
+            case V30_MapVoting_PreGameGameModeState_State.WAITING_PLAYERS: {
+                if (!IsProxy()) {
+                    auto votingComponent = GetVotingComponent();
+                    votingComponent.GetOnPlayerVoteAbilityChanged().Insert(OnPlayerVoteAbilityChanged);
+                };
+                break;
+            };
+            case V30_MapVoting_PreGameGameModeState_State.DELAY_START: {
+                if (!IsProxy())
+                    SetEventMask(owner, EntityEvent.FIXEDFRAME);
+                if (!System.IsConsoleApp())
+                    SetEventMask(owner, EntityEvent.FRAME);
+                break;
+            };
+            case V30_MapVoting_PreGameGameModeState_State.FINISHED: {
+                break;
+            };
+        };
+
+		OnStateChanged(state, stateOld);
+
+        switch (m_State) {
+            case V30_MapVoting_PreGameGameModeState_State.INITIAL: {
+                break;
+            };
+            case V30_MapVoting_PreGameGameModeState_State.WAITING_PLAYERS: {
+                if (!IsProxy())
+                    UpdatePlayerCountLeft();
+                break;
+            };
+            case V30_MapVoting_PreGameGameModeState_State.DELAY_START: {
+                if (!IsProxy())
+                    UpdateStartDelay();
+                break;
+            };
+            case V30_MapVoting_PreGameGameModeState_State.FINISHED: {
+				if (!IsProxy())
+					Finish();
+                break;
+            };
+        };
+    };
+
+	protected /*private*/ event void OnStateChanged(V30_MapVoting_PreGameGameModeState_State stateNew, V30_MapVoting_PreGameGameModeState_State stateOld) {
+		PrintFormat("[V30][MapVoting] %1.OnStateChanged(%2, %3)", this, SCR_Enum.GetEnumName(V30_MapVoting_PreGameGameModeState_State, stateNew), SCR_Enum.GetEnumName(V30_MapVoting_PreGameGameModeState_State, stateOld));
+		m_OnStateChanged.Invoke(this, stateNew, stateOld);
+	};
+
+    /*sealed*/ ScriptInvoker GetOnStateChanged() {
+        return m_OnStateChanged;
     };
 
     protected /*private*/ event void OnPlayerVoteAbilityChanged(notnull V30_MapVoting_VotingComponent votingComponent, int playerId, bool hasVoteAbility) {
-        switch (m_State) {
-            case V30_MapVoting_PreGameGameModeState_State.WAITING_PLAYERS: {
-                auto playerCount = votingComponent.CountPlayersWithVoteAbility();
-                auto requiredPlayerCount = GetRequiredPlayerCount();
-                if (playerCount >= requiredPlayerCount)
-                    SetState(V30_MapVoting_PreGameGameModeState_State.WAITING_DELAY);
-                else
-                    SetPlayerCountLeft(requiredPlayerCount - playerCount);
-                break;
-            };
-            case V30_MapVoting_PreGameGameModeState_State.WAITING_DELAY: {
-                auto playerCount = votingComponent.CountPlayersWithVoteAbility();
-                auto requiredPlayerCount = GetRequiredPlayerCount();
-                if (playerCount < requiredPlayerCount)
-                    SetState(V30_MapVoting_PreGameGameModeState_State.WAITING_PLAYERS);
-                break;
-            };
-        };
+        UpdatePlayerCountLeft();
     };
 
 
@@ -169,7 +241,7 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
                 auto playerCountLeft = m_PlayerCountLeft.ToString();
                 return SCR_StringHelper.Translate(format, playerCountLeft);
             };
-            case V30_MapVoting_PreGameGameModeState_State.WAITING_DELAY: {
+            case V30_MapVoting_PreGameGameModeState_State.DELAY_START: {
                 auto format = "#AR-V30_MapVoting_SimplePreGame_WaitingDelay";
                 auto now = m_WorldTimestampSyncComponent.GetSyncedWorldTimestamp();
                 auto start = m_StartWorldTimestamp;
@@ -200,6 +272,6 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
 enum V30_MapVoting_PreGameGameModeState_State {
     INITIAL,
     WAITING_PLAYERS,
-    WAITING_DELAY,
+    DELAY_START,
     FINISHED
 };

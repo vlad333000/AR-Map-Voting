@@ -21,6 +21,11 @@ class V30_MapVoting_PreGameGameModeStateComponent : SCR_BaseGameModeStateCompone
         m_OnMessageUpdated.Invoke(this, message);
     };
 
+    protected /*sealed*/ void OnMessageUpdated() {
+        auto message = GetMessage();
+        OnMessageUpdated(message);
+    };
+
     /*sealed*/ V30_MapVoting_PreGameGameModeStateComponent_OnMessageUpdatedInvoker GetOnMessageUpdated() {
         return m_OnMessageUpdated;
     };
@@ -47,6 +52,7 @@ class V30_MapVoting_PreGameGameModeStateComponent : SCR_BaseGameModeStateCompone
     };
 
     protected /*private*/ event void OnFinished() {
+		PrintFormat("[V30][MapVoting] %1.OnFinished()", this);
         m_OnFinished.Invoke(this);
     };
 
