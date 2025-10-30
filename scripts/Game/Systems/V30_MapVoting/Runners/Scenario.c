@@ -3,6 +3,7 @@ class V30_MapVoting_Runner_RequestScenarioChangeTransition : V30_MapVoting_Runne
 		auto runDataScenario = V30_MapVoting_RunData_Scenario.Cast(runData);
 		auto scenarioId = runDataScenario.GetScenarioId();
 		auto addonsList = runDataScenario.GetAddonsList();
-		GameStateTransitions.RequestScenarioChangeTransition(scenarioId, addonsList);
+		auto systemConfig = MissionHeader.ReadMissionHeader(scenarioId).GetWorldSystemsConfig();
+		GameStateTransitions.RequestScenarioChangeTransition(scenarioId, systemConfig, addonsList);
 	};
 };
