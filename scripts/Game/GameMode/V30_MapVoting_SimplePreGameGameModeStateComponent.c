@@ -239,7 +239,7 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
             case V30_MapVoting_PreGameGameModeState_State.WAITING_PLAYERS: {
                 auto format = "#AR-V30_MapVoting_SimplePreGame_WaitingPlayers";
                 auto playerCountLeft = m_PlayerCountLeft.ToString();
-                return SCR_StringHelper.Translate(format, playerCountLeft);
+                return WidgetManager.Translate(format, playerCountLeft);
             };
             case V30_MapVoting_PreGameGameModeState_State.DELAY_START: {
                 auto format = "#AR-V30_MapVoting_SimplePreGame_WaitingDelay";
@@ -256,7 +256,7 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
                     	timeStr = "0" + timeStr;
 					timeStr = minutes.ToString() + ":" + timeStr;
 				};
-                return SCR_StringHelper.Translate(format, timeStr);
+                return WidgetManager.Translate(format, timeStr);
             };
         };
         return "";
