@@ -52,7 +52,7 @@ modded class SCR_BaseGameMode {
 		auto jsonConfigDeserializer = V30_Json_FileDeserializer("$profile:V30/MapVoting/config.json");
 		auto jsonConfig = jsonConfigDeserializer.Deserialize();
 		auto config = jsonConfig.AsObject();
-		
+
 		V30_MapVoting_Runner runner;
 		auto runMethod = config.GetAt("runMethod");
 		if (runMethod && !runMethod.IsNull()) {
@@ -76,7 +76,7 @@ modded class SCR_BaseGameMode {
 		else {
 			runner = new V30_MapVoting_Runner_RequestScenarioChangeTransition();
 		};
-		
+
 		auto runData = new V30_MapVoting_RunData_Scenario(resourceName, "");
 		runner.Run(runData);
 	};
