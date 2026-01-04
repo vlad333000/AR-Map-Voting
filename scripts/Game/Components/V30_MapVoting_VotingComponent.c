@@ -573,6 +573,10 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 							m_Runner = new V30_MapVoting_Runner_RequestScenarioChangeTransition();
 							break;
 						};
+						case "StartPlaythrough": {
+							m_Runner = new V30_MapVoting_Runner_StartPlaythrough();
+							break;
+						};
 						case "Podval": {
 							auto url = config.GetAt("podvalUrl").AsString().Get();
 							auto serverId = config.GetAt("podvalServerId").AsString().Get();
@@ -653,7 +657,19 @@ class V30_MapVoting_VotingComponent : SCR_BaseGameModeComponent {
 				return new V30_MapVoting_ChoiceRandom();
 			}
 			else {
-				return new V30_MapVoting_ChoiceMission(path);
+				auto loadedAddonGUIDs = new array<string>();
+				GameProject.GetLoadedAddons(loadedAddonGUIDs);
+
+				auto addonGUIDs = "";
+				foreach (string loadedAddonGUID: loadedAddonGUIDs) {
+					if (!GameProject.IsVanillaAddon(loadedAddonGUID)) {
+						if (!addonGUIDs.IsEmpty())
+							addonGUIDs += ",";
+						addonGUIDs += loadedAddonGUID;
+					};
+				};
+
+				return new V30_MapVoting_ChoiceMission(path, addonGUIDs);
 			};
 		}
 		//else if (entry.IsObject()) {
