@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{B782EE9308F2117F}UI/layouts/V30/MapVoting/V30_MapVoting_GameOverScreenVotingMenu.layout"
+ Configurations {
+  LayoutResourceClass PC {
+  }
+  LayoutResourceClass XBOX_ONE : PC {
+  }
+  LayoutResourceClass XBOX_SERIES : PC {
+  }
+  LayoutResourceClass PS4 : PC {
+  }
+  LayoutResourceClass PS5 : PC {
+  }
+  LayoutResourceClass HEADLESS : PC {
+  }
+ }
+}

@@ -1,0 +1,283 @@
+OverlayWidgetClass {
+ Name "GameOverScreenVotingMenu"
+ Slot FrameWidgetSlot "{6848ED809A36445D}" {
+  Anchor 0 0 1 1
+  PositionX 0
+  OffsetLeft 0
+  PositionY 0
+  OffsetTop 0
+  SizeX -1820
+  OffsetRight 0
+  SizeY -1050
+  OffsetBottom 0
+ }
+ {
+  OverlayWidgetClass "{6848ED80E7CD1705}" : "{A5D822A6CBEB8003}UI/layouts/Menus/Common/MenuBackground-NoScripts.layout" {
+   Name "Background"
+   Slot OverlayWidgetSlot "{6848ED80E7CD176F}" {
+   }
+  }
+  FrameWidgetClass "{6848ED94A3EA6D21}" : "{36E2C012BAE9FE16}UI/layouts/Menus/DeployMenu/RestartTimer.layout" {
+   Name "RestartTimerHolder"
+   Slot OverlayWidgetSlot "{60AAB6C5BDC7742E}" {
+    VerticalAlign 0
+    Padding 0 34 9 0
+   }
+   "Z Order" 1
+  }
+  HorizontalLayoutWidgetClass "{6848ED8B0D780034}" {
+   Name "ButtonHolder"
+   Slot OverlayWidgetSlot "{6848ED8B0D780011}" {
+    HorizontalAlign 3
+    VerticalAlign 2
+    Padding 24 0 24 24
+   }
+   {
+    ButtonWidgetClass "{6848ED83B7D40D00}" : "{08CF3B69CB1ACBC4}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButton.layout" {
+     Name "BackButton"
+     Slot LayoutSlot "{6848ED95A6A935A0}" {
+     }
+     components {
+      SCR_InputButtonComponent "{5D346C3DD81D95CD}" {
+       m_sActionName "MenuBack"
+       m_sLabel "#AR-Menu_Back"
+      }
+     }
+    }
+    ButtonWidgetClass "{6848ED8FC5DDB5BD}" : "{87037226B1A2064B}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButtonSuperSmall.layout" {
+     Name "ChatButton"
+     Slot LayoutSlot "{6848ED95A6A9349F}" {
+     }
+     components {
+      SCR_InputButtonComponent "{5D346C3DD81D95CD}" {
+       m_sActionName "ChatToggle"
+       m_sLabel "#AR-Keybind_ChatOpen"
+      }
+     }
+    }
+    OverlayWidgetClass "{6848ED8B66C965B3}" {
+     Name "Overlay0"
+     Slot LayoutSlot "{6848ED8B66C9658A}" {
+      SizeMode Fill
+     }
+    }
+    ButtonWidgetClass "{6848ED825C40B1D7}" : "{08CF3B69CB1ACBC4}UI/layouts/WidgetLibrary/Buttons/WLib_NavigationButton.layout" {
+     Name "DebriefingButton"
+     Slot LayoutSlot "{6848ED95A6A9342D}" {
+     }
+     components {
+      SCR_InputButtonComponent "{5D346C3DD81D95CD}" {
+       m_sActionName "MenuSelect"
+       m_sLabel "#AR-PauseMenu_Continue"
+      }
+     }
+    }
+   }
+  }
+  FrameWidgetClass "{6848ED8ABE0077B5}" {
+   Name "HudManagerLayout"
+   Slot OverlayWidgetSlot "{5F0B1576FB3E03F4}" {
+    HorizontalAlign 3
+    VerticalAlign 3
+   }
+   "Z Order" 11
+   components {
+    SCR_HUDMenuComponent "{5F0ADEF0C660AF98}" {
+     m_sIdentifier "V30_MapVoting_GameOverScreenVotingMenu"
+    }
+   }
+   {
+    FrameWidgetClass "{6848ED8ABE0077B6}" {
+     Name "Layer_Slots"
+     Slot FrameWidgetSlot "{5D62A913A6057240}" {
+      Anchor 0 0 1 1
+      PositionX 0
+      OffsetLeft 0
+      PositionY 0
+      OffsetTop 0
+      SizeX 0
+      OffsetRight 0
+      SizeY 0
+      OffsetBottom 0
+     }
+     {
+      VerticalLayoutWidgetClass "{6848ED8ABE0077B9}" {
+       Name "Group_Left"
+       Slot FrameWidgetSlot "{5D44B19A2BE9A6C4}" {
+        Anchor 0 0 1 1
+        PositionX 0
+        OffsetLeft 0
+        PositionY 0
+        OffsetTop 0
+        SizeX -1320
+        OffsetRight 1320
+        SizeY 0
+        OffsetBottom 0
+       }
+       Clipping False
+       components {
+        SCR_HUDGroupUIComponent "{5D44B19A39A468D7}" {
+         m_bEnableDebugFont 0
+        }
+       }
+       {
+        FrameWidgetClass "{6848ED8ABE0077BA}" {
+         Name "Filler0"
+         Slot LayoutSlot "{5D44B19A48E6BC77}" {
+          SizeMode Fill
+          FillWeight 0.3
+         }
+        }
+        FrameWidgetClass "{6848ED8ABE01A276}" {
+         Name "Slot_Chat"
+         Slot LayoutSlot "{5D44B19A05C7B70A}" {
+         }
+         components {
+          SCR_HUDSlotUIComponent "{5D44B19A037B2FF4}" {
+           m_iPriority 1
+           m_aHeightSteps {
+            100 200 300
+           }
+           m_aWidthSteps {
+            600
+           }
+          }
+         }
+        }
+        FrameWidgetClass "{6848ED8ABE01A270}" {
+         Name "Slot_VON"
+         Slot LayoutSlot "{5D44B19A05C7B70A}" {
+          Padding 0 0 0 0
+         }
+         components {
+          SCR_HUDSlotUIComponent "{5D44B19A037B2FF4}" {
+           m_iPriority 1
+           m_aHeightSteps {
+            100 200
+           }
+           m_aWidthSteps {
+            600
+           }
+          }
+         }
+        }
+        FrameWidgetClass "{6848ED8ABE01BFBD}" {
+         Name "Filler"
+         Slot LayoutSlot "{5D44B19A48E6BC77}" {
+          SizeMode Fill
+         }
+        }
+       }
+      }
+      VerticalLayoutWidgetClass "{6848ED8ABE01BFBC}" {
+       Name "Group_Right"
+       Slot FrameWidgetSlot "{5D44B19A2BE9A6C4}" {
+        Anchor 0 0 1 1
+        PositionX 1312.64
+        OffsetLeft 1320
+        PositionY -2.735
+        OffsetTop 0
+        SizeX -1320
+        OffsetRight 0
+        SizeY 0
+        OffsetBottom 0
+       }
+       components {
+        SCR_HUDGroupUIComponent "{5D44B19A39A468D7}" {
+         m_bEnableDebugFont 0
+        }
+       }
+       {
+        FrameWidgetClass "{6848ED8ABE01BFBF}" {
+         Name "Slot_GameVersion"
+         Slot LayoutSlot "{5D44B19A05C7B70A}" {
+          HorizontalAlign 2
+         }
+         components {
+          SCR_HUDSlotUIComponent "{5D44B19A037B2FF4}" {
+           m_iPriority 2
+           m_aHeightSteps {
+            50
+           }
+           m_aWidthSteps {
+            600
+           }
+          }
+         }
+        }
+        FrameWidgetClass "{6848ED8ABE0185CE}" {
+         Name "Slot_Notifications"
+         Slot LayoutSlot "{5D44B19A05C7B70A}" {
+          HorizontalAlign 2
+         }
+         components {
+          SCR_HUDSlotUIComponent "{5D44B19A037B2FF4}" {
+           m_iPriority 2
+           m_aHeightSteps {
+            100 150 200 300
+           }
+           m_aWidthSteps {
+            600
+           }
+          }
+         }
+        }
+        FrameWidgetClass "{6848ED8ABE0185CF}" {
+         Name "Filler"
+         Slot LayoutSlot "{5D44B19A48E6BC77}" {
+          SizeMode Fill
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+  SizeLayoutWidgetClass "{6848ED94F621CED2}" {
+   Name "LogoSetter"
+   Slot OverlayWidgetSlot "{57288BB26E9D57D8}" {
+    HorizontalAlign 0
+    VerticalAlign 0
+    Padding 40 40 0 0
+   }
+   AllowWidthOverride 1
+   WidthOverride 80
+   AllowHeightOverride 1
+   HeightOverride 80
+   AllowAspectRatioForce 1
+   AspectRatioForce 1.5
+   {
+    ImageWidgetClass "{6848ED94FB534145}" {
+     Name "Reforger_Logo"
+     Slot AlignableSlot "{6848ED94FB5340F3}" {
+     }
+     Texture "{2F62AEDF7863E900}UI/Textures/Logos/ARMA_source_Reforger_icon_white_small.edds"
+     Size 152 100
+    }
+   }
+  }
+  OverlayWidgetClass "{684914D90484DB04}" {
+   Name "Content"
+   Slot OverlayWidgetSlot "{684914D90484DB6A}" {
+    HorizontalAlign 3
+    VerticalAlign 3
+   }
+   {
+    FrameWidgetClass "{684914C45FB0330F}" : "{06B7FB89806D9685}UI/layouts/V30/MapVoting/V30_MapVoting_Screen_Base.layout" {
+     Name "ChoicesWrapper"
+     Slot OverlayWidgetSlot "{684914F2FCCBFAC0}" {
+      HorizontalAlign 3
+      VerticalAlign 3
+      Padding 25 25 25 75
+     }
+    }
+    SizeLayoutWidgetClass "{684914D952917234}" : "{5486562508132FF1}UI/layouts/V30/MapVoting/V30_MapVoting_EndScreenContent.layout" {
+     Name "NextScenario"
+     Slot OverlayWidgetSlot "{684914F2FCCBFA30}" {
+     }
+    }
+   }
+  }
+ }
+}

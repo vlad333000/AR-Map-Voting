@@ -1,12 +1,7 @@
 modded class SCR_BaseGameMode {
-	[Attribute(desc: "Voting mission to load after game mode end", defvalue: "{B88CC33A14B71FDC}Missions/V30_MapVoting_Mission.conf", uiwidget: UIWidgets.ResourceNamePicker, params: "conf")];
-	protected ResourceName m_V30_MapVoting_votingMissionResourceName;
-
 	protected bool m_V30_MapVoting_overrideOnGameModeEnd = false;
 
-	protected ResourceName V30_MapVoting_GetVotingMissionResourceName() {
-		return m_V30_MapVoting_votingMissionResourceName;
-	};
+	protected V30_MapVoting_VotingComponent m_V30_MapVoting_votingComponent;
 
 	override protected void OnGameModeEnd(SCR_GameModeEndData endData) {
 		// TODO: Change to normal code when BIS allows to disable all actions in super.OnGameModeEnd
@@ -14,70 +9,45 @@ modded class SCR_BaseGameMode {
 		super.OnGameModeEnd(endData);
 		m_V30_MapVoting_overrideOnGameModeEnd = false;
 
-		float reloadTime = Math.Max(0.0, GetAutoReloadDelay());
-		GetGame().GetCallqueue().CallLater(V30_MapVoting_StartVotingMission, reloadTime * 1000.0, false);
+		m_V30_MapVoting_votingComponent = V30_MapVoting_VotingComponent.Cast(FindComponent(V30_MapVoting_VotingComponent));
+		if (!m_V30_MapVoting_votingComponent)
+			return;
+
+		if (!IsMaster())
+			return;
+
+		m_V30_MapVoting_votingComponent.GetOnVoteEnded().Insert(V30_MapVoting_OnVoteEnded);
+
+		if (m_V30_MapVoting_votingComponent.IsAutoStartEnabled())
+			m_V30_MapVoting_votingComponent.StartVote();
 	};
 
 	override float GetAutoReloadDelay() {
-		if (m_V30_MapVoting_overrideOnGameModeEnd) {
-			return 0; // Force to call RestartSession in super.OnGameModeEnd
-		};
+		// Force to call RestartSession in super.OnGameModeEnd
+		if (m_V30_MapVoting_overrideOnGameModeEnd)
+			return 0;
 
 		return super.GetAutoReloadDelay();
 	};
 
 	override protected void RestartSession() {
-		if (m_V30_MapVoting_overrideOnGameModeEnd) {
-			return; // Cancel RestartSession
-		};
+		// Cancel RestartSession in super.OnGameModeEnd
+		if (m_V30_MapVoting_overrideOnGameModeEnd)
+			return;
 
 		super.RestartSession();
 	};
 
-	protected void V30_MapVoting_StartVotingMission() {
-		if (!IsMaster()) {
+	protected event void V30_MapVoting_OnVoteEnded(V30_MapVoting_ChoiceId winnerId) {
+		float reloadTime = Math.Max(5, GetAutoReloadDelay());
+
+		GetGame().GetCallqueue().CallLater(V30_MapVoting_StartVotedMission, reloadTime * 1000, false);
+	};
+
+	protected event void V30_MapVoting_StartVotedMission() {
+		if (!IsMaster())
 			return;
-		};
 
-		if (TryShutdownServer()) {
-			return;
-		};
-
-		auto resourceName = V30_MapVoting_GetVotingMissionResourceName();
-		auto resource = SCR_ConfigHelperT<SCR_MissionHeader>.GetConfigObject(resourceName);
-		if (!resource) {
-			PrintFormat("[V30][MapVoting] Failed to load resource \"%1\" as mission!", resourceName, level: LogLevel.WARNING);
-		};
-
-		auto jsonConfigDeserializer = V30_Json_FileDeserializer("$profile:V30/MapVoting/config.json");
-		auto jsonConfig = jsonConfigDeserializer.Deserialize();
-		auto config = jsonConfig.AsObject();
-
-		V30_MapVoting_Runner runner;
-		auto runMethod = config.GetAt("runMethod");
-		if (runMethod && !runMethod.IsNull()) {
-			switch (runMethod.AsString().Get()) {
-				case "RequestScenarioChangeTransition": {
-					runner = new V30_MapVoting_Runner_RequestScenarioChangeTransition();
-					break;
-				};
-				case "Podval": {
-					auto url = config.GetAt("podvalUrl").AsString().Get();
-					auto serverId = config.GetAt("podvalServerId").AsString().Get();
-					runner = new V30_MapVoting_Runner_Podval(url, serverId);
-					break;
-				};
-				default : {
-					runner = new V30_MapVoting_Runner_RequestScenarioChangeTransition();
-					break;
-				};
-			};
-		}
-		else {
-			runner = new V30_MapVoting_Runner_RequestScenarioChangeTransition();
-		};
-
-		auto runData = new V30_MapVoting_RunData_Scenario(resourceName, "");
-		runner.Run(runData);
+		m_V30_MapVoting_votingComponent.RunWinner();
 	};
 };

@@ -10,6 +10,8 @@ SizeLayoutWidgetClass {
    m_sSubtitleName "SubTitle"
    m_sDebriefingName "Header"
   }
+  V30_MapVoting_WinnerScenarioWidgetComponent "{684914CE1E52E1E4}" {
+  }
  }
  {
   OverlayWidgetClass "{6203735111CC4468}" {

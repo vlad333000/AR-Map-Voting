@@ -58,7 +58,7 @@ class V30_MapVoting_GameMode : SCR_BaseGameMode {
 			m_V30_MapVoting_gameModeComponent.EndVote();
 		};
 
-		GetGame().GetCallqueue().Remove(V30_MapVoting_StartVotingMission);
+		GetGame().GetCallqueue().Remove(V30_MapVoting_StartVotedMission);
 	};
 
 	override float GetAutoReloadDelay() {
@@ -69,7 +69,7 @@ class V30_MapVoting_GameMode : SCR_BaseGameMode {
 		return ((float)m_V30_MapVoting_startVotedMissionDelay) / 1000.0;
 	};
 
-	protected void V30_MapVoting_StartVotedMission() {
+	protected void StartVotedMission() {
 		if (!IsMaster())
 			return;
 
@@ -81,7 +81,7 @@ class V30_MapVoting_GameMode : SCR_BaseGameMode {
 			EndGameMode(SCR_GameModeEndData.CreateSimple(EGameOverTypes.V30_MAPVOTING_NEXT_MAP));
 		};
 
-		GetGame().GetCallqueue().CallLater(V30_MapVoting_StartVotedMission, m_V30_MapVoting_startVotedMissionDelay, false);
+		GetGame().GetCallqueue().CallLater(StartVotedMission, m_V30_MapVoting_startVotedMissionDelay, false);
 	};
 
 	override float GetRemainingTime() {
