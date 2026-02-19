@@ -22,13 +22,15 @@ class V30_MapVoting_WorldTimestampSyncWorldSystem : WorldSystem {
     override protected event void OnOneTimePoint(WorldOneTimePointArgs args) {
         super.OnOneTimePoint(args);
 
-        if (args.GetPoint() != WorldSystemPoint.RuntimeStarted)
-            return;
+        switch (args.GetPoint()) {
+            case WorldSystemPoint.RuntimeStarted: {
+                if (!Replication.IsServer())
+                   break;
 
-        if (!Replication.IsServer())
-            return;
-
-        Sync();
+                Sync();
+                break;
+            };
+        };
     };
 
     override protected event void OnUpdatePoint(WorldUpdatePointArgs args) {
