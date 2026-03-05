@@ -3,8 +3,28 @@ class V30_MapVoting_Scenario {
 
     ResourceName GetMissionHeader();
 
+    bool IsCustomWorldSystemsConfig() {
+        auto defaultWorldSystemsConfig = GetDefaultWorldSystemsConfig();
+        auto requiredWorldSystemsConfig = GetWorldSystemsConfig();
+        return !requiredWorldSystemsConfig.IsEmpty() && defaultWorldSystemsConfig != requiredWorldSystemsConfig;
+    };
+
     ResourceName GetWorldSystemsConfig() {
         return GetDefaultWorldSystemsConfig();
+    };
+
+    bool IsCustomAddonList() {
+        auto currentAddonList = new array<string>();
+        GetCurrentAddonList(currentAddonList);
+        auto requiredAddonList = new array<string>();
+        GetAddonList(requiredAddonList);
+        foreach (auto requiredAddon : requiredAddonList)
+            if (!currentAddonList.Contains(requiredAddon))
+                return true;
+        foreach (auto currentAddon : currentAddonList)
+            if (!requiredAddonList.Contains(currentAddon))
+                return true;
+        return false;
     };
 
     int CountAddonList() {
