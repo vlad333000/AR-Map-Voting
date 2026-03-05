@@ -3,6 +3,9 @@ class V30_MapVoting_FileExternalRunner : V30_MapVoting_ExternalRunner {
     [Attribute("$profile:V30/MapVoting/next.json")]
     protected string filePath;
 
+    [Attribute("0", desc: "Format to use for file.", uiwidget: UIWidgets.ComboBox, enumType: V30_MapVoting_FileExternalRunner_EFormat)]
+    protected V30_MapVoting_FileExternalRunner_EFormat format;
+
     override void PrepareScenarioSwitch() {
         auto filePathSanised = SCR_FileIOHelper.SanitiseFileName(filePath);
         if (filePathSanised != filePath) {
@@ -20,11 +23,30 @@ class V30_MapVoting_FileExternalRunner : V30_MapVoting_ExternalRunner {
             return;
         };
 
-        auto jsonString = GetJsonString();
-        auto bytesWritten = file.Write(jsonString);
-        if (bytesWritten != jsonString.Length()) {
-            PrintFormat("[V30][MapVoting][FileExternalRunner] %2 bytes successfully written to file \"%1\", but %3 expected.", filePathSanised, bytesWritten, jsonString.Length(), level: LogLevel.ERROR);
+        string data;
+        switch (format) {
+            case V30_MapVoting_FileExternalRunner_EFormat.JSON : {
+                data = GetJsonString();
+                break;
+            };
+            default {
+                auto formatName = SCR_Enum.GetEnumName(V30_MapVoting_FileExternalRunner_EFormat, format);
+                PrintFormat("[V30][MapVoting][FileExternalRunner] PrepareScenarioSwitch: unsupported format %1 (%2)", format, formatName, level: LogLevel.ERROR);
+                break;
+            };
+        };
+
+        auto bytesWritten = file.Write(data);
+        if (bytesWritten != data.Length()) {
+            PrintFormat("[V30][MapVoting][FileExternalRunner] %2 bytes successfully written to file \"%1\", but %3 expected.", filePathSanised, bytesWritten, data.Length(), level: LogLevel.ERROR);
         };
         file.Close();
     };
 };
+
+enum V30_MapVoting_FileExternalRunner_EFormat {
+    JSON
+    // TODO: PlainText
+    // TODO: XML
+    // TODO: AUTO = -1 // Automatically determine format based on extension.
+}
