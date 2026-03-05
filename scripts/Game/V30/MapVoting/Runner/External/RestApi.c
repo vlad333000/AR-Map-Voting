@@ -142,12 +142,12 @@ sealed class V30_MapVoting_RestApiExternalRunner : V30_MapVoting_ExternalRunner 
         switch (this.method) {
             case V30_MapVoting_RestApiExternalRunner_EMethod.POST : {
                 auto result = restContext.POST(this.restCallback, this.endpoint, data);
-                // TODO: process result when meaning of result will be known.
+                // TODO: parse result when meaning of int result will be known
                 break;
             };
             case V30_MapVoting_RestApiExternalRunner_EMethod.POST_now : {
-                auto result = restContext.POST_now(this.restCallback, this.endpoint, data);
-                // TODO: process result when meaning of result will be known.
+                auto result = restContext.POST_now(this.endpoint, data);
+                // TODO: parse result for error
                 break;
             };
             default : {
