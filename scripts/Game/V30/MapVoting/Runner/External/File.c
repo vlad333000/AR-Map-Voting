@@ -29,6 +29,10 @@ class V30_MapVoting_FileExternalRunner : V30_MapVoting_ExternalRunner {
                 data = GetJsonString();
                 break;
             };
+            case V30_MapVoting_FileExternalRunner_EFormat.PlainText : {
+                data = GetPlainTextString();
+                break;
+            };
             default : {
                 auto formatName = SCR_Enum.GetEnumName(V30_MapVoting_FileExternalRunner_EFormat, format);
                 PrintFormat("[V30][MapVoting][FileExternalRunner] PrepareScenarioSwitch: unsupported format %1 (%2)", format, formatName, level: LogLevel.ERROR);
@@ -45,8 +49,8 @@ class V30_MapVoting_FileExternalRunner : V30_MapVoting_ExternalRunner {
 };
 
 enum V30_MapVoting_FileExternalRunner_EFormat {
-    JSON
-    // TODO: PlainText
+    JSON,
+	PlainText
     // TODO: XML
     // TODO: AUTO = -1 // Automatically determine format based on extension.
 }

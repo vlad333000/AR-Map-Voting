@@ -42,6 +42,11 @@ sealed class V30_MapVoting_RestApiExternalRunner : V30_MapVoting_ExternalRunner 
                 headersSecret = "Content-Type,application/json";
                 break;
             };
+            case V30_MapVoting_RestApiExternalRunner_EFormat.PlainText : {
+                headers = "Content-Type,text/plain";
+                headersSecret = "Content-Type,text/plain";
+                break;
+            };
             default : {
                 auto formatName = SCR_Enum.GetEnumName(V30_MapVoting_RestApiExternalRunner_EFormat, this.format);
                 PrintFormat("[V30][MapVoting][RestApiExternalRunner] PrepareScenarioSwitch: unsupported format %1 (%2).", this.format, formatName, level: LogLevel.ERROR);
@@ -119,6 +124,10 @@ sealed class V30_MapVoting_RestApiExternalRunner : V30_MapVoting_ExternalRunner 
         switch (this.format) {
             case V30_MapVoting_RestApiExternalRunner_EFormat.JSON : {
                 data = GetJsonString();
+                break;
+            };
+            case V30_MapVoting_RestApiExternalRunner_EFormat.PlainText : {
+                data = GetPlainTextString();
                 break;
             };
             default : {
@@ -209,9 +218,9 @@ enum V30_MapVoting_RestApiExternalRunner_EMethod {
 };
 
 enum V30_MapVoting_RestApiExternalRunner_EFormat {
-    JSON
+    JSON,
+    PlainText
     // TODO: URLQueryString // http://host/endpoint?missionHeader=...&worldSystemsConfig=...&addons=ADDON1%2CADDON2%2C...
     // TODO: URLEncoded // missionHeader=...&worldSystemsConfig=...&addons=ADDON1%2CADDON2%2C...
-    // TODO: PlainText // ...\n....\n...\n
     // TODO: XML // <scenario><missionHeader>...</missionHeader><worldSystemsConfig>...</worldSystemsConfig><addons><addon>...</addon>...</addons></scenario>
 }

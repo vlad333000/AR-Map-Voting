@@ -32,6 +32,30 @@ class V30_MapVoting_ExternalRunner : V30_MapVoting_Runner {
         return json;
     };
 
+    string GetPlainTextString() {
+        auto scenario = GetScenario();
+
+        auto plain = "";
+        plain += scenario.GetMissionHeader() + "\n";
+
+        if (scenario.IsCustomWorldSystemsConfig())
+            plain += scenario.GetWorldSystemsConfig();
+        plain += "\n";
+
+        if (scenario.IsCustomAddonList()) {
+            auto addonList = new array<string>();
+            scenario.GetAddonList(addonList);
+
+            foreach (auto i, auto addon : addonList) {
+                if (i != 0) plain += ",";
+                plain += addon;
+            };
+        };
+        plain += "\n";
+
+        return plain;
+    };
+
     override void SwitchScenario() {
         GameStateTransitions.RequestGameTerminateTransition();
     };
