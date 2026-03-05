@@ -9,16 +9,6 @@ V30_MapVoting_GameMode V30_MapVoting_GameMode1 : "{90B80F466134E2A5}Prefabs/MP/M
   }
  }
  m_bAutoPlayerRespawn 0
- scenarios {
-  V30_MapVoting_SimpleScenario "{68C2AA2FF3546B2E}" {
-  }
-  V30_MapVoting_SimpleWithAddonsScenario "{68C2AA2FF552567B}" {
-  }
-  V30_MapVoting_CustomScenario "{68C2AA2FFB7EAD59}" {
-  }
-  V30_MapVoting_CustomScenarioAlt "{68C2AA2FECE63DC3}" {
-  }
- }
 }
 SCR_FactionManager V30_MapVoting_FactionManager1 : "{C46BF1AB7177139A}Prefabs/MP/Managers/Factions/V30_MapVoting_FactionManager.et" {
  Factions {
