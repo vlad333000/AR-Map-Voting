@@ -29,7 +29,7 @@ class V30_MapVoting_FileExternalRunner : V30_MapVoting_ExternalRunner {
                 data = GetJsonString();
                 break;
             };
-            default {
+            default : {
                 auto formatName = SCR_Enum.GetEnumName(V30_MapVoting_FileExternalRunner_EFormat, format);
                 PrintFormat("[V30][MapVoting][FileExternalRunner] PrepareScenarioSwitch: unsupported format %1 (%2)", format, formatName, level: LogLevel.ERROR);
                 break;

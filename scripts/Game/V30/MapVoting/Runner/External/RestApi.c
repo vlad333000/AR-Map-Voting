@@ -34,13 +34,15 @@ sealed class V30_MapVoting_RestApiExternalRunner : V30_MapVoting_ExternalRunner 
             return;
         };
 
+		string headers;
+		string headersSecret;
         switch (this.format) {
             case V30_MapVoting_RestApiExternalRunner_EFormat.JSON : {
-                auto headers = "Content-Type,application/json";
-                auto headersSecret = "Content-Type,application/json";
+                headers = "Content-Type,application/json";
+                headersSecret = "Content-Type,application/json";
                 break;
             };
-            default {
+            default : {
                 auto formatName = SCR_Enum.GetEnumName(V30_MapVoting_RestApiExternalRunner_EFormat, this.format);
                 PrintFormat("[V30][MapVoting][RestApiExternalRunner] PrepareScenarioSwitch: unsupported format %1 (%2).", this.format, formatName, level: LogLevel.ERROR);
                 break;
@@ -116,10 +118,10 @@ sealed class V30_MapVoting_RestApiExternalRunner : V30_MapVoting_ExternalRunner 
         string data;
         switch (this.format) {
             case V30_MapVoting_RestApiExternalRunner_EFormat.JSON : {
-                data = GetJsonString()
+                data = GetJsonString();
                 break;
             };
-            default {
+            default : {
                 auto formatName = SCR_Enum.GetEnumName(V30_MapVoting_RestApiExternalRunner_EFormat, this.format);
                 PrintFormat("[V30][MapVoting][RestApiExternalRunner] SendRequest: unsupported format %1 (%2).", this.format, formatName, level: LogLevel.ERROR);
                 break;
@@ -148,7 +150,7 @@ sealed class V30_MapVoting_RestApiExternalRunner : V30_MapVoting_ExternalRunner 
                 // TODO: process result when meaning of result will be known.
                 break;
             };
-            default {
+            default : {
                 auto methodName = SCR_Enum.GetEnumName(V30_MapVoting_RestApiExternalRunner_EMethod, this.method);
                 PrintFormat("[V30][MapVoting][RestApiExternalRunner] SendRequest: unsupported method %1 (%2).", this.method, methodName, level: LogLevel.ERROR);
                 break;
