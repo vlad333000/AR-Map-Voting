@@ -150,6 +150,16 @@ sealed class V30_MapVoting_RestApiExternalRunner : V30_MapVoting_ExternalRunner 
                 // TODO: parse result for error
                 break;
             };
+            case V30_MapVoting_RestApiExternalRunner_EMethod.PUT : {
+                auto result = restContext.PUT(this.restCallback, this.endpoint, data);
+                // TODO: parse result when meaning of int result will be known
+                break;
+            };
+            case V30_MapVoting_RestApiExternalRunner_EMethod.PUT_now : {
+                auto result = restContext.PUT_now(this.endpoint, data);
+                // TODO: parse result for error
+                break;
+            };
             default : {
                 auto methodName = SCR_Enum.GetEnumName(V30_MapVoting_RestApiExternalRunner_EMethod, this.method);
                 PrintFormat("[V30][MapVoting][RestApiExternalRunner] SendRequest: unsupported method %1 (%2).", this.method, methodName, level: LogLevel.ERROR);
@@ -191,9 +201,9 @@ sealed class V30_MapVoting_RestApiExternalRunner : V30_MapVoting_ExternalRunner 
 
 enum V30_MapVoting_RestApiExternalRunner_EMethod {
     POST,
-    POST_now
-    // TODO: PUT
-    // TODO: PUT_now
+    POST_now,
+    PUT,
+    PUT_now
     // TODO: GET // Supports only URLQueryString format
     // TODO: GET_now // Supports only URLQueryString format
 };
