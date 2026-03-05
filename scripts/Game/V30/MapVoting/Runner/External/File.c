@@ -29,6 +29,10 @@ class V30_MapVoting_FileExternalRunner : V30_MapVoting_ExternalRunner {
                 data = GetJsonString();
                 break;
             };
+            case V30_MapVoting_FileExternalRunner_EFormat.XML : {
+                data = GetXmlString();
+                break;
+            };
             case V30_MapVoting_FileExternalRunner_EFormat.PlainText : {
                 data = GetPlainTextString();
                 break;
@@ -50,7 +54,7 @@ class V30_MapVoting_FileExternalRunner : V30_MapVoting_ExternalRunner {
 
 enum V30_MapVoting_FileExternalRunner_EFormat {
     JSON,
+    XML,
 	PlainText
-    // TODO: XML
     // TODO: AUTO = -1 // Automatically determine format based on extension.
 }

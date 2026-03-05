@@ -42,6 +42,11 @@ sealed class V30_MapVoting_RestApiExternalRunner : V30_MapVoting_ExternalRunner 
                 headersSecret = "Content-Type,application/json";
                 break;
             };
+            case V30_MapVoting_RestApiExternalRunner_EFormat.XML : {
+                headers = "Content-Type,application/xml";
+                headersSecret = "Content-Type,application/xml";
+                break;
+            };
             case V30_MapVoting_RestApiExternalRunner_EFormat.PlainText : {
                 headers = "Content-Type,text/plain";
                 headersSecret = "Content-Type,text/plain";
@@ -124,6 +129,10 @@ sealed class V30_MapVoting_RestApiExternalRunner : V30_MapVoting_ExternalRunner 
         switch (this.format) {
             case V30_MapVoting_RestApiExternalRunner_EFormat.JSON : {
                 data = GetJsonString();
+                break;
+            };
+            case V30_MapVoting_RestApiExternalRunner_EFormat.XML : {
+                data = GetXmlString();
                 break;
             };
             case V30_MapVoting_RestApiExternalRunner_EFormat.PlainText : {
@@ -219,8 +228,8 @@ enum V30_MapVoting_RestApiExternalRunner_EMethod {
 
 enum V30_MapVoting_RestApiExternalRunner_EFormat {
     JSON,
+    XML,
     PlainText
     // TODO: URLQueryString // http://host/endpoint?missionHeader=...&worldSystemsConfig=...&addons=ADDON1%2CADDON2%2C...
     // TODO: URLEncoded // missionHeader=...&worldSystemsConfig=...&addons=ADDON1%2CADDON2%2C...
-    // TODO: XML // <scenario><missionHeader>...</missionHeader><worldSystemsConfig>...</worldSystemsConfig><addons><addon>...</addon>...</addons></scenario>
 }
