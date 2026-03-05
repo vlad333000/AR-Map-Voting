@@ -44,4 +44,30 @@ class V30_MapVoting_Scenario {
     static protected void GetCurrentAddonList(notnull array<string> outAddonList) {
 		GameProject.GetLoadedAddons(outAddonList);
     };
+
+    int CountTags() {
+        return this.tags.Count();
+    };
+
+    string GetTag(int index) {
+        return this.tags.Get(index);
+    };
+
+    void GetTags(notnull array<string> outTags) {
+        foreach (auto tag : this.tags)
+            outTags.Insert(tag);
+    };
+
+    void AddTag(string tag) {
+        if (!ContainsTag(tag))
+            this.tags.Insert(tag);
+    };
+
+    void RemoveTag(string tag) {
+        this.tags.RemoveItem(tag);
+    };
+
+    bool ContainsTag(string tag) {
+        return this.tags.Contains(tag);
+    };
 };
