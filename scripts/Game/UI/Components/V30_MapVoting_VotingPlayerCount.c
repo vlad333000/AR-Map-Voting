@@ -1,6 +1,6 @@
 class V30_MapVoting_VotingPlayerCountComponent : V30_MapVoting_WidgetComponent {
-	/*sealed*/ override void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
-		super.Setup(votingComponent);
+	/*sealed*/ override void Setup(notnull V30_MapVoting_VotingWorldSystem votingWorldSystem) {
+		super.Setup(votingWorldSystem);
 		GetGame().GetCallqueue().CallLater(UpdatePlayerCount, delay: 1 * 1000, repeat: true);
 	};
 

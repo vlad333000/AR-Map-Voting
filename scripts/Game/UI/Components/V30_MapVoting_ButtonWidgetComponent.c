@@ -1,6 +1,6 @@
 class V30_MapVoting_ButtonWidgetComponent : V30_MapVoting_WidgetComponent {
-	override void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
-		super.Setup(votingComponent);
+	override void Setup(notnull V30_MapVoting_VotingWorldSystem votingWorldSystem) {
+		super.Setup(votingWorldSystem);
         auto widget = GetRootWidget();
         auto buttonWidgetComponent = V30_MapVoting_WidgetHandlerHelperT<SCR_ButtonBaseComponent>.FindHandler(widget);
         auto onButtonWidgetComponentClicked = buttonWidgetComponent.m_OnClicked;

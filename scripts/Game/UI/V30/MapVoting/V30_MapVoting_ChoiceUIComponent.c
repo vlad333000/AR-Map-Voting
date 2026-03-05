@@ -1,40 +1,39 @@
 class V30_MapVoting_ChoiceUIComponent : SCR_ScriptedWidgetComponent {
-	protected /*private*/ V30_MapVoting_VotingComponent m_VotingComponent;
+	protected /*private*/ V30_MapVoting_VotingWorldSystem m_VotingComponent;
 
-	protected /*private*/ V30_MapVoting_ChoiceId m_ChoiceId;
+	protected /*private*/ int m_ChoiceId;
 
 	override event void HandlerAttached(Widget w) {
 		super.HandlerAttached(w);
 		m_VotingComponent = null;
-		m_ChoiceId = V30_MapVoting_NoChoice;
+		m_ChoiceId = -1;
 	};
 
 	override event void HandlerDeattached(Widget w) {
 		m_VotingComponent = null;
-		m_ChoiceId = V30_MapVoting_NoChoice;
+		m_ChoiceId = -1;
 		super.HandlerDeattached(w);
 	};
 
-	/*modded*/ void SetupChoice(notnull V30_MapVoting_VotingComponent votingComponent, V30_MapVoting_ChoiceId choiceId) {
+	/*modded*/ void SetupChoice(notnull V30_MapVoting_VotingWorldSystem votingComponent, int choiceId) {
 		m_VotingComponent = votingComponent;
 		m_ChoiceId = choiceId;
 	};
 
 	/*modded*/ void ClearChoice() {
 		m_VotingComponent = null;
-		m_ChoiceId = V30_MapVoting_NoChoice;
+		m_ChoiceId = -1;
 	};
 
 	/*sealed*/ void Vote() {
 		auto choiceId = GetChoiceId();
-		V30_MapVoting_PlayerControllerComponent.GetLocalInstance().SetVote(choiceId);
 	};
 
-	/*sealed*/ V30_MapVoting_VotingComponent GetVotingComponent() {
+	/*sealed*/ V30_MapVoting_VotingWorldSystem GetVotingComponent() {
 		return m_VotingComponent;
 	};
 
-	/*sealed*/ V30_MapVoting_ChoiceId GetChoiceId() {
+	/*sealed*/ int GetChoiceId() {
 		return m_ChoiceId;
 	};
 
@@ -80,11 +79,11 @@ class V30_MapVoting_SimpleChoiceUIComponent : V30_MapVoting_ChoiceUIComponent {
 
 	protected TextWidget m_SubTitleWidget;
 
-	protected V30_MapVoting_PlayerControllerComponent m_PlayerControllerComponent;
+	//protected V30_MapVoting_PlayerControllerComponent m_PlayerControllerComponent;
 
 	override event void HandlerAttached(Widget w) {
 		super.HandlerAttached(w);
-		m_ChoiceId = V30_MapVoting_NoChoice;
+		m_ChoiceId = -1;
 		m_RootWidget = ButtonWidget.Cast(w);
 		m_ButtonComponent = SCR_ButtonBaseComponent.Cast(m_RootWidget.FindHandler(SCR_ButtonBaseComponent));
 		m_ButtonComponent.m_OnClicked.Insert(OnClicked);
@@ -103,28 +102,28 @@ class V30_MapVoting_SimpleChoiceUIComponent : V30_MapVoting_ChoiceUIComponent {
 		if (!game) return;
 		auto playerController = game.GetPlayerController();
 		if (!playerController) return;
-		m_PlayerControllerComponent = V30_MapVoting_PlayerControllerComponent.Cast(playerController.FindComponent(V30_MapVoting_PlayerControllerComponent));
-		if (!m_PlayerControllerComponent) return;
-		m_PlayerControllerComponent.GetOnVoteChanged().Insert(OnPlayerVoteChanged);
+		//m_PlayerControllerComponent = V30_MapVoting_PlayerControllerComponent.Cast(playerController.FindComponent(V30_MapVoting_PlayerControllerComponent));
+		//if (!m_PlayerControllerComponent) return;
+		//m_PlayerControllerComponent.GetOnVoteChanged().Insert(OnPlayerVoteChanged);
 		GetGame().GetCallqueue().Remove(DelayedAddOnPlayerVoteChanged);
 	};
 
-	/*sealed*/ override void SetupChoice(notnull V30_MapVoting_VotingComponent votingComponent, V30_MapVoting_ChoiceId choiceId) {
+	/*sealed*/ override void SetupChoice(notnull V30_MapVoting_VotingWorldSystem votingComponent, int choiceId) {
 		auto choice = votingComponent.GetChoice(choiceId);
 		m_ChoiceId = choiceId;
 		m_Choice = choice;
-		auto choicePreview = choice.GetPreviewData();
-		if (m_VoteCountWidget) UpdateVoteCount();
-		if (m_ImageWidget) {
-			m_ImageWidget.LoadImageTexture(0, choicePreview.GetImage());
-			int x, y;
-			m_ImageWidget.GetImageSize(0, x, y);
-			m_ImageWidget.SetSize(x, y);
-		};
-		if (m_TitleWidget) m_TitleWidget.SetText(choicePreview.GetTitle());
-		if (m_SubTitleWidget) m_SubTitleWidget.SetText(choicePreview.GetSubTitle());
-		choice.GetOnPlayerVoteAdded().Insert(OnChoiceVoteAdded);
-		choice.GetOnPlayerVoteRemoved().Insert(OnChoiceVoteRemoved);
+		//auto choicePreview = choice.GetPreviewData();
+		//if (m_VoteCountWidget) UpdateVoteCount();
+		//if (m_ImageWidget) {
+		//	m_ImageWidget.LoadImageTexture(0, choicePreview.GetImage());
+		//	int x, y;
+		//	m_ImageWidget.GetImageSize(0, x, y);
+		//	m_ImageWidget.SetSize(x, y);
+		//};
+		//if (m_TitleWidget) m_TitleWidget.SetText(choicePreview.GetTitle());
+		//if (m_SubTitleWidget) m_SubTitleWidget.SetText(choicePreview.GetSubTitle());
+		//choice.GetOnPlayerVoteAdded().Insert(OnChoiceVoteAdded);
+		//choice.GetOnPlayerVoteRemoved().Insert(OnChoiceVoteRemoved);
 	};
 
 	/*sealed*/ override void ClearChoice() {
@@ -140,9 +139,6 @@ class V30_MapVoting_SimpleChoiceUIComponent : V30_MapVoting_ChoiceUIComponent {
 			m_TitleWidget.SetText("#AR-V30_MapVoting_MenuChoiceTitle");
 		if (m_SubTitleWidget)
 			m_SubTitleWidget.SetText("#AR-V30_MapVoting_MenuChoiceSubTitle");
-
-		m_Choice.GetOnPlayerVoteAdded().Remove(OnChoiceVoteAdded);
-		m_Choice.GetOnPlayerVoteRemoved().Remove(OnChoiceVoteRemoved);
 	};
 
 	protected void OnClicked(SCR_ButtonBaseComponent component) {
@@ -159,19 +155,19 @@ class V30_MapVoting_SimpleChoiceUIComponent : V30_MapVoting_ChoiceUIComponent {
 
 	protected void UpdateVoteCount() {
 		// TODO: Add player's vote extrapolation
-		if (m_VoteCountWidget) m_VoteCountWidget.SetText(m_Choice.CountVotes().ToString());
+		//if (m_VoteCountWidget) m_VoteCountWidget.SetText(m_Choice.CountVotes().ToString());
 	};
 
-	protected void OnPlayerVoteChanged(V30_MapVoting_PlayerControllerComponent component, V30_MapVoting_ChoiceId choiceId, V30_MapVoting_ChoiceId oldChoiceId) {
-		if (m_CheckWidget) {
-			if (choiceId == m_ChoiceId) {
-				m_CheckWidget.SetVisible(true);
-			}
-			else if (oldChoiceId == m_ChoiceId) {
-				m_CheckWidget.SetVisible(false);
-			};
-		};
-	};
+	//protected void OnPlayerVoteChanged(V30_MapVoting_PlayerControllerComponent component, int choiceId, int oldChoiceId) {
+	//	if (m_CheckWidget) {
+	//		if (choiceId == m_ChoiceId) {
+	//			m_CheckWidget.SetVisible(true);
+	//		}
+	//		else if (oldChoiceId == m_ChoiceId) {
+	//			m_CheckWidget.SetVisible(false);
+	//		};
+	//	};
+	//};
 
 	/*sealed*/ static V30_MapVoting_SimpleChoiceUIComponent GetSimpleInstance(notnull Widget w) {
 		return V30_MapVoting_SimpleChoiceUIComponent.Cast(V30_MapVoting_ChoiceUIComponent.GetInstance(w));

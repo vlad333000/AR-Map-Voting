@@ -1,20 +1,12 @@
 class V30_MapVoting_VotedPlayerCountComponent : V30_MapVoting_WidgetComponent {
-	/*sealed*/ override void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
-		super.Setup(votingComponent);
+	/*sealed*/ override void Setup(notnull V30_MapVoting_VotingWorldSystem votingWorldSystem) {
+		super.Setup(votingWorldSystem);
 		GetGame().GetCallqueue().CallLater(UpdatePlayerCount, delay: 1 * 1000, repeat: true);
 	};
 
 	/*sealed*/ protected /*private*/ void UpdatePlayerCount() {
-		auto playerIds = new array<int>();
-		GetGame().GetPlayerManager().GetPlayers(playerIds);
-
-		int count = 0;
-		foreach (int playerId : playerIds)
-			if (m_VotingComponent.IsPlayerVoted(playerId))
-				count++;
-
-		auto text = count.ToString();
-		SetText(text);
+		//auto text = count.ToString();
+		//SetText(text);
 	};
 
 	/*sealed*/ protected /*private*/ void SetText(string text) {

@@ -1,5 +1,5 @@
 class V30_MapVoting_Menu : ChimeraMenuBase {
-	protected V30_MapVoting_VotingComponent m_VotingComponent;
+	protected V30_MapVoting_VotingWorldSystem m_VotingComponent;
 
 	protected V30_MapVoting_MenuUIComponent m_MenuUIComponent;
 
@@ -70,19 +70,14 @@ class V30_MapVoting_Menu : ChimeraMenuBase {
 		m_Choices.SetVisible(false);
 	};
 
-	/*saeled*/ void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
+	/*saeled*/ void Setup(notnull V30_MapVoting_VotingWorldSystem votingComponent) {
 		m_VotingComponent = votingComponent;
 
         auto menuUiComponent = V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_MenuUIComponent>.FindHandler(GetRootWidget());
 		menuUiComponent.Setup(votingComponent);
-
-		if (votingComponent.IsAllChoicesLoaded())
-			GetGame().GetCallqueue().CallLater(OnAllChoicesLoaded, delay: 0, param1: votingComponent, param2: votingComponent.GetAllChoices());
-		else
-			votingComponent.GetOnAllChoicesLoaded().Insert(OnAllChoicesLoaded);
 	};
 
-	protected void OnAllChoicesLoaded(notnull V30_MapVoting_VotingComponent component, notnull map<V30_MapVoting_ChoiceId, ref V30_MapVoting_Choice> choices) {
+	protected void OnAllChoicesLoaded(notnull V30_MapVoting_VotingWorldSystem component, notnull map<int, ref V30_MapVoting_Choice> choices) {
 		auto screenWidget = GetRootWidget().FindAnyWidget("ChoicesWrapper");
 		auto screenUiComponent = V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_ScreenUIComponent>.FindHandler(screenWidget);
 		screenUiComponent.Setup(component);

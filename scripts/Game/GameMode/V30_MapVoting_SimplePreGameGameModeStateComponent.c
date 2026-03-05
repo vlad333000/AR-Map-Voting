@@ -7,7 +7,7 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
     [Attribute("10000.0", uiwidget: "slider", params: "0.0 3600000.0 1.0")]
     protected /*private*/ float m_StartDelay;
 
-    protected /*private*/ V30_MapVoting_WorldTimestampSyncComponent m_WorldTimestampSyncComponent;
+    protected /*private*/ V30_MapVoting_WorldTimestampSyncWorldSystem m_WorldTimestampSyncWorldSystem;
 
     protected /*private*/ RplComponent m_RplComponent;
 
@@ -34,7 +34,7 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
     override protected event void EOnInit(IEntity owner) {
         super.EOnInit(owner);
         m_RplComponent = V30_MapVoting_ComponentHelper<RplComponent>.FindComponent(owner);
-        m_WorldTimestampSyncComponent = V30_MapVoting_ComponentHelper<V30_MapVoting_WorldTimestampSyncComponent>.FindComponent(owner);
+        m_WorldTimestampSyncWorldSystem = V30_MapVoting_WorldTimestampSyncWorldSystem.GetWorldInstance(owner.GetWorld());
 
 		if (SCR_Global.IsEditMode())
 			return;
@@ -60,7 +60,6 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
     };
 
     override protected event void OnDelete(IEntity owner) {
-        m_VotingComponent.GetOnPlayerVoteAbilityChanged().Remove(OnPlayerVoteAbilityChanged);
         super.OnDelete(owner);
     };
 
@@ -76,8 +75,8 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
 
 
 
-    /*sealed*/ V30_MapVoting_WorldTimestampSyncComponent GetWorldTimestampSyncComponent() {
-        return m_WorldTimestampSyncComponent;
+    /*sealed*/ V30_MapVoting_WorldTimestampSyncWorldSystem GetWorldTimestampSyncComponent() {
+        return m_WorldTimestampSyncWorldSystem;
     };
 
     /*sealed*/ V30_MapVoting_PreGameGameModeState_State GetState() {
@@ -87,31 +86,32 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
 
 
     protected /*private*/ void UpdatePlayerCountLeft(int playerCountLeft) {
-        if (playerCountLeft < 0)
-            playerCountLeft = 0;
+        //if (playerCountLeft < 0)
+        //    playerCountLeft = 0;
 
-        Rpc(RpcDo_UpdatePlayerCountLeft, playerCountLeft);
-        RpcDo_UpdatePlayerCountLeft(playerCountLeft);
+        //Rpc(RpcDo_UpdatePlayerCountLeft, playerCountLeft);
+        //RpcDo_UpdatePlayerCountLeft(playerCountLeft);
 
-        if (playerCountLeft == 0)
-            SetState(V30_MapVoting_PreGameGameModeState_State.DELAY_START);
-        else if (GetState() == V30_MapVoting_PreGameGameModeState_State.DELAY_START)
-            SetState(V30_MapVoting_PreGameGameModeState_State.WAITING_PLAYERS);
+        //if (playerCountLeft == 0)
+        //    SetState(V30_MapVoting_PreGameGameModeState_State.DELAY_START);
+        //else if (GetState() == V30_MapVoting_PreGameGameModeState_State.DELAY_START)
+        //    SetState(V30_MapVoting_PreGameGameModeState_State.WAITING_PLAYERS);
     };
 
     protected /*private*/ int UpdatePlayerCountLeft() {
-        auto votingComponent = GetVotingComponent();
-        auto requiredPlayerCount = GetRequiredPlayerCount();
-        auto playerCount = votingComponent.CountPlayersWithVoteAbility();
-        auto playerCountLeft = requiredPlayerCount - playerCount;
-        UpdatePlayerCountLeft(playerCountLeft);
-        return playerCountLeft;
+        //auto votingComponent = GetVotingComponent();
+        //auto requiredPlayerCount = GetRequiredPlayerCount();
+        //auto playerCount = votingComponent.CountPlayersWithVoteAbility();
+        //auto playerCountLeft = requiredPlayerCount - playerCount;
+        //UpdatePlayerCountLeft(playerCountLeft);
+        //return playerCountLeft;
+		return 0;
     };
 
     [RplRpc(channel: RplChannel.Reliable, rcver: RplRcver.Broadcast)]
     protected /*private*/ void RpcDo_UpdatePlayerCountLeft(int playerCountLeft) {
-        m_PlayerCountLeft = playerCountLeft;
-        OnMessageUpdated();
+        //m_PlayerCountLeft = playerCountLeft;
+        //OnMessageUpdated();
     };
 
     protected /*private*/ void UpdateStartDelay(WorldTimestamp startWorldTimestamp) {
@@ -153,8 +153,6 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
                 break;
             };
             case V30_MapVoting_PreGameGameModeState_State.WAITING_PLAYERS: {
-                if (!IsProxy())
-                    m_VotingComponent.GetOnPlayerVoteAbilityChanged().Remove(OnPlayerVoteAbilityChanged);
                 break;
             };
             case V30_MapVoting_PreGameGameModeState_State.DELAY_START: {
@@ -177,10 +175,6 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
                 break;
             };
             case V30_MapVoting_PreGameGameModeState_State.WAITING_PLAYERS: {
-                if (!IsProxy()) {
-                    auto votingComponent = GetVotingComponent();
-                    votingComponent.GetOnPlayerVoteAbilityChanged().Insert(OnPlayerVoteAbilityChanged);
-                };
                 break;
             };
             case V30_MapVoting_PreGameGameModeState_State.DELAY_START: {
@@ -228,7 +222,7 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
         return m_OnStateChanged;
     };
 
-    protected /*private*/ event void OnPlayerVoteAbilityChanged(notnull V30_MapVoting_VotingComponent votingComponent, int playerId, bool hasVoteAbility) {
+    protected /*private*/ event void OnPlayerVoteAbilityChanged(notnull V30_MapVoting_VotingWorldSystem votingComponent, int playerId, bool hasVoteAbility) {
         UpdatePlayerCountLeft();
     };
 
@@ -243,7 +237,7 @@ class V30_MapVoting_SimplePreGameGameModeStateComponent : V30_MapVoting_PreGameG
             };
             case V30_MapVoting_PreGameGameModeState_State.DELAY_START: {
                 auto format = "#AR-V30_MapVoting_SimplePreGame_WaitingDelay";
-                auto now = m_WorldTimestampSyncComponent.GetSyncedWorldTimestamp();
+                auto now = m_WorldTimestampSyncWorldSystem.GetSyncedWorldTimestamp();
                 auto start = m_StartWorldTimestamp;
                 int time = start.DiffSeconds(now) + 1;
                 if (time < 1)

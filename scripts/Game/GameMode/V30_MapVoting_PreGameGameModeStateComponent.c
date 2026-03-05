@@ -7,7 +7,7 @@ class V30_MapVoting_PreGameGameModeStateComponentClass : SCR_BaseGameModeStateCo
 class V30_MapVoting_PreGameGameModeStateComponent : SCR_BaseGameModeStateComponent {
     protected /*private*/ ref V30_MapVoting_PreGameGameModeStateComponent_OnMessageUpdatedInvoker m_OnMessageUpdated;
 
-    protected /*private*/ V30_MapVoting_VotingComponent m_VotingComponent;
+    protected /*private*/ V30_MapVoting_VotingWorldSystem m_VotingWorldSystem;
 
     protected /*private*/ bool m_Finished;
 
@@ -30,8 +30,8 @@ class V30_MapVoting_PreGameGameModeStateComponent : SCR_BaseGameModeStateCompone
         return m_OnMessageUpdated;
     };
 
-    /*sealed*/ V30_MapVoting_VotingComponent GetVotingComponent() {
-        return m_VotingComponent;
+    /*sealed*/ V30_MapVoting_VotingWorldSystem GetVotingComponent() {
+        return m_VotingWorldSystem;
     };
 
 
@@ -84,7 +84,7 @@ class V30_MapVoting_PreGameGameModeStateComponent : SCR_BaseGameModeStateCompone
 
     override protected event void EOnInit(IEntity owner) {
         super.EOnInit(owner);
-        m_VotingComponent = V30_MapVoting_ComponentHelper<V30_MapVoting_VotingComponent>.FindComponent(owner);
+        m_VotingWorldSystem = V30_MapVoting_ComponentHelper<V30_MapVoting_VotingWorldSystem>.FindComponent(owner);
     };
 
 

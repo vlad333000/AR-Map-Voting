@@ -17,7 +17,7 @@ class V30_MapVoting_GameOverScreenVotingMenu : ChimeraMenuBase {
 
     protected Widget restartTimer;
 
-    protected V30_MapVoting_VotingComponent m_VotingComponent;
+    protected V30_MapVoting_VotingWorldSystem m_VotingComponent;
 
     protected Widget content;
 
@@ -63,11 +63,11 @@ class V30_MapVoting_GameOverScreenVotingMenu : ChimeraMenuBase {
 
         auto game = GetGame();
         auto gameMode = game.GetGameMode();
-        auto votingComponent = V30_MapVoting_VotingComponent.Cast(gameMode.FindComponent(V30_MapVoting_VotingComponent));
+        auto votingComponent = V30_MapVoting_VotingWorldSystem.Cast(gameMode.FindComponent(V30_MapVoting_VotingWorldSystem));
         Setup(votingComponent);
     };
 
-    void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
+    void Setup(notnull V30_MapVoting_VotingWorldSystem votingComponent) {
 		m_VotingComponent = votingComponent;
 
         // auto root = GetRootWidget();
@@ -77,27 +77,15 @@ class V30_MapVoting_GameOverScreenVotingMenu : ChimeraMenuBase {
         content.SetVisible(true);
         contentChoices.SetVisible(false);
         contentNextScenario.SetVisible(false);
-
-		if (votingComponent.IsAllChoicesLoaded())
-			GetGame().GetCallqueue().CallLater(OnAllChoicesLoaded, delay: 0, param1: votingComponent, param2: votingComponent.GetAllChoices());
-		else
-			votingComponent.GetOnAllChoicesLoaded().Insert(OnAllChoicesLoaded);
     };
 
-    protected event void OnAllChoicesLoaded(notnull V30_MapVoting_VotingComponent votingComponent, notnull map<V30_MapVoting_ChoiceId, ref V30_MapVoting_Choice> choices) {
+    protected event void OnAllChoicesLoaded(notnull V30_MapVoting_VotingWorldSystem votingComponent, notnull map<int, ref V30_MapVoting_Choice> choices) {
 
 		auto screenUiComponent = V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_ScreenUIComponent>.FindHandler(contentChoices);
 		screenUiComponent.Setup(votingComponent);
-
-        if (!votingComponent.IsVoteEnded()) {
-		    contentChoices.SetVisible(true);
-            votingComponent.GetOnVoteEnded().Insert(OnVoteEnded);
-        }
-        else
-            OnVoteEnded(votingComponent, votingComponent.GetWinnerChoice());
     };
 
-    protected event void OnVoteEnded(notnull V30_MapVoting_VotingComponent votingComponent, V30_MapVoting_ChoiceId winnerId) {
+    protected event void OnVoteEnded(notnull V30_MapVoting_VotingWorldSystem votingComponent, int winnerId) {
 		contentChoices.SetVisible(false);
         contentNextScenario.SetVisible(true);
 		auto contentNextScenarioComponent = V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_WinnerScenarioWidgetComponent>.FindHandler(contentNextScenario);

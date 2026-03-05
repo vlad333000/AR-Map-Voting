@@ -1,6 +1,6 @@
 class V30_MapVoting_EndVoteButtonWidgetComponent : V30_MapVoting_ButtonWidgetComponent {
-    /*sealed*/ override void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
-		super.Setup(votingComponent);
+    /*sealed*/ override void Setup(notnull V30_MapVoting_VotingWorldSystem votingWorldSystem) {
+		super.Setup(votingWorldSystem);
 		GetGame().GetCallqueue().CallLater(UpdateButtonAllowance, repeat: true, delay: 0.5 * 1000);
 	};
 
@@ -14,8 +14,7 @@ class V30_MapVoting_EndVoteButtonWidgetComponent : V30_MapVoting_ButtonWidgetCom
     };
 
     /*sealed*/ override protected event void OnButtonClicked(notnull SCR_ButtonBaseComponent buttonWidgetComponent) {
-        if (SCR_Global.IsAdmin())
-            V30_MapVoting_PlayerControllerComponent.GetLocalInstance().EndVote();
+		return;
     };
 
 	override event void HandlerDeattached(Widget w) {

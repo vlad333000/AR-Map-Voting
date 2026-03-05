@@ -1,5 +1,5 @@
 class V30_MapVoting_MenuUIComponent : SCR_ScriptedWidgetComponent {
-    protected V30_MapVoting_VotingComponent m_VotingComponent;
+    protected V30_MapVoting_VotingWorldSystem m_VotingComponent;
 
     [Attribute("Waiting")]
     protected string m_WaitingWidgetName;
@@ -26,14 +26,13 @@ class V30_MapVoting_MenuUIComponent : SCR_ScriptedWidgetComponent {
         m_ContentWidget.SetEnabled(false);
 	};
 
-    /*saeled*/ void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
+    /*saeled*/ void Setup(notnull V30_MapVoting_VotingWorldSystem votingComponent) {
         m_VotingComponent = votingComponent;
-        m_VotingComponent.GetOnVoteStarted().Insert(OnVoteStarted);
         auto waitingWidgetComponent = V30_MapVoting_WidgetHandlerHelperT<V30_MapVoting_WaitingWidgetComponent>.FindHandler(m_WaitingWidget);
         waitingWidgetComponent.Setup(votingComponent);
     };
 
-    protected /*private*/ event void OnVoteStarted(notnull V30_MapVoting_VotingComponent votingComponent) {
+    protected /*private*/ event void OnVoteStarted(notnull V30_MapVoting_VotingWorldSystem votingComponent) {
         m_WaitingWidget.SetVisible(false);
         m_WaitingWidget.SetEnabled(false);
 

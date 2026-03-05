@@ -1,7 +1,7 @@
 modded class SCR_BaseGameMode {
 	protected bool m_V30_MapVoting_overrideOnGameModeEnd = false;
 
-	protected V30_MapVoting_VotingComponent m_V30_MapVoting_votingComponent;
+	protected V30_MapVoting_VotingWorldSystem m_V30_MapVoting_votingComponent;
 
 	override protected void OnGameModeEnd(SCR_GameModeEndData endData) {
 		// TODO: Change to normal code when BIS allows to disable all actions in super.OnGameModeEnd
@@ -9,17 +9,12 @@ modded class SCR_BaseGameMode {
 		super.OnGameModeEnd(endData);
 		m_V30_MapVoting_overrideOnGameModeEnd = false;
 
-		m_V30_MapVoting_votingComponent = V30_MapVoting_VotingComponent.Cast(FindComponent(V30_MapVoting_VotingComponent));
+		m_V30_MapVoting_votingComponent = V30_MapVoting_VotingWorldSystem.Cast(FindComponent(V30_MapVoting_VotingWorldSystem));
 		if (!m_V30_MapVoting_votingComponent)
 			return;
 
 		if (!IsMaster())
 			return;
-
-		m_V30_MapVoting_votingComponent.GetOnVoteEnded().Insert(V30_MapVoting_OnVoteEnded);
-
-		if (m_V30_MapVoting_votingComponent.IsAutoStartEnabled())
-			m_V30_MapVoting_votingComponent.StartVote();
 	};
 
 	override float GetAutoReloadDelay() {
@@ -38,7 +33,7 @@ modded class SCR_BaseGameMode {
 		super.RestartSession();
 	};
 
-	protected event void V30_MapVoting_OnVoteEnded(V30_MapVoting_ChoiceId winnerId) {
+	protected event void V30_MapVoting_OnVoteEnded(int winnerId) {
 		float reloadTime = Math.Max(5, GetAutoReloadDelay());
 
 		GetGame().GetCallqueue().CallLater(V30_MapVoting_StartVotedMission, reloadTime * 1000, false);
@@ -47,7 +42,5 @@ modded class SCR_BaseGameMode {
 	protected event void V30_MapVoting_StartVotedMission() {
 		if (!IsMaster())
 			return;
-
-		m_V30_MapVoting_votingComponent.RunWinner();
 	};
 };

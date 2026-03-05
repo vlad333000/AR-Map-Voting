@@ -20,22 +20,22 @@ class V30_MapVoting_WaitingWidgetComponent : V30_MapVoting_WidgetComponent {
 
 
 
-    override void Setup(notnull V30_MapVoting_VotingComponent votingComponent) {
-        super.Setup(votingComponent);
+    override void Setup(notnull V30_MapVoting_VotingWorldSystem votingWorldSystem) {
+        super.Setup(votingWorldSystem);
 
-        auto owner = votingComponent.GetOwner();
-        auto gameMode = SCR_BaseGameMode.Cast(owner);
-        if (!gameMode)
-            return;
+        //auto owner = votingWorldSystem.GetOwner();
+        //auto gameMode = SCR_BaseGameMode.Cast(owner);
+        //if (!gameMode)
+        //    return;
 
-        auto preGameGameStateComponent = gameMode.GetStateComponent(SCR_EGameModeState.PREGAME);
-        m_PreGameGameModeStateComponent = V30_MapVoting_PreGameGameModeStateComponent.Cast(preGameGameStateComponent);
-        if (!m_PreGameGameModeStateComponent)
-			return;
+        //auto preGameGameStateComponent = gameMode.GetStateComponent(SCR_EGameModeState.PREGAME);
+        //m_PreGameGameModeStateComponent = V30_MapVoting_PreGameGameModeStateComponent.Cast(preGameGameStateComponent);
+        //if (!m_PreGameGameModeStateComponent)
+		//	return;
 
-        m_PreGameGameModeStateComponent.GetOnMessageUpdated().Insert(OnMessageUpdated);
-		auto message = m_PreGameGameModeStateComponent.GetMessage();
-		OnMessageUpdated(m_PreGameGameModeStateComponent, message);
+        //m_PreGameGameModeStateComponent.GetOnMessageUpdated().Insert(OnMessageUpdated);
+		//auto message = m_PreGameGameModeStateComponent.GetMessage();
+		//OnMessageUpdated(m_PreGameGameModeStateComponent, message);
     };
 
     void OnMessageUpdated(notnull V30_MapVoting_PreGameGameModeStateComponent preGameGameModeStateComponent, string message) {
