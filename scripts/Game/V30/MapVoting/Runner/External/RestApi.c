@@ -9,6 +9,12 @@ sealed class V30_MapVoting_RestApiExternalRunner : V30_MapVoting_ExternalRunner 
     [Attribute("$profile:V30/MapVoting/token.txt")]
     protected string bearerTokenFilePath;
 
+    [Attribute("0", desc: "HTTP method to use for request.", uiwidget: UIWidgets.ComboBox, enumType: V30_MapVoting_RestApiExternalRunner_EMethod)]
+    protected V30_MapVoting_RestApiExternalRunner_EMethod method;
+
+    [Attribute("0", desc: "Format to use for request.", uiwidget: UIWidgets.ComboBox, enumType: V30_MapVoting_RestApiExternalRunner_EFormat)]
+    protected V30_MapVoting_RestApiExternalRunner_EFormat format;
+
     protected RestApi restApi;
 
     protected ref RestCallback restCallback;
@@ -28,8 +34,18 @@ sealed class V30_MapVoting_RestApiExternalRunner : V30_MapVoting_ExternalRunner 
             return;
         };
 
-        auto headers = "Content-Type,application/json";
-        auto headersSecret = "Content-Type,application/json";
+        switch (this.format) {
+            case V30_MapVoting_RestApiExternalRunner_EFormat.JSON : {
+                auto headers = "Content-Type,application/json";
+                auto headersSecret = "Content-Type,application/json";
+                break;
+            };
+            default {
+                auto formatName = SCR_Enum.GetEnumName(V30_MapVoting_RestApiExternalRunner_EFormat, this.format);
+                PrintFormat("[V30][MapVoting][RestApiExternalRunner] PrepareScenarioSwitch: unsupported format %1 (%2).", this.format, formatName, level: LogLevel.ERROR);
+                break;
+            };
+        };
 
         auto token = GetToken();
         if (!token.IsEmpty()) {
@@ -97,7 +113,19 @@ sealed class V30_MapVoting_RestApiExternalRunner : V30_MapVoting_ExternalRunner 
     };
 
     protected void SendRequest() {
-        auto data = GetJsonString();
+        string data;
+        switch (this.format) {
+            case V30_MapVoting_RestApiExternalRunner_EFormat.JSON : {
+                data = GetJsonString()
+                break;
+            };
+            default {
+                auto formatName = SCR_Enum.GetEnumName(V30_MapVoting_RestApiExternalRunner_EFormat, this.format);
+                PrintFormat("[V30][MapVoting][RestApiExternalRunner] SendRequest: unsupported format %1 (%2).", this.format, formatName, level: LogLevel.ERROR);
+                break;
+            };
+        };
+
 
         auto restContext = this.restApi.GetContext(this.host);
         if (!restContext) {
@@ -109,8 +137,23 @@ sealed class V30_MapVoting_RestApiExternalRunner : V30_MapVoting_ExternalRunner 
             PrintFormat("[V30][MapVoting][RestApiExternalRunner] PrepareScenarioSwitch(): Failed to set headers \"%1\".", this.restHeadersPublic, level: LogLevel.ERROR);
         };
 
-	    auto result = restContext.POST(this.restCallback, this.endpoint, data);
-        // TODO: process result when meaning of result will be known.
+        switch (this.method) {
+            case V30_MapVoting_RestApiExternalRunner_EMethod.POST : {
+                auto result = restContext.POST(this.restCallback, this.endpoint, data);
+                // TODO: process result when meaning of result will be known.
+                break;
+            };
+            case V30_MapVoting_RestApiExternalRunner_EMethod.POST_now : {
+                auto result = restContext.POST_now(this.restCallback, this.endpoint, data);
+                // TODO: process result when meaning of result will be known.
+                break;
+            };
+            default {
+                auto methodName = SCR_Enum.GetEnumName(V30_MapVoting_RestApiExternalRunner_EMethod, this.method);
+                PrintFormat("[V30][MapVoting][RestApiExternalRunner] SendRequest: unsupported method %1 (%2).", this.method, methodName, level: LogLevel.ERROR);
+                break;
+            };
+        };
     };
 
     protected event void OnRestCallback(RestCallback cb = null) {
@@ -143,3 +186,20 @@ sealed class V30_MapVoting_RestApiExternalRunner : V30_MapVoting_ExternalRunner 
             SwitchScenario();
     };
 };
+
+enum V30_MapVoting_RestApiExternalRunner_EMethod {
+    POST,
+    POST_now
+    // TODO: PUT
+    // TODO: PUT_now
+    // TODO: GET // Supports only URLQueryString format
+    // TODO: GET_now // Supports only URLQueryString format
+};
+
+enum V30_MapVoting_RestApiExternalRunner_EFormat {
+    JSON
+    // TODO: URLQueryString // http://host/endpoint?missionHeader=...&worldSystemsConfig=...&addons=ADDON1%2CADDON2%2C...
+    // TODO: URLEncoded // missionHeader=...&worldSystemsConfig=...&addons=ADDON1%2CADDON2%2C...
+    // TODO: PlainText // ...\n....\n...\n
+    // TODO: XML // <scenario><missionHeader>...</missionHeader><worldSystemsConfig>...</worldSystemsConfig><addons><addon>...</addon>...</addons></scenario>
+}
