@@ -1,25 +1,25 @@
 modded class SCR_BaseGameMode {
 	[Attribute(desc: "Voting mission to load after game mode end", defvalue: "{B88CC33A14B71FDC}Missions/V30_MapVoting_Mission.conf", uiwidget: UIWidgets.ResourceNamePicker, params: "conf")];
-	protected ResourceName m_V30_MapVoting_votingMissionResourceName;
+	protected ResourceName m_V30_MapVoting_VotingMissionResourceName;
 
-	protected bool m_V30_MapVoting_overrideOnGameModeEnd = false;
+	protected bool m_V30_MapVoting_OverrideOnGameModeEnd = false;
 
 	protected ResourceName V30_MapVoting_GetVotingMissionResourceName() {
-		return m_V30_MapVoting_votingMissionResourceName;
+		return m_V30_MapVoting_VotingMissionResourceName;
 	};
 
 	override protected void OnGameModeEnd(SCR_GameModeEndData endData) {
 		// TODO: Change to normal code when BIS allows to disable all actions in super.OnGameModeEnd
-		m_V30_MapVoting_overrideOnGameModeEnd = true;
+		m_V30_MapVoting_OverrideOnGameModeEnd = true;
 		super.OnGameModeEnd(endData);
-		m_V30_MapVoting_overrideOnGameModeEnd = false;
+		m_V30_MapVoting_OverrideOnGameModeEnd = false;
 
 		float reloadTime = Math.Max(0.0, GetAutoReloadDelay());
 		GetGame().GetCallqueue().CallLater(V30_MapVoting_StartVotingMission, reloadTime * 1000.0, false);
 	};
 
 	override float GetAutoReloadDelay() {
-		if (m_V30_MapVoting_overrideOnGameModeEnd) {
+		if (m_V30_MapVoting_OverrideOnGameModeEnd) {
 			return 0; // Force to call RestartSession in super.OnGameModeEnd
 		};
 
@@ -27,7 +27,7 @@ modded class SCR_BaseGameMode {
 	};
 
 	override protected void RestartSession() {
-		if (m_V30_MapVoting_overrideOnGameModeEnd) {
+		if (m_V30_MapVoting_OverrideOnGameModeEnd) {
 			return; // Cancel RestartSession
 		};
 

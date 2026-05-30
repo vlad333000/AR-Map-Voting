@@ -110,27 +110,27 @@ class V30_MapVoting_ChoiceResource : V30_MapVoting_Choice {
 		return V30_MapVoting_PreviewData.Create("{65B6F7199650B53A}UI/Textures/V30_MapVoting_Choice_RandomImage.edds", m_ResourceName, m_AddonsList);
 	};
 
-	protected static bool m_IsInitialAddonsList = false;
+	protected static bool s_IsInitialAddonsList = false;
 
-	protected static string m_InitialAddonsList;
+	protected static string s_InitialAddonsList;
 
 	override V30_MapVoting_RunData GetRunData() {
 		return new V30_MapVoting_RunData_Scenario(m_ResourceName, m_AddonsList);
 	};
 
 	static string GetInitialAddonsList() {
-		if (m_IsInitialAddonsList) return m_InitialAddonsList;
+		if (s_IsInitialAddonsList) return s_InitialAddonsList;
 
 		auto addons = new array<string>();
 		GameProject.GetLoadedAddons(addons);
 
-		m_InitialAddonsList = "";
+		s_InitialAddonsList = "";
 		foreach (int i, string addon : addons) {
-			if (i > 0) m_InitialAddonsList += ",";
-			m_InitialAddonsList += addon;
+			if (i > 0) s_InitialAddonsList += ",";
+			s_InitialAddonsList += addon;
 		};
-		m_IsInitialAddonsList = true;
-		return m_InitialAddonsList;
+		s_IsInitialAddonsList = true;
+		return s_InitialAddonsList;
 	};
 
 	static string GetCurrentAddonsList() {
