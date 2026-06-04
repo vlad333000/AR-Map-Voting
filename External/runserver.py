@@ -7,17 +7,18 @@ import argparse
 import json
 
 def run(exe: str, profile: str, config_template_path: str = "config.template.json", force_json: bool = False, *args: str):
-    first = True
+    voting = True
 
     while True:
         try:
             # Step 1: Generate server config using a helper script
-            if not first:
+            if not voting:
+                voting = True
                 with open(os.path.join(profile, "profile", "V30", "MapVoting", "voted.json"), 'r') as f:
                     scenario = json.load(f)
             else:
                 scenario = "{B88CC33A14B71FDC}Missions/V30_MapVoting_Mission.conf"
-                first = True
+                voting = False
 
             makeconfig.makeconfig(scenario, config_template_path, "config.json", force_json)
 
