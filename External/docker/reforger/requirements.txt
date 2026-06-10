@@ -1,0 +1,6 @@
+fastapi
+json5
+pydantic
+uvicorn
+websockets
+wsproto

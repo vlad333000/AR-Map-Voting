@@ -1,0 +1,7 @@
+{
+	"bindAddress": "0.0.0.0",
+	"bindPort": 2001,
+	"game": {
+		"name": "Arma Reforger Server"
+	}
+}

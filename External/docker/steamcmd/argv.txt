@@ -1,0 +1,6 @@
++@ShutdownOnFailedCommand 1
++@NoPromptForPassword 1
++force_install_dir "${REFORGER_SERVER_DIR}"
++login "${STEAMCMD_LOGIN}" "${STEAMCMD_PASSWORD}"
++app_update 1874900
++quit

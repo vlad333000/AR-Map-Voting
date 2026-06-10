@@ -1,0 +1,29 @@
+services:
+  reforger:
+    build:
+      context: .
+      args:
+        UID: 1000
+        GID: 1000
+        USER: reforger
+        GROUP: reforger
+    image: v30-map-voting-reforger:latest
+    container_name: reforger
+    restart: unless-stopped
+    ports:
+      - "2001:2001/udp"
+    # Force -it, otherwise for some reason logs is buffered and very slow
+    stdin_open: true
+    tty: true
+
+    volumes:
+      - reforger_profile:/home/reforger/reforger/profile
+      - reforger_logs:/home/reforger/reforger/logs
+      - reforger_addons:/home/reforger/reforger/addons
+      - reforger_server:/home/reforger/reforger/server
+
+volumes:
+  reforger_server:
+  reforger_profile:
+  reforger_logs:
+  reforger_addons:

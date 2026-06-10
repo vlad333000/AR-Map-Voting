@@ -1,0 +1,14 @@
+{
+    "count": 3,
+    "countPreserveRandom": true,
+    "skipRepeats": true,
+    "list": [
+            "#random",
+            "{28802845ADA64D52}Missions/23_Campaign_SWCoast.conf",
+            "{C700DB41F0C546E1}Missions/23_Campaign_NorthCentral.conf",
+            "{94992A3D7CE4FF8A}Missions/23_Campaign_Western.conf",
+            "{FDE33AFE2ED7875B}Missions/23_Campaign_Montignac.conf",
+            "{C41618FD18E9D714}Missions/23_Campaign_Arland.conf"
+    ],
+    "runMethod": "ScriptedRestart"
+}

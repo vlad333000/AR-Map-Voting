@@ -1,0 +1,1 @@
+-profile ${REFORGER_PROFILE_PATH} -config ${REFORGER_CONFIG_PATH} -maxFPS 60 -logStats
