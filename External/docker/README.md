@@ -50,7 +50,7 @@ These files are copied into the image during build:
 
 - `reforger/config.json` - default Arma Reforger server config and config template.
 - `reforger/argv.txt` - command line arguments passed to `ArmaReforgerServer`.
-- `reforger/voting/config.json` - V30 Map Voting config.
+- `reforger/voting/profile/config.json` - V30 Map Voting config.
 - `steamcmd/argv.txt` - SteamCMD install/update commands.
 - `docker-compose.yml` - ports, image name, build args, and volumes.
 
