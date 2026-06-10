@@ -2,6 +2,9 @@
 	"bindAddress": "0.0.0.0",
 	"bindPort": 2001,
 	"game": {
-		"name": "Arma Reforger Server"
+		"name": "Arma Reforger Server",
+		"mods": [
+			{ "modId": "61CE96A4BB024B4C", "name": "V30 Map Voting", "version": "" }
+		]
 	}
 }
