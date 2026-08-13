@@ -279,7 +279,7 @@ class V30_MapVoting_GameMode : SCR_BaseGameMode {
 	};
 
 	bool IsTicking() {
-		if (m_RplComponent.Role() == RplRole.Authority) {
+		if (GetRplComponent().Role() == RplRole.Authority) {
 			return IsTimerTicking() || IsThresholdTimerTicking();
 		}
 		else {
@@ -288,7 +288,7 @@ class V30_MapVoting_GameMode : SCR_BaseGameMode {
 	};
 
 	int GetVotingRemainingTime() {
-		if (m_RplComponent.Role() == RplRole.Authority) {
+		if (GetRplComponent().Role() == RplRole.Authority) {
 			if (!IsTimerTicking() && !IsThresholdTimerTicking()) return int.MAX;
 			auto timer = GetTimer();
 			auto thresholdTimer = GetThreshouldTimer();
